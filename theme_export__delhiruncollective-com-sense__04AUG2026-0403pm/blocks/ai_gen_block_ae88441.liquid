@@ -1,0 +1,366 @@
+{% doc %}
+  @prompt
+    create a floating buy now button , it will open our cutom url and it should have no gap from the bottom of the screen and side , make the button better with price on one end and button CTA on one end , make this a bottom vcard put a small button on the right side and left side should show price and a very small titile , the price and title  should be custom added , width of button can be increased to cover empty space 
+{% enddoc %}
+{% assign ai_gen_id = block.id | replace: '_', '' | downcase %}
+
+{% style %}
+  .ai-floating-buy-button-{{ ai_gen_id }} {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 999;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+  }
+
+  .ai-floating-buy-button-{{ ai_gen_id }}.visible {
+    opacity: 1;
+    visibility: visible;
+  }
+
+  .ai-floating-buy-button-{{ ai_gen_id }}__card {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: {{ block.settings.card_padding }}px;
+    background-color: {{ block.settings.background_color }};
+    box-shadow: 0 -4px 12px rgba(0, 0, 0, {{ block.settings.shadow_opacity | divided_by: 100.0 }});
+    text-decoration: none;
+    width: 100%;
+  }
+
+  .ai-floating-buy-button-{{ ai_gen_id }}__left {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    flex-shrink: 0;
+  }
+
+  .ai-floating-buy-button-{{ ai_gen_id }}__title {
+    font-size: {{ block.settings.title_font_size }}px;
+    font-weight: 500;
+    margin: 0;
+    color: {{ block.settings.text_color }};
+    line-height: 1.2;
+  }
+
+  .ai-floating-buy-button-{{ ai_gen_id }}__price {
+    font-size: {{ block.settings.price_font_size }}px;
+    font-weight: 700;
+    margin: 0;
+    color: {{ block.settings.price_color }};
+    line-height: 1.2;
+  }
+
+  .ai-floating-buy-button-{{ ai_gen_id }}__button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: {{ block.settings.button_padding_vertical }}px {{ block.settings.button_padding_horizontal }}px;
+    background-color: {{ block.settings.button_color }};
+    color: {{ block.settings.button_text_color }};
+    font-weight: 600;
+    font-size: {{ block.settings.button_font_size }}px;
+    border-radius: {{ block.settings.button_border_radius }}px;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    border: none;
+    white-space: nowrap;
+    text-decoration: none;
+    flex: 1;
+    max-width: {{ block.settings.button_max_width }}px;
+  }
+
+  .ai-floating-buy-button-{{ ai_gen_id }}__button:hover {
+    background-color: {{ block.settings.button_hover_color }};
+    color: {{ block.settings.button_hover_text_color }};
+    transform: translateY(-1px);
+  }
+
+  .ai-floating-buy-button-{{ ai_gen_id }}__empty {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: {{ block.settings.card_padding }}px;
+    background-color: {{ block.settings.background_color }};
+    box-shadow: 0 -4px 12px rgba(0, 0, 0, 0.1);
+    opacity: 0.6;
+  }
+
+  .ai-floating-buy-button-{{ ai_gen_id }}__empty-text {
+    color: {{ block.settings.text_color }};
+    font-size: 14px;
+    text-align: center;
+  }
+
+  @media screen and (max-width: 749px) {
+    .ai-floating-buy-button-{{ ai_gen_id }}__title {
+      font-size: {{ block.settings.title_font_size | times: 0.9 }}px;
+    }
+
+    .ai-floating-buy-button-{{ ai_gen_id }}__button {
+      padding: {{ block.settings.button_padding_vertical | times: 0.9 }}px {{ block.settings.button_padding_horizontal | times: 0.8 }}px;
+      font-size: {{ block.settings.button_font_size | times: 0.9 }}px;
+    }
+  }
+{% endstyle %}
+
+<floating-buy-button-{{ ai_gen_id }}
+  class="ai-floating-buy-button-{{ ai_gen_id }}"
+  data-scroll-threshold="{{ block.settings.scroll_threshold }}"
+  {{ block.shopify_attributes }}
+>
+  {% if block.settings.custom_url != blank %}
+    <div class="ai-floating-buy-button-{{ ai_gen_id }}__card">
+      <div class="ai-floating-buy-button-{{ ai_gen_id }}__left">
+        {% if block.settings.custom_title != blank %}
+          <p class="ai-floating-buy-button-{{ ai_gen_id }}__title">{{ block.settings.custom_title }}</p>
+        {% endif %}
+        {% if block.settings.custom_price != blank %}
+          <p class="ai-floating-buy-button-{{ ai_gen_id }}__price">{{ block.settings.custom_price }}</p>
+        {% endif %}
+      </div>
+
+      <a
+        href="{{ block.settings.custom_url }}"
+        class="ai-floating-buy-button-{{ ai_gen_id }}__button"
+      >
+        {{ block.settings.button_text }}
+      </a>
+    </div>
+  {% else %}
+    <div class="ai-floating-buy-button-{{ ai_gen_id }}__empty">
+      <span class="ai-floating-buy-button-{{ ai_gen_id }}__empty-text">Add a custom URL in settings</span>
+    </div>
+  {% endif %}
+</floating-buy-button-{{ ai_gen_id }}>
+
+<script>
+  (function() {
+    class FloatingBuyButton{{ ai_gen_id }} extends HTMLElement {
+      constructor() {
+        super();
+        this.scrollThreshold = parseInt(this.dataset.scrollThreshold) || 300;
+      }
+
+      connectedCallback() {
+        this.handleScroll = this.handleScroll.bind(this);
+        window.addEventListener('scroll', this.handleScroll);
+        this.handleScroll();
+      }
+
+      disconnectedCallback() {
+        window.removeEventListener('scroll', this.handleScroll);
+      }
+
+      handleScroll() {
+        const scrollPosition = window.scrollY || window.pageYOffset;
+        
+        if (scrollPosition > this.scrollThreshold) {
+          this.classList.add('visible');
+        } else {
+          this.classList.remove('visible');
+        }
+      }
+    }
+
+    customElements.define('floating-buy-button-{{ ai_gen_id }}', FloatingBuyButton{{ ai_gen_id }});
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "Floating buy button",
+  "tag": null,
+  "settings": [
+    {
+      "type": "header",
+      "content": "Content"
+    },
+    {
+      "type": "text",
+      "id": "custom_title",
+      "label": "Title"
+    },
+    {
+      "type": "text",
+      "id": "custom_price",
+      "label": "Price"
+    },
+    {
+      "type": "url",
+      "id": "custom_url",
+      "label": "Button link"
+    },
+    {
+      "type": "text",
+      "id": "button_text",
+      "label": "Button text",
+      "default": "Buy Now"
+    },
+    {
+      "type": "range",
+      "id": "scroll_threshold",
+      "min": 0,
+      "max": 1000,
+      "step": 50,
+      "unit": "px",
+      "label": "Show after scroll",
+      "default": 300
+    },
+    {
+      "type": "header",
+      "content": "Colors"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background",
+      "default": "#fdfbf7"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text",
+      "default": "#2e2a39"
+    },
+    {
+      "type": "color",
+      "id": "price_color",
+      "label": "Price",
+      "default": "#9b046f"
+    },
+    {
+      "type": "color",
+      "id": "button_color",
+      "label": "Button background",
+      "default": "#9b046f"
+    },
+    {
+      "type": "color",
+      "id": "button_hover_color",
+      "label": "Button hover background",
+      "default": "#86106a"
+    },
+    {
+      "type": "color",
+      "id": "button_text_color",
+      "label": "Button text",
+      "default": "#fdfbf7"
+    },
+    {
+      "type": "color",
+      "id": "button_hover_text_color",
+      "label": "Button hover text",
+      "default": "#ffffff"
+    },
+    {
+      "type": "header",
+      "content": "Layout"
+    },
+    {
+      "type": "range",
+      "id": "card_padding",
+      "min": 12,
+      "max": 30,
+      "step": 2,
+      "unit": "px",
+      "label": "Card padding",
+      "default": 16
+    },
+    {
+      "type": "range",
+      "id": "button_padding_vertical",
+      "min": 8,
+      "max": 20,
+      "step": 2,
+      "unit": "px",
+      "label": "Button vertical padding",
+      "default": 12
+    },
+    {
+      "type": "range",
+      "id": "button_padding_horizontal",
+      "min": 16,
+      "max": 40,
+      "step": 2,
+      "unit": "px",
+      "label": "Button horizontal padding",
+      "default": 24
+    },
+    {
+      "type": "range",
+      "id": "button_max_width",
+      "min": 100,
+      "max": 400,
+      "step": 10,
+      "unit": "px",
+      "label": "Button max width",
+      "default": 300
+    },
+    {
+      "type": "range",
+      "id": "button_border_radius",
+      "min": 0,
+      "max": 30,
+      "step": 2,
+      "unit": "px",
+      "label": "Button border radius",
+      "default": 10
+    },
+    {
+      "type": "range",
+      "id": "shadow_opacity",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "%",
+      "label": "Shadow opacity",
+      "default": 20
+    },
+    {
+      "type": "header",
+      "content": "Typography"
+    },
+    {
+      "type": "range",
+      "id": "button_font_size",
+      "min": 12,
+      "max": 18,
+      "step": 1,
+      "unit": "px",
+      "label": "Button font size",
+      "default": 14
+    },
+    {
+      "type": "range",
+      "id": "title_font_size",
+      "min": 10,
+      "max": 16,
+      "step": 1,
+      "unit": "px",
+      "label": "Title font size",
+      "default": 11
+    },
+    {
+      "type": "range",
+      "id": "price_font_size",
+      "min": 14,
+      "max": 24,
+      "step": 1,
+      "unit": "px",
+      "label": "Price font size",
+      "default": 18
+    }
+  ],
+  "presets": [
+    {
+      "name": "Floating buy button"
+    }
+  ]
+}
+{% endschema %}

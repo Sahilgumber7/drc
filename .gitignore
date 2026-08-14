@@ -1,0 +1,8 @@
+# Git ignore for DRC
+.DS_Store
+Thumbs.db
+*.zip
+node_modules/
+.env
+.idea/
+.vscode/

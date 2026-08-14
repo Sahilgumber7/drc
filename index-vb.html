@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html class="scroll-smooth" lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+  <title>Delhi Run Collective — The Cult That Runs Together</title>
+  
+  <!-- Google Fonts: Instrument Serif (Luxury Display Serif) & Instrument Sans (Clean body) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:ital,wght@0,400..700;1,400..700&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+  
+  <!-- FontAwesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  <script id="tailwind-config">
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            drcBg: "#FFFFFF",
+            drcBlue: "#1A56DB", // Yamuna Blue
+            drcText: "#0C0F19",
+            drcMuted: "#687087",
+            drcLight: "#F3F4F6"
+          },
+          fontFamily: {
+            syne: ["'Instrument Serif'", "serif"],
+            sans: ["'Instrument Sans'", "sans-serif"]
+          },
+          transitionTimingFunction: {
+            custom: "cubic-bezier(0.32, 0.72, 0, 1)"
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    body {
+      background-color: #FFFFFF;
+      color: #0C0F19;
+      font-family: 'Instrument Sans', sans-serif;
+      overflow-x: hidden;
+    }
+
+    /* Custom scrollbar */
+    ::-webkit-scrollbar {
+      width: 4px;
+      height: 4px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #FFFFFF;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #1A56DB;
+    }
+
+    /* Scroll Snap Horizontal Reel */
+    .snap-x-reel {
+      display: flex;
+      overflow-x: auto;
+      scroll-snap-type: x mandatory;
+      scrollbar-width: none; /* Hide scrollbar for clean look */
+    }
+    .snap-x-reel::-webkit-scrollbar {
+      display: none;
+    }
+    .snap-item {
+      scroll-snap-align: start;
+      flex-shrink: 0;
+    }
+
+    /* Scroll entry animation */
+    .reveal-item {
+      opacity: 0;
+      transform: translateY(30px);
+      transition: all 0.8s cubic-bezier(0.32, 0.72, 0, 1);
+    }
+    .reveal-item.active {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* Double Bezel Card */
+    .double-bezel {
+      background: rgba(26, 86, 219, 0.05);
+      padding: 6px;
+      border-radius: 1.5rem;
+      border: 1px solid rgba(26, 86, 219, 0.1);
+    }
+    .double-bezel-inner {
+      background: #FFFFFF;
+      border-radius: calc(1.5rem - 6px);
+      border: 1px solid rgba(12, 15, 25, 0.05);
+    }
+
+    /* High contrast keyboard focus rings for accessibility */
+    :focus-visible {
+      outline: 2px solid #1A56DB !important;
+      outline-offset: 4px !important;
+    }
+  </style>
+</head>
+<body class="selection:bg-drcBlue selection:text-white">
+
+  <!-- Sticky Minimal Nav -->
+  <header class="fixed top-0 left-0 right-0 z-50 bg-white/80 backdrop-blur-xl border-b border-drcLight">
+    <nav class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
+      <a href="#" class="flex items-center gap-3">
+        <div class="w-8 h-8 rounded-full bg-drcBlue flex items-center justify-center text-white font-syne text-xs font-extrabold tracking-tighter">
+          DRC
+        </div>
+        <span class="font-syne text-sm font-extrabold uppercase tracking-tight text-drcText">DELHI RUN COLLECTIVE</span>
+      </a>
+
+      <!-- Navigation links -->
+      <div class="hidden md:flex items-center gap-8">
+        <a href="#drops" class="text-xs font-bold uppercase tracking-widest text-drcMuted hover:text-drcBlue transition-colors">Drops</a>
+        <a href="#manifesto" class="text-xs font-bold uppercase tracking-widest text-drcMuted hover:text-drcBlue transition-colors">Rules</a>
+        <a href="#reel" class="text-xs font-bold uppercase tracking-widest text-drcMuted hover:text-drcBlue transition-colors">Reel</a>
+        <a href="#join" class="text-xs font-bold uppercase tracking-widest text-drcMuted hover:text-drcBlue transition-colors">Collective</a>
+      </div>
+
+      <!-- Nav CTA -->
+      <a href="#join" class="inline-flex items-center gap-2 bg-drcText text-white px-5 py-2.5 rounded-full text-xs font-bold uppercase tracking-widest hover:bg-drcBlue transition-colors">
+        <span>JOIN CLUB</span>
+        <i class="fa-solid fa-arrow-right text-[10px]"></i>
+      </a>
+    </nav>
+  </header>
+
+  <!-- HERO SECTION WITH FULL-BLEED IMAGE/LOOP & NOW LIVE DROPS -->
+  <section class="min-h-screen pt-24 pb-16 flex flex-col justify-between relative overflow-hidden">
+    <!-- Grid Overlay -->
+    <div class="absolute inset-0 bg-[radial-gradient(#1A56DB_1px,transparent_1px)] [background-size:24px_24px] opacity-10 z-[-2]"></div>
+    
+    <div></div>
+
+    <div class="max-w-7xl mx-auto px-6 w-full py-12">
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-end">
+        <div class="lg:col-span-8">
+          <!-- Now Live Pulsing Badge -->
+          <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-drcBlue/10 text-drcBlue text-xs font-bold uppercase tracking-widest mb-6">
+            <span class="w-2 h-2 rounded-full bg-drcBlue animate-ping"></span>
+            <span>NEXT DROP: DAWN PATROL 012</span>
+          </div>
+
+          <h1 class="font-syne text-5xl sm:text-7xl lg:text-[5.5rem] leading-[0.95] font-extrabold uppercase text-drcText tracking-tighter">
+            THE CULT THAT<br>RUNS TOGETHER.
+          </h1>
+
+          <p class="font-sans text-lg text-drcMuted mt-6 max-w-xl leading-relaxed">
+            Delhi Run Collective is not a coaching program. It is an identity. A morning rebellion against quiet streets and sleeping grids.
+          </p>
+
+          <div class="flex gap-4 mt-8">
+            <a href="#drops" class="bg-drcBlue text-white px-8 py-4 rounded-full text-xs font-bold uppercase tracking-widest hover:scale-105 active:scale-[0.98] transition-all duration-500 ease-custom flex items-center gap-2 group">
+              <span>EXPLORE DROPS</span>
+              <div class="w-5 h-5 rounded-full bg-white/20 flex items-center justify-center group-hover:translate-x-1 transition-transform">
+                <i class="fa-solid fa-arrow-down text-[10px]"></i>
+              </div>
+            </a>
+          </div>
+        </div>
+
+        <!-- Right Side: Vertical teaser -->
+        <div class="lg:col-span-4 hidden lg:block">
+          <div class="double-bezel">
+            <div class="double-bezel-inner overflow-hidden p-2 aspect-[4/3] bg-drcLight relative">
+              <img class="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-700" src="https://images.unsplash.com/photo-1552674605-db6ffd4facb5?auto=format&fit=crop&w=1600&q=80" alt="Group running"/>
+              <div class="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent flex items-end p-4">
+                <span class="text-white font-syne text-xs uppercase tracking-widest font-bold">ESTD. 28.60° N</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Live Stats Bar -->
+    <div class="border-y border-drcLight bg-white py-6">
+      <div class="max-w-7xl mx-auto px-6 grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
+        <div>
+          <p class="font-syne text-2xl font-extrabold text-drcBlue">520+</p>
+          <p class="text-[10px] text-drcMuted font-bold uppercase tracking-wider">ACTIVE MEMBERS</p>
+        </div>
+        <div>
+          <p class="font-syne text-2xl font-extrabold text-drcText">05:30</p>
+          <p class="text-[10px] text-drcMuted font-bold uppercase tracking-wider">WEEKLY START TIME</p>
+        </div>
+        <div>
+          <p class="font-syne text-2xl font-extrabold text-drcText">72km</p>
+          <p class="text-[10px] text-drcMuted font-bold uppercase tracking-wider">MAPPED STREETS</p>
+        </div>
+        <div>
+          <p class="font-syne text-2xl font-extrabold text-drcBlue">100%</p>
+          <p class="text-[10px] text-drcMuted font-bold uppercase tracking-wider">CHAI RITUAL</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- THE WEEKLY RUN EVENTS (Styled like streetwear apparel drops) -->
+  <section id="drops" class="py-24 px-6 max-w-7xl mx-auto">
+    <div class="flex flex-col md:flex-row md:items-end justify-between mb-16">
+      <div>
+        <span class="text-xs font-bold text-drcBlue uppercase tracking-widest block mb-2">RUN DROPS</span>
+        <h2 class="font-syne text-4xl md:text-5xl font-extrabold uppercase text-drcText">WEEKLY CALENDAR DROPS</h2>
+      </div>
+      <p class="text-sm text-drcMuted max-w-xs mt-4 md:mt-0">
+        Every event is a limited drop. RSVP is mandatory to receive route lock-codes on WhatsApp.
+      </p>
+    </div>
+
+    <!-- Drop Cards Grid -->
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+      
+      <!-- Drop Card 1 -->
+      <div class="border border-drcLight p-4 rounded-3xl flex flex-col justify-between hover:shadow-lg transition-shadow duration-300">
+        <div>
+          <div class="relative overflow-hidden aspect-[4/3] rounded-2xl bg-drcLight mb-6">
+            <img class="w-full h-full object-cover" src="https://images.unsplash.com/photo-1552674605-db6ffd4facb5?auto=format&fit=crop&w=1600&q=80" alt="Lodhi runs"/>
+            <span class="absolute top-4 left-4 bg-drcBlue text-white text-[9px] font-bold tracking-widest px-3 py-1 rounded-full uppercase">NOW LIVE</span>
+          </div>
+          <p class="text-[10px] font-bold text-drcBlue tracking-widest mb-1">DROP 042 / TUESDAY</p>
+          <h3 class="font-syne text-2xl font-extrabold uppercase text-drcText mb-2">LODHI SANCTUARY</h3>
+          <p class="text-xs text-drcMuted leading-relaxed">
+            Pacing through Lodhi Garden's ancient Mughal tombs. Smooth tempo intervals under green canopies. Finish with cold brews.
+          </p>
+        </div>
+        <div class="mt-6 pt-4 border-t border-drcLight flex items-center justify-between">
+          <span class="text-xs font-semibold text-drcMuted">Slots: 42 / 50 left</span>
+          <a href="#join" class="bg-drcText hover:bg-drcBlue text-white px-4 py-2 rounded-full text-[10px] font-bold uppercase tracking-widest transition-colors">RSVP NOW</a>
+        </div>
+      </div>
+
+      <!-- Drop Card 2 -->
+      <div class="border border-drcLight p-4 rounded-3xl flex flex-col justify-between hover:shadow-lg transition-shadow duration-300">
+        <div>
+          <div class="relative overflow-hidden aspect-[4/3] rounded-2xl bg-drcLight mb-6">
+            <img class="w-full h-full object-cover" src="https://images.unsplash.com/photo-1476480862126-209bfaa8edc8?auto=format&fit=crop&w=1000&q=80" alt="Wednesday Sprints"/>
+            <span class="absolute top-4 left-4 bg-drcBlue text-white text-[9px] font-bold tracking-widest px-3 py-1 rounded-full uppercase">NOW LIVE</span>
+          </div>
+          <p class="text-[10px] font-bold text-drcBlue tracking-widest mb-1">DROP 043 / THURSDAY</p>
+          <h3 class="font-syne text-2xl font-extrabold uppercase text-drcText mb-2">INDIA GATE LOOP</h3>
+          <p class="text-xs text-drcMuted leading-relaxed">
+            Fast sprints around India Gate's circular pathways. Under streetlights, fighting cadence. Finish with piping hot street chai.
+          </p>
+        </div>
+        <div class="mt-6 pt-4 border-t border-drcLight flex items-center justify-between">
+          <span class="text-xs font-semibold text-drcMuted">Slots: 15 / 30 left</span>
+          <a href="#join" class="bg-drcText hover:bg-drcBlue text-white px-4 py-2 rounded-full text-[10px] font-bold uppercase tracking-widest transition-colors">RSVP NOW</a>
+        </div>
+      </div>
+
+      <!-- Drop Card 3 -->
+      <div class="border border-drcLight p-4 rounded-3xl flex flex-col justify-between hover:shadow-lg transition-shadow duration-300 opacity-75">
+        <div>
+          <div class="relative overflow-hidden aspect-[4/3] rounded-2xl bg-drcLight mb-6">
+            <img class="w-full h-full object-cover grayscale" src="https://images.unsplash.com/photo-1517838277536-f5f99be501cd?auto=format&fit=crop&w=1000&q=80" alt="Sunday long runs"/>
+            <span class="absolute top-4 left-4 bg-drcMuted text-white text-[9px] font-bold tracking-widest px-3 py-1 rounded-full uppercase">UNLOCKS SOON</span>
+          </div>
+          <p class="text-[10px] font-bold text-drcMuted tracking-widest mb-1">DROP 044 / SUNDAY</p>
+          <h3 class="font-syne text-2xl font-extrabold uppercase text-drcText mb-2">YAMUNA EXPRESSWAY</h3>
+          <p class="text-xs text-drcMuted leading-relaxed">
+            Our high-mileage Sunday ritual. Sunrise patrol over Yamuna bridges, exploring quiet dirt tracks and early fog buffers.
+          </p>
+        </div>
+        <div class="mt-6 pt-4 border-t border-drcLight flex items-center justify-between">
+          <span class="text-xs font-semibold text-drcMuted">Unlocks: Friday 08:00 AM</span>
+          <span class="text-[10px] font-bold uppercase tracking-wider text-drcMuted"><i class="fa-solid fa-lock mr-1"></i> LOCKED</span>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- PULL QUOTE CULT MANIFESTO -->
+  <section id="manifesto" class="py-24 bg-drcText text-white relative overflow-hidden">
+    <div class="absolute inset-0 bg-drcBlue opacity-10 z-0"></div>
+    <div class="max-w-5xl mx-auto px-6 relative z-10 text-center space-y-8">
+      <span class="text-xs font-bold text-drcBlue uppercase tracking-[0.2em] block">RULE ONE</span>
+      <h2 class="font-syne text-3xl sm:text-5xl lg:text-7xl font-extrabold uppercase leading-[1.05] text-white">
+        THE ROAD NEVER ASKS<br>WHO YOU WERE YESTERDAY.
+      </h2>
+      <p class="font-sans text-sm sm:text-base text-drcMuted max-w-xl mx-auto leading-relaxed">
+        It doesn't care about your job, your targets, or your status. The asphalt only demands your cadence. Lace up, lock in, and move.
+      </p>
+    </div>
+  </section>
+
+  <!-- HORIZONTAL SCROLL REEL (Action shots with streetwear captions) -->
+  <section id="reel" class="py-24 bg-white overflow-hidden">
+    <div class="max-w-7xl mx-auto px-6 mb-12 flex justify-between items-end">
+      <div>
+        <span class="text-xs font-bold text-drcBlue uppercase tracking-widest block mb-2">IN ACTION</span>
+        <h2 class="font-syne text-4xl font-extrabold uppercase text-drcText">COLLECTIVE MILESTONES</h2>
+      </div>
+      <p class="text-xs text-drcMuted hidden sm:block">Scroll horizontally to traverse the phases →</p>
+    </div>
+
+    <!-- Drag scroll horizontal snapping container -->
+    <div class="snap-x-reel gap-6 px-6 max-w-7xl mx-auto pb-8">
+      
+      <!-- Phase 1 -->
+      <div class="snap-item w-[300px] sm:w-[400px] border border-drcLight p-4 rounded-3xl bg-white space-y-4">
+        <div class="overflow-hidden aspect-[4/3] rounded-2xl bg-drcLight">
+          <img class="w-full h-full object-cover" src="https://images.unsplash.com/photo-1476480862126-209bfaa8edc8?auto=format&fit=crop&w=1000&q=80" alt="First km"/>
+        </div>
+        <div>
+          <span class="text-[10px] font-bold text-drcBlue uppercase tracking-widest">PHASE 01</span>
+          <h3 class="font-syne text-lg font-bold uppercase text-drcText">FIRST KILOMETRE</h3>
+          <p class="text-xs text-drcMuted leading-relaxed mt-1">Lacing up in darkness. The cold tarmac is quiet. Heart rate rising as the breath syncs with the team.</p>
+        </div>
+      </div>
+
+      <!-- Phase 2 -->
+      <div class="snap-item w-[300px] sm:w-[400px] border border-drcLight p-4 rounded-3xl bg-white space-y-4">
+        <div class="overflow-hidden aspect-[4/3] rounded-2xl bg-drcLight">
+          <img class="w-full h-full object-cover" src="https://images.unsplash.com/photo-1552674605-db6ffd4facb5?auto=format&fit=crop&w=1600&q=80" alt="Fog lifting"/>
+        </div>
+        <div>
+          <span class="text-[10px] font-bold text-drcBlue uppercase tracking-widest">PHASE 02</span>
+          <h3 class="font-syne text-lg font-bold uppercase text-drcText">FOG LIFTING</h3>
+          <p class="text-xs text-drcMuted leading-relaxed mt-1">Passing Humayun's Tomb. Early morning smog/mist glows golden-orange as the city starts to breathe.</p>
+        </div>
+      </div>
+
+      <!-- Phase 3 -->
+      <div class="snap-item w-[300px] sm:w-[400px] border border-drcLight p-4 rounded-3xl bg-white space-y-4">
+        <div class="overflow-hidden aspect-[4/3] rounded-2xl bg-drcLight">
+          <img class="w-full h-full object-cover" src="https://images.unsplash.com/photo-1542291026-7eec264c27ff?auto=format&fit=crop&w=1000&q=80" alt="Chai stop"/>
+        </div>
+        <div>
+          <span class="text-[10px] font-bold text-drcBlue uppercase tracking-widest">PHASE 03</span>
+          <h3 class="font-syne text-lg font-bold uppercase text-drcText">CHAI STOP REWARD</h3>
+          <p class="text-xs text-drcMuted leading-relaxed mt-1">Stopwatches off. We sit on stone dividers, sharing steaming cups of tea and discussing stride cadences.</p>
+        </div>
+      </div>
+
+      <!-- Phase 4 -->
+      <div class="snap-item w-[300px] sm:w-[400px] border border-drcLight p-4 rounded-3xl bg-white space-y-4">
+        <div class="overflow-hidden aspect-[4/3] rounded-2xl bg-drcLight">
+          <img class="w-full h-full object-cover" src="https://images.unsplash.com/photo-1517838277536-f5f99be501cd?auto=format&fit=crop&w=1000&q=80" alt="Last push"/>
+        </div>
+        <div>
+          <span class="text-[10px] font-bold text-drcBlue uppercase tracking-widest">PHASE 04</span>
+          <h3 class="font-syne text-lg font-bold uppercase text-drcText">LAST PUSH</h3>
+          <p class="text-xs text-drcMuted leading-relaxed mt-1">Final sprint to the hub. The sun is fully up now. Sweat, exhaustion, and high-fives at the terminal gates.</p>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- PRESS / BRAND LOGOS ROW -->
+  <section class="py-12 border-y border-drcLight bg-drcLight/20">
+    <div class="max-w-7xl mx-auto px-6 flex flex-wrap items-center justify-around gap-8 opacity-45 grayscale hover:grayscale-0 transition-all duration-300">
+      <span class="font-syne text-sm font-black tracking-widest">PEAKST8</span>
+      <span class="font-syne text-sm font-black tracking-widest">KYRO COMPASS</span>
+      <span class="font-syne text-sm font-black tracking-widest">THE RUN REVIEW</span>
+      <span class="font-syne text-sm font-black tracking-widest">DELHI DIRECT</span>
+    </div>
+  </section>
+
+  <!-- SIGN UP SECTION -->
+  <section id="join" class="py-24 px-6 max-w-4xl mx-auto text-center space-y-8">
+    <div class="double-bezel">
+      <div class="double-bezel-inner p-8 sm:p-16 space-y-6">
+        <h2 class="font-syne text-4xl sm:text-5xl font-extrabold uppercase text-drcText leading-none">JOIN THE COLLECTIVE</h2>
+        <p class="font-sans text-sm text-drcMuted max-w-md mx-auto leading-relaxed">
+          We release coordinates and route locks only via phone drop. Enter your details to get added to the private invite list.
+        </p>
+
+        <form onsubmit="event.preventDefault(); alert('Lock codes sent!');" class="flex flex-col sm:flex-row justify-center gap-3 max-w-md mx-auto pt-4">
+          <input class="w-full bg-drcLight border border-drcLight focus:border-drcBlue focus:ring-1 focus:ring-drcBlue px-6 py-4 rounded-full text-xs font-bold uppercase tracking-wider text-drcText placeholder:text-drcMuted focus:outline-none transition-colors" type="tel" placeholder="YOUR PHONE NUMBER" required/>
+          <button class="bg-drcBlue text-white hover:bg-drcText px-8 py-4 rounded-full text-xs font-bold uppercase tracking-widest shrink-0 transition-colors flex items-center justify-center gap-2 group" type="submit">
+            <span>GET IN</span>
+            <i class="fa-solid fa-chevron-right text-[10px] group-hover:translate-x-1 transition-transform"></i>
+          </button>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="border-t border-drcLight py-12 bg-white px-6">
+    <div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-6">
+      <div class="flex items-center gap-3">
+        <div class="w-6 h-6 rounded-full bg-drcBlue flex items-center justify-center text-white font-syne text-[10px] font-bold">
+          DRC
+        </div>
+        <span class="font-syne text-xs font-extrabold uppercase tracking-tight text-drcText">DELHI RUN COLLECTIVE</span>
+      </div>
+      <p class="text-[10px] text-drcMuted font-bold uppercase tracking-wider">
+        © 2026 DELHI RUN COLLECTIVE. NO RENTAL. ALL GRAVEL.
+      </p>
+      <div class="flex gap-6 text-drcMuted text-sm">
+        <a href="#" class="hover:text-drcBlue transition-colors"><i class="fa-brands fa-instagram"></i></a>
+        <a href="#" class="hover:text-drcBlue transition-colors"><i class="fa-brands fa-strava"></i></a>
+        <a href="#" class="hover:text-drcBlue transition-colors"><i class="fa-brands fa-whatsapp"></i></a>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // Reveal Observer
+    const revealItems = document.querySelectorAll('.reveal-item');
+    const observerOptions = {
+      root: null,
+      threshold: 0.1
+    };
+
+    const observer = new IntersectionObserver((entries, observer) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('active');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, observerOptions);
+
+    revealItems.forEach(item => {
+      observer.observe(item);
+    });
+  </script>
+</body>
+</html>

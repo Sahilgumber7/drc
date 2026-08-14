@@ -1,0 +1,546 @@
+<!DOCTYPE html>
+<html class="scroll-smooth" lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+  <title>Delhi Run Collective — Own the Dawn</title>
+  
+  <!-- Google Fonts: Bodoni Moda (Italian High-Contrast Luxury Serif) & Plus Jakarta Sans (Clean geometric body) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400..900;1,6..96,400..900&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  
+  <!-- FontAwesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  <script id="tailwind-config">
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            drcBg: "#FAF9F6", // Bone White
+            drcFog: "#3B4E5E", // Delhi Winter Fog Blue-Grey
+            drcText: "#0D0F12",
+            drcMuted: "#6B7280",
+            drcAccent: "#B5442E" // Terracotta Sandstone
+          },
+          fontFamily: {
+            sans: ["'Plus Jakarta Sans'", "sans-serif"],
+            display: ["'Bodoni Moda'", "serif"]
+          },
+          transitionTimingFunction: {
+            custom: "cubic-bezier(0.32, 0.72, 0, 1)"
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    body {
+      background-color: #FAF9F6;
+      color: #0D0F12;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      overflow-x: hidden;
+    }
+
+    /* Custom Scrollbar */
+    ::-webkit-scrollbar {
+      width: 6px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #FAF9F6;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #3B4E5E;
+      border-radius: 3px;
+    }
+
+    /* SVG Route Drawing Animation */
+    .route-path {
+      stroke-dasharray: 1000;
+      stroke-dashoffset: 1000;
+      animation: drawRoute 3.5s cubic-bezier(0.32, 0.72, 0, 1) forwards;
+    }
+    @keyframes drawRoute {
+      to {
+        stroke-dashoffset: 0;
+      }
+    }
+
+    /* Scroll entry animation */
+    .reveal-item {
+      opacity: 0;
+      transform: translateY(40px);
+      filter: blur(4px);
+      transition: all 0.9s cubic-bezier(0.32, 0.72, 0, 1);
+    }
+    .reveal-item.active {
+      opacity: 1;
+      transform: translateY(0);
+      filter: blur(0);
+    }
+
+    /* Double Bezel Container (Doppelrand) */
+    .double-bezel {
+      background: rgba(59, 78, 94, 0.05);
+      padding: 8px;
+      border-radius: 2rem;
+      border: 1px solid rgba(59, 78, 94, 0.08);
+      transition: transform 0.5s cubic-bezier(0.32, 0.72, 0, 1);
+    }
+    .double-bezel:hover {
+      transform: translateY(-4px);
+    }
+    .double-bezel-inner {
+      background: #FAF9F6;
+      border-radius: calc(2rem - 8px);
+      border: 1px solid rgba(13, 15, 18, 0.04);
+      box-shadow: inset 0 1px 2px rgba(255, 255, 255, 0.9);
+    }
+
+    /* High contrast keyboard focus rings for accessibility */
+    :focus-visible {
+      outline: 2px solid #B5442E !important;
+      outline-offset: 4px !important;
+    }
+
+    /* Interactive Cursor Follower Monogram */
+    #cursor-monogram {
+      width: 80px;
+      height: 80px;
+      position: absolute;
+      border-radius: 50%;
+      background: #3B4E5E;
+      color: #FAF9F6;
+      pointer-events: none;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 10px;
+      font-weight: 900;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      box-shadow: 0 10px 30px rgba(59, 78, 94, 0.2);
+      z-index: 30;
+      transform: translate(-50%, -50%) scale(0);
+      transition: transform 0.3s cubic-bezier(0.32, 0.72, 0, 1);
+    }
+
+    /* Horizontal scroll gallery wrapper */
+    .horizontal-gallery {
+      display: flex;
+      overflow-x: auto;
+      scroll-snap-type: x mandatory;
+      scrollbar-width: none;
+    }
+    .horizontal-gallery::-webkit-scrollbar {
+      display: none;
+    }
+    .gallery-card {
+      scroll-snap-align: center;
+      flex-shrink: 0;
+    }
+  </style>
+</head>
+<body class="selection:bg-drcFog selection:text-white">
+
+  <!-- Interactive Monogram Stamp -->
+  <div id="cursor-monogram">DRC</div>
+
+  <!-- STICKY FLOATING NAVBAR -->
+  <header class="fixed top-6 left-0 right-0 z-50 px-4 md:px-0">
+    <nav class="max-w-4xl mx-auto bg-drcBg/90 backdrop-blur-xl border border-drcFog/15 rounded-2xl px-6 py-4 flex items-center justify-between shadow-sm">
+      <a href="#" class="flex items-center gap-3">
+        <img alt="DRC Logo" class="h-6 object-contain" src="https://delhiruncollective.com/cdn/shop/files/LOGO_streached_1.png"/>
+        <span class="font-display text-sm font-extrabold uppercase tracking-tight text-drcText">DELHI RUN COLLECTIVE</span>
+      </a>
+
+      <div class="hidden md:flex items-center gap-8 text-xs font-bold uppercase tracking-widest text-drcMuted">
+        <a href="#why" class="hover:text-drcFog transition-colors">Culture</a>
+        <a href="#routes" class="hover:text-drcFog transition-colors">Routes</a>
+        <a href="#manifesto" class="hover:text-drcFog transition-colors">Story</a>
+        <a href="#schedule" class="hover:text-drcFog transition-colors">Runs</a>
+      </div>
+
+      <a href="#join" class="bg-drcFog text-white px-5 py-2.5 rounded-xl text-xs font-bold uppercase tracking-widest hover:bg-drcAccent transition-colors">
+        JOIN NOW
+      </a>
+    </nav>
+  </header>
+
+  <!-- HERO SECTION WITH DRAWING GPS SVG -->
+  <section class="min-h-screen pt-32 pb-16 flex flex-col justify-between relative px-6 max-w-7xl mx-auto">
+    <!-- SVG route line drawing behind hero content -->
+    <div class="absolute inset-0 z-[-1] opacity-25 flex items-center justify-center overflow-hidden">
+      <svg class="w-full max-w-4xl h-full max-h-[600px]" viewBox="0 0 1000 600" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <!-- Self-drawing GPS trail -->
+        <path class="route-path" d="M100 150 C 250 100, 350 250, 450 180 C 550 110, 600 350, 700 280 C 800 210, 850 400, 950 350" stroke="#3B4E5E" stroke-width="4" stroke-linecap="round"/>
+        <!-- Start point circle -->
+        <circle cx="100" cy="150" r="8" fill="#B5442E"/>
+        <!-- Finish point marker -->
+        <circle cx="950" cy="350" r="8" fill="#3B4E5E"/>
+      </svg>
+    </div>
+
+    <div></div>
+
+    <div class="my-auto py-12">
+      <span class="text-[10px] uppercase tracking-[0.3em] font-bold text-drcAccent mb-3 block">CINEMATIC LAUNCH SYSTEM // 01</span>
+      
+      <h1 class="font-display text-6xl sm:text-8xl lg:text-[7.5rem] leading-[0.9] font-extrabold uppercase text-drcText tracking-tighter max-w-6xl mb-8">
+        BECAUSE RUNNING<br>
+        ALONE ISN'T IT.
+      </h1>
+
+      <div class="grid grid-cols-1 md:grid-cols-12 gap-8 items-end">
+        <div class="md:col-span-7">
+          <p class="font-sans text-xl text-drcFog leading-relaxed max-w-xl">
+            Delhi Run Collective is a premium running community based in Delhi. From weekly 5K runs and Sunday socials to coffee after-parties and curated fitness events.
+          </p>
+        </div>
+        <div class="md:col-span-5 flex md:justify-end">
+          <a href="#join" class="bg-drcText hover:bg-drcFog text-white px-8 py-5 rounded-2xl text-xs font-bold uppercase tracking-widest transition-all duration-500 flex items-center gap-3">
+            <span>GET PRIVATE ACCESS</span>
+            <i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i>
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Minimal Header Row -->
+    <div class="flex flex-col sm:flex-row justify-between items-center border-t border-drcFog/15 pt-8 text-[10px] font-bold uppercase tracking-widest text-drcMuted gap-4">
+      <span>LOCATIONS: 28.6139° N, 77.2090° E</span>
+      <span>MEMBERS: 1,840+ ACTIVE RUNNERS</span>
+      <span>RITUAL: CURATED WORKOUTS &amp; COFFEE SOCIALS</span>
+    </div>
+  </section>
+
+  <!-- CULTURE BENTO GRID (Why Delhi Runs Different) -->
+  <section id="why" class="py-32 px-6 max-w-7xl mx-auto">
+    <div class="mb-16">
+      <span class="text-xs font-bold text-drcAccent uppercase tracking-widest block mb-2">THE CULTURE MATRIX</span>
+      <h2 class="font-display text-4xl sm:text-5xl font-extrabold uppercase text-drcText">WHY DELHI RUNS DIFFERENT</h2>
+    </div>
+
+    <!-- Bento Grid Structure -->
+    <div class="grid grid-cols-1 md:grid-cols-12 gap-8">
+      
+      <!-- Bento Card 1: AQI-Defying (col-span-8) -->
+      <div class="md:col-span-8 double-bezel">
+        <div class="double-bezel-inner p-8 sm:p-12 flex flex-col justify-between h-full space-y-8">
+          <div class="flex justify-between items-start">
+            <div>
+              <span class="text-[9px] bg-drcAccent/10 text-drcAccent px-3.5 py-1 rounded-full font-bold uppercase tracking-wider">VARIABLE CONDITION</span>
+              <h3 class="font-display text-3xl font-extrabold uppercase text-drcText mt-3">AQI-DEFYING DAWN PATROLS</h3>
+            </div>
+            <i class="fa-solid fa-smog text-2xl text-drcFog"></i>
+          </div>
+          <p class="text-sm text-drcMuted leading-relaxed max-w-2xl">
+            We adapt. We track indices, running early before urban heating peaks. Our winter routes are designed around low fog-levels, keeping groups compressed and pacing visual.
+          </p>
+          <div class="border-t border-drcFog/10 pt-4 flex gap-6 text-[10px] font-bold uppercase tracking-wider text-drcMuted">
+            <span>Buffer Window: 05:00 - 06:15 AM</span>
+            <span>Refuse to sleep in</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Bento Card 2: Heritage Density (col-span-4) -->
+      <div class="md:col-span-4 double-bezel">
+        <div class="double-bezel-inner p-8 flex flex-col justify-between h-full space-y-8">
+          <div class="flex justify-between items-start">
+            <h3 class="font-display text-2xl font-extrabold uppercase text-drcText leading-tight">HERITAGE DENSITY</h3>
+            <i class="fa-solid fa-landmark text-xl text-drcAccent"></i>
+          </div>
+          <p class="text-xs text-drcMuted leading-relaxed">
+            Running through 800 years of visible history. From the sandstone walls of the Red Fort to the symmetrical roundabouts of CP corridors.
+          </p>
+          <div class="border-t border-drcFog/10 pt-4 text-[10px] font-bold uppercase tracking-wider text-drcMuted">
+            <span>22 Monument Waypoints</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Bento Card 3: Extreme Heat Grit (col-span-4) -->
+      <div class="md:col-span-4 double-bezel">
+        <div class="double-bezel-inner p-8 flex flex-col justify-between h-full space-y-8">
+          <div class="flex justify-between items-start">
+            <h3 class="font-display text-2xl font-extrabold uppercase text-drcText leading-tight">HEAT RESISTANT</h3>
+            <i class="fa-solid fa-temperature-high text-xl text-drcFog"></i>
+          </div>
+          <p class="text-xs text-drcMuted leading-relaxed">
+            Tempered in 45-degree summers. We train early, Hydrated by electrolytes and local lemons. True fitness is constructed in heat.
+          </p>
+          <div class="border-t border-drcFog/10 pt-4 text-[10px] font-bold uppercase tracking-wider text-drcMuted">
+            <span>Pre-Dawn Temp: 32°C</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Bento Card 4: Chai Post-Run (col-span-8) -->
+      <div class="md:col-span-8 double-bezel">
+        <div class="double-bezel-inner p-8 sm:p-12 flex flex-col justify-between h-full space-y-8">
+          <div class="flex justify-between items-start">
+            <div>
+              <span class="text-[9px] bg-drcFog/10 text-drcFog px-3.5 py-1 rounded-full font-bold uppercase tracking-wider">SOCIAL AGREEMENT</span>
+              <h3 class="font-display text-3xl font-extrabold uppercase text-drcText mt-3">POST-RUN CHAI RITUAL</h3>
+            </div>
+            <i class="fa-solid fa-mug-hot text-2xl text-drcAccent"></i>
+          </div>
+          <p class="text-sm text-drcMuted leading-relaxed max-w-xl">
+            Our run wraps at a local street wallah. Steaming hot chai in clay cups, sharing pacing stats, stories, and breathing together before the capital wakes up.
+          </p>
+          <div class="border-t border-drcFog/10 pt-4 flex gap-6 text-[10px] font-bold uppercase tracking-wider text-drcMuted">
+            <span>Clay cups only</span>
+            <span>Zero pretense</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- SIGNATURE ROUTES (Horizontal scroll gallery with drag capability) -->
+  <section id="routes" class="py-32 bg-drcFog text-white relative overflow-hidden">
+    <div class="max-w-7xl mx-auto px-6 mb-16 flex flex-col sm:flex-row sm:items-end justify-between gap-6">
+      <div>
+        <span class="text-xs font-bold text-drcAccent uppercase tracking-widest block mb-2">GPS SELECTION</span>
+        <h2 class="font-display text-4xl sm:text-5xl font-extrabold uppercase text-white">SIGNATURE RUN PATHS</h2>
+      </div>
+      <p class="text-sm text-white/70 max-w-xs leading-relaxed">
+        Swipe/scroll horizontally to explore routes, difficulty grit meters, and sunrise running windows.
+      </p>
+    </div>
+
+    <!-- Drag scroll horizontal container -->
+    <div class="horizontal-gallery gap-8 px-6 pb-12 max-w-7xl mx-auto">
+      
+      <!-- Card 1: India Gate Loop -->
+      <div class="gallery-card w-[320px] sm:w-[450px] bg-white text-drcText p-6 rounded-3xl flex flex-col justify-between space-y-6">
+        <div>
+          <div class="overflow-hidden aspect-[16/10] rounded-2xl bg-drcLight relative">
+            <img class="w-full h-full object-cover" src="https://images.unsplash.com/photo-1552674605-db6ffd4facb5?auto=format&fit=crop&w=1600&q=80" alt="India gate"/>
+            <span class="absolute top-4 left-4 bg-drcAccent text-white text-[9px] font-bold tracking-widest px-3 py-1 rounded-full uppercase">LOOP</span>
+          </div>
+          <h3 class="font-display text-2xl font-extrabold uppercase mt-6 text-drcText">INDIA GATE RADIALS</h3>
+          <p class="text-xs text-drcMuted mt-2">Flat tarmac circle pacing around the India Gate ceremonial structure. Best at early sunrise.</p>
+        </div>
+        <div class="pt-6 border-t border-drcLight flex items-center justify-between text-xs font-semibold text-drcFog">
+          <span>Distance: 3.2km</span>
+          <span>Grit: 2 / 5</span>
+          <span>Time: 06:45 AM</span>
+        </div>
+      </div>
+
+      <!-- Card 2: Lodhi Tombs -->
+      <div class="gallery-card w-[320px] sm:w-[450px] bg-white text-drcText p-6 rounded-3xl flex flex-col justify-between space-y-6">
+        <div>
+          <div class="overflow-hidden aspect-[16/10] rounded-2xl bg-drcLight relative">
+            <img class="w-full h-full object-cover" src="https://images.unsplash.com/photo-1476480862126-209bfaa8edc8?auto=format&fit=crop&w=1000&q=80" alt="Lodhi garden"/>
+            <span class="absolute top-4 left-4 bg-drcFog text-white text-[9px] font-bold tracking-widest px-3 py-1 rounded-full uppercase">TRAIL</span>
+          </div>
+          <h3 class="font-display text-2xl font-extrabold uppercase mt-6 text-drcText">LODHI SANCTUARY</h3>
+          <p class="text-xs text-drcMuted mt-2">Gravel tracks around historic 15th-century Mughal ruins. Our primary Sunday social run.</p>
+        </div>
+        <div class="pt-6 border-t border-drcLight flex items-center justify-between text-xs font-semibold text-drcFog">
+          <span>Distance: 5.0km</span>
+          <span>Grit: 1 / 5</span>
+          <span>Time: 06:45 AM</span>
+        </div>
+      </div>
+
+      <!-- Card 3: Yamuna Ghat -->
+      <div class="gallery-card w-[320px] sm:w-[450px] bg-white text-drcText p-6 rounded-3xl flex flex-col justify-between space-y-6">
+        <div>
+          <div class="overflow-hidden aspect-[16/10] rounded-2xl bg-drcLight relative">
+            <img class="w-full h-full object-cover" src="https://images.unsplash.com/photo-1517838277536-f5f99be501cd?auto=format&fit=crop&w=1000&q=80" alt="Yamuna ghat"/>
+            <span class="absolute top-4 left-4 bg-drcAccent text-white text-[9px] font-bold tracking-widest px-3 py-1 rounded-full uppercase">OFFROAD</span>
+          </div>
+          <h3 class="font-display text-2xl font-extrabold uppercase mt-6 text-drcText">YAMUNA RIVER GHATS</h3>
+          <p class="text-xs text-drcMuted mt-2">Sandy early trails by the sacred river banks. Beautiful and demanding workout landscape.</p>
+        </div>
+        <div class="pt-6 border-t border-drcLight flex items-center justify-between text-xs font-semibold text-drcFog">
+          <span>Distance: 8.0km</span>
+          <span>Grit: 4 / 5</span>
+          <span>Time: 06:15 AM</span>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- MANIFESTO TEXT PULL-QUOTE -->
+  <section id="manifesto" class="py-32 px-6 max-w-5xl mx-auto text-center space-y-8">
+    <img alt="DRC Logo" class="h-6 object-contain mx-auto" src="https://delhiruncollective.com/cdn/shop/files/LOGO_streached_1.png"/>
+    <h2 class="font-display text-4xl sm:text-6xl font-extrabold uppercase leading-tight text-drcText">
+      "MILITARY ROOTS · COMMUNITY DRIVEN · ALL PACES LED"
+    </h2>
+    <p class="font-sans text-lg text-drcMuted max-w-2xl mx-auto leading-relaxed">
+      Founded by Manraj & Shahnil, sons of Army officers, who met during a posting in Tezpur. Joined by Krishna from EY. Dedicated to creating an inclusive place where movement meets culture.
+    </p>
+  </section>
+
+  <!-- WEEKLY SCHEDULE (Responsive Table / Card Layout) -->
+  <section id="schedule" class="py-32 px-6 max-w-7xl mx-auto border-t border-drcFog/15">
+    <div class="mb-16">
+      <span class="text-xs font-bold text-drcAccent uppercase tracking-widest block mb-2">RUN CALENDAR</span>
+      <h2 class="font-display text-4xl sm:text-5xl font-extrabold uppercase text-drcText">THE WEEKLY RUN SLATE</h2>
+    </div>
+
+    <!-- Responsive Table -->
+    <div class="overflow-x-auto">
+      <table class="w-full text-left border-collapse">
+        <thead>
+          <tr class="border-b border-drcFog/15 text-[10px] font-bold uppercase tracking-wider text-drcMuted">
+            <th class="py-4">SESSION / METRO GROUP</th>
+            <th class="py-4">DAY / TIME</th>
+            <th class="py-4">MEET POINT</th>
+            <th class="py-4">TARGET PACE</th>
+            <th class="py-4 text-right">STATUS</th>
+          </tr>
+        </thead>
+        <tbody class="divide-y divide-drcLight text-sm font-semibold text-drcText">
+          
+          <tr class="hover:bg-drcLight/30 transition-colors">
+            <td class="py-6">
+              <span class="text-xs text-drcAccent block mb-1">SUNDAY SOCIAL</span>
+              <span class="font-display text-lg uppercase font-bold text-drcText">Sunday Social 5K</span>
+            </td>
+            <td class="py-6">Sunday<br>06:45 AM</td>
+            <td class="py-6">Lodhi Gardens Gate 1</td>
+            <td class="py-6">Conversational Paces</td>
+            <td class="py-6 text-right">
+              <span class="bg-emerald-50 text-emerald-700 border border-emerald-200 text-[9px] font-bold px-3 py-1 rounded-full uppercase">OPEN</span>
+            </td>
+          </tr>
+
+          <tr class="hover:bg-drcLight/30 transition-colors">
+            <td class="py-6">
+              <span class="text-xs text-drcAccent block mb-1">WORKOUT</span>
+              <span class="font-display text-lg uppercase font-bold text-drcText">Burn for Beer</span>
+            </td>
+            <td class="py-6">Aug 16<br>06:45 AM</td>
+            <td class="py-6">Lodhi Gardens</td>
+            <td class="py-6">Workout Intervals</td>
+            <td class="py-6 text-right">
+              <span class="bg-emerald-50 text-emerald-700 border border-emerald-200 text-[9px] font-bold px-3 py-1 rounded-full uppercase">OPEN</span>
+            </td>
+          </tr>
+
+          <tr class="hover:bg-drcLight/30 transition-colors">
+            <td class="py-6">
+              <span class="text-xs text-drcAccent block mb-1">TEAM EVENT</span>
+              <span class="font-display text-lg uppercase font-bold text-drcText">Peakst8: No Parking</span>
+            </td>
+            <td class="py-6">Aug 23<br>06:45 AM</td>
+            <td class="py-6">Delhi NCR (Code: drc30)</td>
+            <td class="py-6">Partner Sprints</td>
+            <td class="py-6 text-right">
+              <span class="bg-emerald-50 text-emerald-700 border border-emerald-200 text-[9px] font-bold px-3 py-1 rounded-full uppercase">OPEN</span>
+            </td>
+          </tr>
+
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- JOIN COLLECTIVE & INTERACTIVE MOUSE MONOGRAM STAMP -->
+  <section id="join" class="py-32 px-6 max-w-4xl mx-auto text-center relative">
+    
+    <!-- Monogram stamp area container (interactive stamp triggers here) -->
+    <div id="interactive-stamp-area" class="double-bezel">
+      <div class="double-bezel-inner p-12 sm:p-24 space-y-8 relative overflow-hidden">
+        
+        <div>
+          <span class="text-xs font-bold text-drcAccent uppercase tracking-widest block mb-2">JOIN MOVEMENT</span>
+          <h2 class="font-display text-4xl sm:text-6xl font-extrabold uppercase text-drcText leading-none">
+            LACE UP. JOIN DRC.
+          </h2>
+          <p class="font-sans text-sm text-drcMuted max-w-md mx-auto leading-relaxed mt-4">
+            We drop event coordinates, weather indexes, and social check-in spots straight to our chat community.
+          </p>
+        </div>
+
+        <div class="flex justify-center gap-3 max-w-md mx-auto pt-6">
+          <a href="https://offlyn.life/e/0zB6Akl" target="_blank" class="bg-drcFog hover:bg-drcAccent text-white px-8 py-4 rounded-xl text-xs font-bold uppercase tracking-widest shrink-0 transition-colors flex items-center justify-center gap-2 group">
+            <span>REGISTER ON OFFLYN</span>
+            <i class="fa-solid fa-arrow-right text-[10px] group-hover:translate-x-1 transition-transform"></i>
+          </a>
+        </div>
+
+        <div class="pt-6 text-xs text-drcMuted flex justify-center gap-6">
+          <a href="https://www.instagram.com/delhiruncollective/?hl=en" target="_blank"><i class="fa-brands fa-instagram text-drcAccent mr-1"></i> Instagram</a>
+          <a href="https://www.strava.com/clubs/1483233" target="_blank"><i class="fa-brands fa-strava text-drcAccent mr-1"></i> Strava Club</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="border-t border-drcFog/15 bg-drcBg py-16 px-6">
+    <div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-8">
+      
+      <div class="flex items-center gap-3">
+        <img alt="DRC Logo" class="h-6 object-contain" src="https://delhiruncollective.com/cdn/shop/files/LOGO_streached_1.png"/>
+        <span class="font-display text-xs font-extrabold uppercase tracking-tight text-drcText">DELHI RUN COLLECTIVE</span>
+      </div>
+
+      <p class="text-[10px] text-drcMuted font-bold uppercase tracking-widest">
+        © 2026 DELHI RUN COLLECTIVE. Contact: delhiruncollective@gmail.com · 9958446326 · Block G Chittaranjan Park, 1328, New Delhi.
+      </p>
+
+      <div class="flex gap-6 text-drcMuted text-sm">
+        <a href="https://www.instagram.com/delhiruncollective/?hl=en" target="_blank" class="hover:text-drcAccent transition-colors"><i class="fa-brands fa-instagram"></i></a>
+        <a href="https://www.strava.com/clubs/1483233" target="_blank" class="hover:text-drcAccent transition-colors"><i class="fa-brands fa-strava"></i></a>
+        <a href="https://offlyn.life/e/0zB6Akl" target="_blank" class="hover:text-drcAccent transition-colors"><i class="fa-solid fa-link"></i></a>
+      </div>
+
+    </div>
+  </footer>
+
+  <script>
+    // 1. Reveal entry observer
+    const revealItems = document.querySelectorAll('.reveal-item');
+    const observerOptions = {
+      root: null,
+      threshold: 0.1
+    };
+
+    const observer = new IntersectionObserver((entries, observer) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('active');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, observerOptions);
+
+    revealItems.forEach(item => {
+      observer.observe(item);
+    });
+
+    // 2. Interactive Monogram cursor follow stamp
+    const stampArea = document.getElementById('interactive-stamp-area');
+    const monogram = document.getElementById('cursor-monogram');
+
+    stampArea.addEventListener('mouseenter', () => {
+      monogram.style.transform = 'translate(-50%, -50%) scale(1)';
+    });
+
+    stampArea.addEventListener('mouseleave', () => {
+      monogram.style.transform = 'translate(-50%, -50%) scale(0)';
+    });
+
+    stampArea.addEventListener('mousemove', (e) => {
+      // Calculate coordinates relative to document (since monogram is absolute)
+      const x = e.pageX;
+      const y = e.pageY;
+      monogram.style.left = `${x}px`;
+      monogram.style.top = `${y}px`;
+    });
+  </script>
+</body>
+</html>

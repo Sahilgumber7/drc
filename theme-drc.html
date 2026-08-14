@@ -1,0 +1,1533 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Delhi Run Collective | Premium Run Club & Community in Delhi</title>
+  
+  <!-- SEO Meta Tags -->
+  <meta name="description" content="Join Delhi Run Collective - a premium running community based in Delhi. From weekly 5K runs and Sunday socials to coffee after-parties and curated fitness events, DRC is where movement meets culture. Open to all levels.">
+  
+  <!-- Open Graph -->
+  <meta property="og:site_name" content="DelhiRunCollective">
+  <meta property="og:title" content="Delhi Run Collective | Premium Run Club & Community in Delhi">
+  <meta property="og:description" content="Join Delhi Run Collective - a premium running community based in Delhi. From weekly 5K runs and Sunday socials to coffee after-parties and curated fitness events, DRC is where movement meets culture. Open to all levels.">
+  <meta property="og:type" content="website">
+  
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=Syne:wght@700;800&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    /* ─── DESIGN TOKENS (Sense Theme Mapping) ─── */
+    :root {
+      /* Theme Scheme 1 (OLED Dark Mode & Luxury Gold) */
+      --color-bg-1: #060709;
+      --gradient-bg-1: radial-gradient(circle at 50% -20%, #171E1B 0%, #060709 70%);
+      --color-fg-1: #F5F5F7;
+      --color-button-1: #C5A880; /* Premium Champagne Gold */
+      --color-button-fg-1: #060709;
+      --color-sec-button-fg-1: #F5F5F7;
+      --color-shadow-1: rgba(0, 0, 0, 0.8);
+      --color-card-bg-1: #101216;
+      --color-border-1: rgba(255, 255, 255, 0.08);
+      --color-border-inner: rgba(255, 255, 255, 0.04);
+
+      /* Theme Scheme 2 (Secondary Glass & Accents) */
+      --color-bg-2: #16181C;
+      --gradient-bg-2: linear-gradient(180deg, #1A1C22 0%, #101216 100%);
+      --color-fg-2: #F5F5F7;
+      --color-button-2: #F5F5F7;
+      --color-button-fg-2: #060709;
+
+      /* Theme Scheme 3 (Luxury Deep Slate) */
+      --color-bg-3: #0B0C0E;
+      --color-fg-3: #F5F5F7;
+      --color-button-3: #C5A880;
+      --color-button-fg-3: #0B0C0E;
+
+      /* Theme Scheme 4 (High Energy Volt Accent for highlights) */
+      --color-bg-4: #D4FF00; /* Neon Volt */
+      --color-fg-4: #060709;
+      
+      /* Spacing and Constants */
+      --font-family-body: 'Plus Jakarta Sans', sans-serif;
+      --font-family-display: 'Syne', sans-serif;
+      --font-family-cond: 'Space Grotesk', sans-serif;
+      --page-width: 1200px;
+      --container-padding: 24px;
+      --transition-standard: all 700ms cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    /* ─── RESET & BASE STYLES ─── */
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      font-size: 62.5%; /* 10px base */
+      scroll-behavior: smooth;
+      height: 100%;
+    }
+
+    body {
+      font-family: var(--font-family-body);
+      font-size: 1.6rem;
+      line-height: 1.6;
+      color: var(--color-fg-1);
+      background-color: var(--color-bg-1);
+      background-image: var(--gradient-bg-1);
+      min-height: 100%;
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+      transition: var(--transition-standard);
+    }
+
+    img {
+      max-width: 100%;
+      height: auto;
+      display: block;
+    }
+
+    button, .btn {
+      font-family: var(--font-family-cond);
+      font-size: 1.4rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      padding: 14px 32px;
+      border-radius: 999px; /* fully rounded pill */
+      border: none;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      transition: var(--transition-standard);
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .btn-primary {
+      background-color: var(--color-button-1);
+      color: var(--color-button-fg-1);
+      box-shadow: 0 4px 15px rgba(197, 168, 128, 0.15);
+    }
+
+    .btn-primary:hover {
+      background-color: #e5c158; /* slightly brighter gold */
+      transform: translateY(-2px);
+      box-shadow: 0 8px 25px rgba(197, 168, 128, 0.3);
+    }
+
+    .btn-primary:active {
+      transform: translateY(0) scale(0.98);
+    }
+
+    .btn-secondary {
+      background-color: transparent;
+      color: var(--color-fg-1);
+      border: 1px solid var(--color-border-1);
+    }
+
+    .btn-secondary:hover {
+      background-color: rgba(255, 255, 255, 0.04);
+      border-color: var(--color-button-1);
+      transform: translateY(-2px);
+    }
+
+    .btn-secondary:active {
+      transform: translateY(0) scale(0.98);
+    }
+
+    /* ─── CONTAINER ─── */
+    .container {
+      max-width: var(--page-width);
+      margin: 0 auto;
+      padding: 0 var(--container-padding);
+      width: 100%;
+    }
+
+    /* ─── ANNOUNCEMENT BAR ─── */
+    .announcement-bar {
+      background-color: var(--color-bg-2);
+      background-image: var(--gradient-bg-2);
+      color: var(--color-fg-2);
+      text-align: center;
+      padding: 8px var(--container-padding);
+      font-size: 1.2rem;
+      font-weight: 600;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      border-bottom: 1px solid rgba(46, 42, 57, 0.08);
+      position: relative;
+      z-index: 101;
+    }
+
+    /* ─── HEADER / NAVIGATION ─── */
+    header {
+      position: fixed;
+      top: 24px;
+      left: 0;
+      right: 0;
+      z-index: 100;
+      pointer-events: none; /* Let clicks pass through outside navbar */
+      transition: var(--transition-standard);
+    }
+
+    header.scrolled {
+      top: 12px;
+    }
+
+    .nav-wrapper {
+      pointer-events: auto; /* Re-enable clicks inside navbar */
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 64px;
+      max-width: fit-content;
+      min-width: 600px;
+      margin: 0 auto;
+      background-color: rgba(22, 24, 28, 0.65);
+      backdrop-filter: blur(16px) saturate(180%);
+      -webkit-backdrop-filter: blur(16px) saturate(180%);
+      border: 1px solid var(--color-border-1);
+      border-radius: 999px;
+      padding: 0 24px 0 32px;
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+      transition: var(--transition-standard);
+    }
+
+    header.scrolled .nav-wrapper {
+      height: 56px;
+      background-color: rgba(10, 11, 14, 0.85);
+      border-color: rgba(197, 168, 128, 0.25); /* Subtle gold highlight on scroll */
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+    }
+
+    .logo-link {
+      display: flex;
+      align-items: center;
+      margin-right: 40px;
+    }
+
+    .logo-img {
+      height: 28px;
+      object-fit: contain;
+      filter: brightness(0) invert(1); /* Ensure logo is white on dark bg */
+      transition: var(--transition-standard);
+    }
+
+    header.scrolled .logo-img {
+      height: 24px;
+    }
+
+    .nav-menu {
+      display: flex;
+      gap: 32px;
+      list-style: none;
+      align-items: center;
+    }
+
+    .nav-link {
+      font-size: 1.3rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.15em;
+      color: rgba(245, 245, 247, 0.7);
+      position: relative;
+      padding: 8px 0;
+      transition: var(--transition-standard);
+    }
+
+    .nav-link::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 50%;
+      width: 0;
+      height: 1px;
+      background-color: var(--color-button-1);
+      transition: var(--transition-standard);
+      transform: translateX(-50%);
+    }
+
+    .nav-link:hover {
+      color: var(--color-fg-1);
+    }
+
+    .nav-link:hover::after {
+      width: 60%;
+    }
+
+    /* Mobile Nav Toggle */
+    .menu-toggle {
+      display: none;
+      flex-direction: column;
+      justify-content: space-between;
+      width: 24px;
+      height: 14px;
+      background: transparent;
+      border: none;
+      cursor: pointer;
+      position: relative;
+      z-index: 102;
+    }
+
+    .menu-toggle span {
+      display: block;
+      width: 100%;
+      height: 1.5px;
+      background-color: var(--color-fg-1);
+      transition: var(--transition-standard);
+      transform-origin: center;
+    }
+
+    /* ─── SECTION COMMON ─── */
+    .section-padding {
+      padding: 80px 0;
+    }
+
+    .section-title {
+      font-size: 3.6rem;
+      font-weight: 700;
+      color: var(--color-fg-1);
+      line-height: 1.2;
+      margin-bottom: 12px;
+      letter-spacing: -0.02em;
+    }
+
+    .section-subtitle {
+      font-size: 1.6rem;
+      color: #666666;
+      max-width: 600px;
+      margin-bottom: 40px;
+    }
+
+    /* ─── HYPERFRAMES ADAPTER CSS ─── */
+    .hf-anim {
+      animation-duration: 1s;
+      animation-fill-mode: both;
+      animation-play-state: paused;
+    }
+    .hf-fade-in { animation-name: hfFadeIn; }
+    .hf-slide-up { animation-name: hfSlideUp; }
+    .hf-scale-up { animation-name: hfScaleUp; }
+
+    @keyframes hfFadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+    @keyframes hfSlideUp {
+      from { opacity: 0; transform: translateY(30px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes hfScaleUp {
+      from { opacity: 0; transform: scale(0.96); }
+      to { opacity: 1; transform: scale(1); }
+    }
+
+    /* ─── HERO: IMAGE WITH TEXT ─── */
+    .hero-section {
+      background-color: transparent;
+      overflow: hidden;
+      padding: 140px 0 100px;
+    }
+
+    .hero-grid {
+      display: grid;
+      grid-template-columns: 1.15fr 0.85fr;
+      gap: 80px;
+      align-items: center;
+    }
+
+    .hero-content {
+      padding-right: 20px;
+    }
+
+    .hero-eyebrow {
+      font-size: 1.2rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.25em;
+      color: var(--color-button-1);
+      margin-bottom: 24px;
+      display: inline-block;
+      border: 1px solid rgba(197, 168, 128, 0.25);
+      padding: 6px 16px;
+      border-radius: 999px;
+      background-color: rgba(197, 168, 128, 0.05);
+    }
+
+    .hero-title {
+      font-family: var(--font-family-display);
+      font-size: clamp(4rem, 6vw, 6.8rem);
+      font-weight: 800;
+      line-height: 1.05;
+      color: var(--color-fg-1);
+      margin-bottom: 28px;
+      letter-spacing: -0.03em;
+    }
+
+    .hero-title span {
+      font-style: italic;
+      color: var(--color-button-1);
+      font-weight: 800;
+    }
+
+    .hero-desc {
+      font-family: var(--font-family-body);
+      font-size: 1.8rem;
+      line-height: 1.7;
+      color: rgba(245, 245, 247, 0.65);
+      margin-bottom: 40px;
+      max-width: 540px;
+    }
+
+    .hero-image-container {
+      position: relative;
+    }
+
+    /* DOUBLE-BEZEL nested architecture (Doppelrand) for Hero Image */
+    .hero-image-outer-shell {
+      background-color: rgba(255, 255, 255, 0.03);
+      border: 1px solid var(--color-border-1);
+      padding: 8px;
+      border-radius: 32px;
+      box-shadow: 0 30px 60px rgba(0, 0, 0, 0.4);
+    }
+
+    .hero-image-wrapper {
+      position: relative;
+      border-radius: calc(32px - 8px);
+      overflow: hidden;
+      aspect-ratio: 4 / 5;
+      background-color: #101216;
+    }
+
+    .hero-img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 6s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .hero-image-wrapper:hover .hero-img {
+      transform: scale(1.05);
+    }
+
+    /* Floating Card Overlay */
+    .hero-floating-card {
+      position: absolute;
+      bottom: -20px;
+      left: -40px;
+      background-color: rgba(22, 24, 28, 0.75);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid var(--color-border-1);
+      border-radius: 16px;
+      padding: 24px;
+      max-width: 280px;
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+      z-index: 10;
+    }
+
+    .hero-floating-card p {
+      font-size: 1.4rem;
+      font-style: italic;
+      color: rgba(245, 245, 247, 0.9);
+      line-height: 1.6;
+    }
+
+    /* Button in Button icon */
+    .btn span {
+      position: relative;
+      z-index: 2;
+    }
+    .btn-icon {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      background-color: rgba(6, 7, 9, 0.08);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-left: 12px;
+      transition: var(--transition-standard);
+      flex-shrink: 0;
+    }
+    .btn-primary .btn-icon {
+      background-color: rgba(6, 7, 9, 0.08);
+      color: var(--color-button-fg-1);
+    }
+    .btn-secondary .btn-icon {
+      background-color: rgba(255, 255, 255, 0.08);
+      color: var(--color-fg-1);
+    }
+    .btn:hover .btn-icon {
+      transform: scale(1.1) rotate(45deg);
+      background-color: rgba(6, 7, 9, 0.15);
+    }
+    .btn-secondary:hover .btn-icon {
+      background-color: var(--color-button-1);
+      color: var(--color-button-fg-1);
+    }
+    .btn-icon svg {
+      width: 14px;
+      height: 14px;
+      fill: none;
+      stroke: currentColor;
+      stroke-width: 1.5;
+    }
+
+    /* ─── SECTION: UPCOMING EXPERIENCES (Link Tree Block) ─── */
+    .experiences-section {
+      background-color: transparent;
+    }
+
+    .exp-header {
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .exp-list {
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+      max-width: 820px;
+      margin: 0 auto;
+      width: 100%;
+    }
+
+    /* DOUBLE-BEZEL nested architecture (Doppelrand) for Experiences */
+    .exp-card-outer {
+      background-color: rgba(255, 255, 255, 0.02);
+      border: 1px solid var(--color-border-1);
+      border-radius: 24px;
+      padding: 6px;
+      transition: var(--transition-standard);
+      display: block;
+      text-decoration: none;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+    }
+
+    .exp-card-outer:hover {
+      transform: translateY(-4px);
+      border-color: rgba(197, 168, 128, 0.35);
+      box-shadow: 0 25px 50px rgba(0, 0, 0, 0.45);
+    }
+
+    .exp-card {
+      display: flex;
+      align-items: center;
+      gap: 28px;
+      background-color: var(--color-card-bg-1);
+      border-radius: calc(24px - 6px);
+      padding: 24px;
+      transition: var(--transition-standard);
+      position: relative;
+      overflow: hidden;
+      border: 1px solid var(--color-border-inner);
+    }
+
+    .exp-card::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.02) 50%, transparent);
+      transform: translateX(-100%);
+      transition: transform 1s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .exp-card-outer:hover .exp-card::before {
+      transform: translateX(100%);
+    }
+
+    .exp-thumbnail {
+      width: 100px;
+      height: 100px;
+      border-radius: 12px;
+      overflow: hidden;
+      flex-shrink: 0;
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      transition: var(--transition-standard);
+    }
+
+    .exp-thumbnail img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: var(--transition-standard);
+    }
+
+    .exp-card-outer:hover .exp-thumbnail img {
+      transform: scale(1.05);
+    }
+
+    .exp-content {
+      flex-grow: 1;
+      min-width: 0;
+      text-align: left;
+    }
+
+    .exp-title {
+      font-family: var(--font-family-cond);
+      font-size: 1.9rem;
+      font-weight: 700;
+      color: var(--color-fg-1);
+      margin-bottom: 6px;
+      letter-spacing: -0.01em;
+    }
+
+    .exp-desc {
+      font-family: var(--font-family-body);
+      font-size: 1.4rem;
+      color: rgba(245, 245, 247, 0.6);
+      line-height: 1.6;
+      margin-bottom: 12px;
+    }
+
+    .exp-date-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 1.2rem;
+      font-weight: 600;
+      color: var(--color-button-1);
+      background-color: rgba(197, 168, 128, 0.08);
+      border: 1px solid rgba(197, 168, 128, 0.15);
+      padding: 6px 16px;
+      border-radius: 999px;
+      width: fit-content;
+      transition: var(--transition-standard);
+    }
+
+    .exp-card-outer:hover .exp-date-badge {
+      background-color: var(--color-button-1);
+      color: var(--color-button-fg-1);
+      border-color: var(--color-button-1);
+    }
+
+    .exp-date-icon {
+      width: 13px;
+      height: 13px;
+      stroke: currentColor;
+      fill: none;
+      stroke-width: 1.5;
+    }
+
+    /* ─── SECTION: MERCHANDISE (Grab the Merch) ─── */
+    .merch-section {
+      background-color: transparent;
+    }
+
+    .merch-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 30px;
+    }
+
+    /* DOUBLE-BEZEL nested architecture (Doppelrand) for Merchandise */
+    .merch-card-outer {
+      background-color: rgba(255, 255, 255, 0.02);
+      border: 1px solid var(--color-border-1);
+      border-radius: 24px;
+      padding: 6px;
+      transition: var(--transition-standard);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+    }
+
+    .merch-card-outer:hover {
+      transform: translateY(-6px);
+      border-color: rgba(197, 168, 128, 0.35);
+      box-shadow: 0 25px 50px rgba(0, 0, 0, 0.45);
+    }
+
+    .merch-card {
+      background-color: var(--color-card-bg-1);
+      border-radius: calc(24px - 6px);
+      overflow: hidden;
+      transition: var(--transition-standard);
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+      border: 1px solid var(--color-border-inner);
+    }
+
+    .merch-image-wrap {
+      width: 100%;
+      aspect-ratio: 1 / 1;
+      overflow: hidden;
+      background-color: #16181C;
+      position: relative;
+      border-bottom: 1px solid var(--color-border-inner);
+    }
+
+    .merch-img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 6s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .merch-card-outer:hover .merch-img {
+      transform: scale(1.05);
+    }
+
+    .merch-info {
+      padding: 24px;
+      flex-grow: 1;
+      display: flex;
+      flex-direction: column;
+      text-align: left;
+    }
+
+    .merch-name {
+      font-family: var(--font-family-cond);
+      font-size: 1.6rem;
+      font-weight: 700;
+      color: var(--color-fg-1);
+      margin-bottom: 6px;
+      line-height: 1.4;
+    }
+
+    .merch-details {
+      font-family: var(--font-family-body);
+      font-size: 1.3rem;
+      color: rgba(245, 245, 247, 0.5);
+      margin-bottom: 16px;
+    }
+
+    .merch-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-top: auto;
+    }
+
+    .merch-price {
+      font-family: var(--font-family-cond);
+      font-size: 1.7rem;
+      font-weight: 700;
+      color: var(--color-fg-1);
+    }
+
+    .merch-buy-btn {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background-color: rgba(255, 255, 255, 0.04);
+      color: var(--color-fg-1);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 1px solid var(--color-border-1);
+      cursor: pointer;
+      transition: var(--transition-standard);
+    }
+
+    .merch-card-outer:hover .merch-buy-btn {
+      background-color: var(--color-button-1);
+      color: var(--color-button-fg-1);
+      border-color: var(--color-button-1);
+      transform: scale(1.08);
+    }
+
+    .merch-buy-btn svg {
+      width: 14px;
+      height: 14px;
+      fill: none;
+      stroke: currentColor;
+      stroke-width: 1.5;
+    }
+
+    /* ─── SECTION: JOIN DRC (Multicolumn) ─── */
+    .join-section {
+      background-color: transparent;
+    }
+
+    .join-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 40px;
+    }
+
+    /* DOUBLE-BEZEL nested architecture (Doppelrand) for Join DRC */
+    .join-card-outer {
+      background-color: rgba(255, 255, 255, 0.02);
+      border: 1px solid var(--color-border-1);
+      border-radius: 28px;
+      padding: 8px;
+      transition: var(--transition-standard);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+    }
+
+    .join-card-outer:hover {
+      transform: translateY(-6px);
+      border-color: rgba(197, 168, 128, 0.35);
+      box-shadow: 0 25px 50px rgba(0, 0, 0, 0.4);
+    }
+
+    .join-card {
+      background-color: var(--color-card-bg-1);
+      border-radius: calc(28px - 8px);
+      overflow: hidden;
+      transition: var(--transition-standard);
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+      border: 1px solid var(--color-border-inner);
+    }
+
+    .join-image-wrap {
+      width: 100%;
+      height: 280px;
+      overflow: hidden;
+      position: relative;
+      border-bottom: 1px solid var(--color-border-inner);
+    }
+
+    .join-card-img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 6s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .join-card-outer:hover .join-card-img {
+      transform: scale(1.05);
+    }
+
+    .join-body {
+      padding: 32px;
+      text-align: left;
+    }
+
+    .join-card-title {
+      font-family: var(--font-family-cond);
+      font-size: 2.4rem;
+      font-weight: 700;
+      color: var(--color-fg-1);
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .join-card-desc {
+      font-family: var(--font-family-body);
+      font-size: 1.5rem;
+      color: rgba(245, 245, 247, 0.65);
+      line-height: 1.6;
+      margin-bottom: 28px;
+      min-height: 72px;
+    }
+
+    /* ─── FOOTER ─── */
+    footer {
+      background-color: var(--color-bg-3);
+      color: var(--color-fg-3);
+      padding: 100px 0 50px;
+      border-top: 1px solid var(--color-border-1);
+    }
+
+    .footer-grid {
+      display: grid;
+      grid-template-columns: 1.5fr 1fr 1fr;
+      gap: 60px;
+      margin-bottom: 60px;
+    }
+
+    .footer-brand {
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+      animation-name: hfFadeIn;
+      animation-duration: 1s;
+      animation-fill-mode: both;
+      animation-play-state: paused;
+    }
+
+    .footer-logo {
+      height: 28px;
+      object-fit: contain;
+      align-self: flex-start;
+      filter: brightness(0) invert(1); /* Whitens logo */
+    }
+
+    .footer-tagline {
+      font-family: var(--font-family-body);
+      font-size: 1.4rem;
+      line-height: 1.6;
+      color: rgba(245, 245, 247, 0.55);
+      max-width: 340px;
+    }
+
+    .footer-title {
+      font-family: var(--font-family-cond);
+      font-size: 1.4rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.18em;
+      color: rgba(245, 245, 247, 0.4);
+      margin-bottom: 28px;
+    }
+
+    .footer-links-col {
+      animation-name: hfFadeIn;
+      animation-duration: 1s;
+      animation-fill-mode: both;
+      animation-play-state: paused;
+    }
+
+    .footer-links {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      list-style: none;
+    }
+
+    .footer-link {
+      font-family: var(--font-family-body);
+      font-size: 1.4rem;
+      color: rgba(245, 245, 247, 0.65);
+      transition: var(--transition-standard);
+    }
+
+    .footer-link:hover {
+      color: var(--color-button-1);
+      transform: translateX(4px);
+    }
+
+    .footer-social-row {
+      display: flex;
+      gap: 16px;
+      margin-top: 14px;
+    }
+
+    .social-btn {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      background-color: rgba(255, 255, 255, 0.03);
+      color: var(--color-fg-3);
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: var(--transition-standard);
+    }
+
+    .social-btn:hover {
+      background-color: var(--color-button-1);
+      color: var(--color-button-fg-3);
+      border-color: var(--color-button-1);
+      transform: translateY(-3px);
+    }
+
+    .social-btn svg {
+      width: 18px;
+      height: 18px;
+      fill: currentColor;
+    }
+
+    .footer-bottom {
+      padding-top: 36px;
+      border-top: 1px solid rgba(255, 255, 255, 0.05);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-family: var(--font-family-cond);
+      font-size: 1.2rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: rgba(245, 245, 247, 0.3);
+    }
+
+    .footer-copy {
+      font-weight: 600;
+    }
+
+    /* ─── RESPONSIVE DESIGN ─── */
+    @media (max-width: 1024px) {
+      .hero-title {
+        font-size: 4.8rem;
+      }
+      .merch-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 24px;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .section-padding {
+        padding: 60px 0;
+      }
+      .section-title {
+        font-size: 2.8rem;
+      }
+
+      /* Navigation */
+      .nav-menu {
+        display: none; /* hidden on mobile by default */
+        position: fixed;
+        top: 88px;
+        left: 16px;
+        right: 16px;
+        background-color: rgba(10, 11, 14, 0.95);
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
+        border: 1px solid var(--color-border-1);
+        border-radius: 24px;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 24px;
+        padding: 40px;
+        z-index: 99;
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+      }
+
+      .nav-menu.open {
+        display: flex;
+        animation: hfSlideUpMenu 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+      }
+
+      @keyframes hfSlideUpMenu {
+        from { opacity: 0; transform: translateY(10px); }
+        to { opacity: 1; transform: translateY(0); }
+      }
+
+      .menu-toggle {
+        display: flex;
+      }
+
+      /* Hero */
+      .hero-grid {
+        grid-template-columns: 1fr;
+        gap: 40px;
+      }
+      .hero-content {
+        padding-right: 0;
+        text-align: center;
+      }
+      .hero-title {
+        font-size: 3.8rem;
+      }
+      .hero-desc {
+        margin: 0 auto 28px;
+      }
+      .hero-floating-card {
+        display: none; /* Hide floating card on mobile */
+      }
+      .hero-image-outer-shell {
+        border-radius: 24px;
+        padding: 6px;
+      }
+      .hero-image-wrapper {
+        border-radius: calc(24px - 6px);
+      }
+
+      /* link tree card mobile */
+      .exp-card-outer {
+        border-radius: 20px;
+        padding: 4px;
+      }
+      .exp-card {
+        flex-direction: column;
+        text-align: center;
+        padding: 24px 16px;
+        border-radius: calc(20px - 4px);
+        gap: 20px;
+      }
+      .exp-thumbnail {
+        width: 80px;
+        height: 80px;
+      }
+      .exp-date-badge {
+        margin: 0 auto;
+      }
+
+      /* join section mobile */
+      .join-grid {
+        grid-template-columns: 1fr;
+        gap: 30px;
+      }
+      .join-card-outer {
+        border-radius: 24px;
+        padding: 6px;
+      }
+      .join-card {
+        border-radius: calc(24px - 6px);
+      }
+
+      /* Footer */
+      .footer-grid {
+        grid-template-columns: 1fr;
+        gap: 40px;
+      }
+      .footer-bottom {
+        flex-direction: column;
+        gap: 12px;
+        text-align: center;
+      }
+    }
+
+    /* High contrast keyboard focus rings for accessibility */
+    :focus-visible {
+      outline: 2px solid var(--color-button-1) !important;
+      outline-offset: 4px !important;
+    }
+
+    /* Clear pointer interactions */
+    a, button, [role="button"], .exp-card, .merch-card, .join-card {
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body data-composition-id="root" data-start="0" data-duration="10" data-width="1920" data-height="1080">
+
+  <!-- ANNOUNCEMENT BAR -->
+  <div class="announcement-bar">
+    #joinTheRun
+  </div>
+
+  <!-- HEADER -->
+  <header id="main-header">
+    <div class="container nav-wrapper">
+      <a href="#" class="logo-link">
+        <img class="logo-img" src="https://delhiruncollective.com/cdn/shop/files/LOGO_streached_1.png?v=1785179759" alt="Delhi Run Collective Logo">
+      </a>
+      
+      <ul class="nav-menu" id="nav-menu">
+        <li><a href="#hero" class="nav-link">The Story</a></li>
+        <li><a href="#experiences" class="nav-link">The Crew</a></li>
+        <li><a href="#merch" class="nav-link">Routes</a></li>
+        <li><a href="#join" class="nav-link">Join</a></li>
+      </ul>
+
+      <button class="menu-toggle" id="menu-toggle" aria-label="Toggle navigation menu">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+  </header>
+
+  <main>
+    <!-- 1. HERO (Image With Text Section) -->
+    <section id="hero" class="hero-section hf-anim hf-fade-in" data-start="0" data-duration="2.5">
+      <div class="container hero-grid">
+        <div class="hero-content">
+          <span class="hero-eyebrow hf-anim hf-fade-in animate-child" data-delay="0.1">Lodhi Gardens · 05:30 AM</span>
+          <h1 class="hero-title hf-anim hf-fade-in animate-child" data-delay="0.2">Because running <span>alone isn't it.</span></h1>
+          <p class="hero-desc hf-anim hf-slide-up animate-child" data-delay="0.4">We claim the streets when the air is still and the narrative is ours to write. Join a group of runners moving through Delhi's historical paths every Sunday at dawn.</p>
+          <a href="https://www.instagram.com/delhiruncollective/?hl=en" target="_blank" class="btn btn-primary hf-anim hf-slide-up animate-child" data-delay="0.55">
+            <span>Inside the community</span>
+            <span class="btn-icon">
+              <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path d="M7 17L17 7M17 7H8M17 7V16" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </span>
+          </a>
+        </div>
+        <div class="hero-image-container hf-anim hf-scale-up animate-child" data-delay="0.3">
+          <div class="hero-image-outer-shell">
+            <div class="hero-image-wrapper">
+              <img class="hero-img" src="https://images.unsplash.com/photo-1552674605-db6ffd4facb5?auto=format&fit=crop&w=1600&q=80" alt="Delhi Run Collective stretching session at dawn in Lodhi Gardens">
+            </div>
+          </div>
+          <div class="hero-floating-card hf-anim hf-fade-in animate-child" data-delay="0.5">
+            <p>"The prep is as vital as the pace. We find our center before we find our stride."</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 2. UPCOMING EXPERIENCES (Link Tree block) -->
+    <section id="experiences" class="experiences-section section-padding">
+      <div class="container">
+        <div class="exp-header hf-anim hf-slide-up" data-start="1.5" data-duration="1">
+          <h2 class="section-title">Upcoming Experiences</h2>
+          <p class="section-subtitle">Curated runs, workouts, and community experiences across Delhi NCR.</p>
+        </div>
+        
+        <div class="exp-list">
+          <!-- Card 1 -->
+          <a href="https://luma.com/l59on2u7" target="_blank" class="exp-card-outer" data-start="1.8" data-duration="1">
+            <div class="exp-card">
+              <div class="exp-thumbnail">
+                <img src="https://images.unsplash.com/photo-1476480862126-209bfaa8edc8?auto=format&fit=crop&w=1000&q=80" alt="Wednesday Evening Run Session">
+              </div>
+              <div class="exp-content">
+                <h3 class="exp-title">Wednesday Evening Run</h3>
+                <p class="exp-desc">Curious about how Peakst8: No Parking works? This simulation is the perfect way to experience the race format before race day.</p>
+                <div class="exp-date-badge">
+                  <svg class="exp-date-icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                    <line x1="16" y1="2" x2="16" y2="6"></line>
+                    <line x1="8" y1="2" x2="8" y2="6"></line>
+                    <line x1="3" y1="10" x2="21" y2="10"></line>
+                  </svg>
+                  <span>5th Aug</span>
+                </div>
+              </div>
+            </div>
+          </a>
+
+          <!-- Card 2 -->
+          <a href="#" onclick="return false;" class="exp-card-outer" data-start="2.1" data-duration="1">
+            <div class="exp-card">
+              <div class="exp-thumbnail">
+                <img src="https://images.unsplash.com/photo-1552674605-db6ffd4facb5?auto=format&fit=crop&w=1600&q=80" alt="Sunday Run with Kyro App Integration">
+              </div>
+              <div class="exp-content">
+                <h3 class="exp-title">Sunday Run with Kyro (Link Drops Soon)</h3>
+                <p class="exp-desc">Runners will split into small teams and explore different parts of Lodhi Colony using KYRO's gamified running app to capture territory as they run.</p>
+                <div class="exp-date-badge">
+                  <svg class="exp-date-icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                    <line x1="16" y1="2" x2="16" y2="6"></line>
+                    <line x1="8" y1="2" x2="8" y2="6"></line>
+                    <line x1="3" y1="10" x2="21" y2="10"></line>
+                  </svg>
+                  <span>9th Aug</span>
+                </div>
+              </div>
+            </div>
+          </a>
+
+          <!-- Card 3 -->
+          <a href="https://luma.com/pbdq7l28" target="_blank" class="exp-card-outer" data-start="2.4" data-duration="1">
+            <div class="exp-card">
+              <div class="exp-thumbnail">
+                <img src="https://images.unsplash.com/photo-1517838277536-f5f99be501cd?auto=format&fit=crop&w=1000&q=80" alt="Nike Pegasus Trial Run">
+              </div>
+              <div class="exp-content">
+                <h3 class="exp-title">Saturday Run with Nike</h3>
+                <p class="exp-desc">Try on the latest Nike Pegasus 42 or Nike Structure 26. Lace up, test them on the road, and find the pair that matches your stride.</p>
+                <div class="exp-date-badge">
+                  <svg class="exp-date-icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                    <line x1="16" y1="2" x2="16" y2="6"></line>
+                    <line x1="8" y1="2" x2="8" y2="6"></line>
+                    <line x1="3" y1="10" x2="21" y2="10"></line>
+                  </svg>
+                  <span>8th Aug</span>
+                </div>
+              </div>
+            </div>
+          </a>
+
+          <!-- Card 4 -->
+          <a href="https://www.peakst8.club/no-parking?id=drc30" target="_blank" class="exp-card-outer" data-start="2.7" data-duration="1">
+            <div class="exp-card">
+              <div class="exp-thumbnail">
+                <img src="https://images.unsplash.com/photo-1542291026-7eec264c27ff?auto=format&fit=crop&w=1000&q=80" alt="Peakst8 Fitness Challenge Logo">
+              </div>
+              <div class="exp-content">
+                <h3 class="exp-title">Peakst8: No Parking</h3>
+                <p class="exp-desc">One person runs a 500m loop. The rest of the team maxes out reps on mountain climbers or burpees. Get an exclusive 30% discount through our community registration link.</p>
+                <div class="exp-date-badge">
+                  <svg class="exp-date-icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                    <line x1="16" y1="2" x2="16" y2="6"></line>
+                    <line x1="8" y1="2" x2="8" y2="6"></line>
+                    <line x1="3" y1="10" x2="21" y2="10"></line>
+                  </svg>
+                  <span>23rd Aug</span>
+                </div>
+              </div>
+            </div>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- 3. FEATURED COLLECTION (Grab the Merch) -->
+    <section id="merch" class="merch-section section-padding">
+      <div class="container">
+        <div class="section-head hf-anim hf-slide-up" data-start="4.8" data-duration="1">
+          <h2 class="section-title">Grab the Merch</h2>
+          <p class="section-subtitle">Gear designed for premium pre-dawn performance and everyday comfort.</p>
+        </div>
+        
+        <div class="merch-grid">
+          <!-- Item 1 -->
+          <div class="merch-card-outer" data-start="5.2" data-duration="1">
+            <div class="merch-card">
+              <div class="merch-image-wrap">
+                <img class="merch-img" src="https://images.unsplash.com/photo-1552674605-db6ffd4facb5?auto=format&fit=crop&w=1600&q=80" alt="DRC // 01 Aerostat Singlet">
+              </div>
+              <div class="merch-info">
+                <h3 class="merch-name">DRC // 01 Aerostat Singlet</h3>
+                <p class="merch-details">Ink / Clay</p>
+                <div class="merch-footer">
+                  <span class="merch-price">₹2,499</span>
+                  <button class="merch-buy-btn" aria-label="Add to cart">
+                    <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M12 5v14M5 12h14" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Item 2 -->
+          <div class="merch-card-outer" data-start="5.5" data-duration="1">
+            <div class="merch-card">
+              <div class="merch-image-wrap">
+                <img class="merch-img" src="https://images.unsplash.com/photo-1476480862126-209bfaa8edc8?auto=format&fit=crop&w=1000&q=80" alt="Urban Rhythm Shorts">
+              </div>
+              <div class="merch-info">
+                <h3 class="merch-name">Urban Rhythm Shorts</h3>
+                <p class="merch-details">Asphalt Black</p>
+                <div class="merch-footer">
+                  <span class="merch-price">₹3,200</span>
+                  <button class="merch-buy-btn" aria-label="Add to cart">
+                    <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M12 5v14M5 12h14" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Item 3 -->
+          <div class="merch-card-outer" data-start="5.8" data-duration="1">
+            <div class="merch-card">
+              <div class="merch-image-wrap">
+                <img class="merch-img" src="https://images.unsplash.com/photo-1517838277536-f5f99be501cd?auto=format&fit=crop&w=1000&q=80" alt="Dawn Patrol Cap">
+              </div>
+              <div class="merch-info">
+                <h3 class="merch-name">Dawn Patrol Cap</h3>
+                <p class="merch-details">Clay</p>
+                <div class="merch-footer">
+                  <span class="merch-price">₹1,150</span>
+                  <button class="merch-buy-btn" aria-label="Add to cart">
+                    <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M12 5v14M5 12h14" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Item 4 -->
+          <div class="merch-card-outer" data-start="6.1" data-duration="1">
+            <div class="merch-card">
+              <div class="merch-image-wrap">
+                <img class="merch-img" src="https://images.unsplash.com/photo-1542291026-7eec264c27ff?auto=format&fit=crop&w=1000&q=80" alt="Pre-Dawn Windbreaker">
+              </div>
+              <div class="merch-info">
+                <h3 class="merch-name">Pre-Dawn Windbreaker</h3>
+                <p class="merch-details">Stone / Clay</p>
+                <div class="merch-footer">
+                  <span class="merch-price">₹4,800</span>
+                  <button class="merch-buy-btn" aria-label="Add to cart">
+                    <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M12 5v14M5 12h14" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 4. JOIN DRC (Multicolumn) -->
+    <section id="join" class="join-section section-padding">
+      <div class="container">
+        <div class="section-head hf-anim hf-slide-up" data-start="7.0" data-duration="1">
+          <h2 class="section-title">Join DRC</h2>
+          <p class="section-subtitle">Whether tracking virtual runs or showing up at dawn, become a part of Delhi's running tribe.</p>
+        </div>
+        
+        <div class="join-grid">
+          <!-- Instagram -->
+          <div class="join-card-outer" data-start="7.4" data-duration="1.2">
+            <div class="join-card">
+              <div class="join-image-wrap">
+                <img class="join-card-img" src="https://images.unsplash.com/photo-1552674605-db6ffd4facb5?auto=format&fit=crop&w=1600&q=80" alt="DRC Instagram Community Feed Thumbnail">
+              </div>
+              <div class="join-body">
+                <h3 class="join-card-title">Instagram</h3>
+                <p class="join-card-desc">Follow us on Instagram for run updates, community highlights, and everything that makes DelhiRunCollective more than just a run club.</p>
+                <a href="https://www.instagram.com/delhiruncollective/?hl=en" target="_blank" class="btn btn-primary">
+                  <span>Follow Updates</span>
+                  <span class="btn-icon">
+                    <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M7 17L17 7M17 7H8M17 7V16" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                  </span>
+                </a>
+              </div>
+            </div>
+          </div>
+
+          <!-- Strava -->
+          <div class="join-card-outer" data-start="7.8" data-duration="1.2">
+            <div class="join-card">
+              <div class="join-image-wrap">
+                <img class="join-card-img" src="https://images.unsplash.com/photo-1476480862126-209bfaa8edc8?auto=format&fit=crop&w=1000&q=80" alt="DRC Strava Club Running Feet Close Up">
+              </div>
+              <div class="join-body">
+                <h3 class="join-card-title">Strava</h3>
+                <p class="join-card-desc">Track your runs, celebrate progress, and run virtually with the crew. Join the Delhi Run Collective club on Strava.</p>
+                <a href="https://www.strava.com/clubs/1483233" target="_blank" class="btn btn-primary">
+                  <span>Join Strava Club</span>
+                  <span class="btn-icon">
+                    <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M7 17L17 7M17 7H8M17 7V16" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                  </span>
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="container footer-grid">
+      <div class="footer-brand" data-start="8.8" data-duration="1">
+        <img class="footer-logo" src="https://delhiruncollective.com/cdn/shop/files/LOGO_streached_1.png?v=1785179759" alt="Delhi Run Collective Logo">
+        <p class="footer-tagline">Building a culture of urban distance running in the heart of the capital. One Sunday at a time.</p>
+      </div>
+      <div class="footer-links-col" data-start="9.1" data-duration="1">
+        <h3 class="footer-title">Explore</h3>
+        <ul class="footer-links">
+          <li><a href="#hero" class="footer-link">The Story</a></li>
+          <li><a href="#experiences" class="footer-link">The Crew</a></li>
+          <li><a href="#merch" class="footer-link">Routes</a></li>
+          <li><a href="#join" class="footer-link">Join Movement</a></li>
+        </ul>
+      </div>
+      <div class="footer-links-col" data-start="9.4" data-duration="1">
+        <h3 class="footer-title">Connect</h3>
+        <ul class="footer-links" style="margin-bottom: 20px;">
+          <li><a href="https://www.instagram.com/delhiruncollective/?hl=en" target="_blank" class="footer-link">Instagram</a></li>
+          <li><a href="https://www.strava.com/clubs/1483233" target="_blank" class="footer-link">Strava Club</a></li>
+          <li><a href="https://chat.whatsapp.com/CEw1N0UlVHz3Dn9mWVP4bS" target="_blank" class="footer-link">WhatsApp Group</a></li>
+        </ul>
+        <div class="footer-social-row">
+          <a href="https://www.instagram.com/delhiruncollective/?hl=en" target="_blank" class="social-btn" aria-label="Instagram">
+            <svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.051.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 1 0 0 12.324 6.162 6.162 0 0 0 0-12.324zM12 16a4 4 0 1 1 0-8 4 4 0 0 1 0 8zm6.406-11.845a1.44 1.44 0 1 0 0 2.881 1.44 1.44 0 0 0 0-2.881z"/></svg>
+          </a>
+          <a href="https://www.strava.com/clubs/1483233" target="_blank" class="social-btn" aria-label="Strava">
+            <svg viewBox="0 0 24 24"><path d="M15.387 17.944l-2.089-4.116h-3.065L15.387 24l5.15-10.172h-3.066m-7.108-4.48L10.22 5.17h3.065L10.22 0 5.07 9.348h3.065z"/></svg>
+          </a>
+        </div>
+      </div>
+    </div>
+    <div class="container footer-bottom">
+      <p class="footer-copy">© 2024 Delhi Run Collective. Movement is Narrative.</p>
+      <p style="color: rgba(255, 255, 255, 0.15);">Sense Theme Extracted</p>
+    </div>
+  </footer>
+
+  <script>
+    // Header shrink on scroll
+    const header = document.getElementById('main-header');
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 40) {
+        header.classList.add('scrolled');
+      } else {
+        header.classList.remove('scrolled');
+      }
+    });
+
+    // Mobile nav menu toggle
+    const menuToggle = document.getElementById('menu-toggle');
+    const navMenu = document.getElementById('nav-menu');
+    menuToggle.addEventListener('click', () => {
+      navMenu.classList.toggle('open');
+      menuToggle.classList.toggle('active');
+    });
+
+    // Close menu when links are clicked
+    document.querySelectorAll('.nav-link').forEach(link => {
+      link.addEventListener('click', () => {
+        navMenu.classList.remove('open');
+        menuToggle.classList.remove('active');
+      });
+    });
+
+    // Initial seek setup
+    document.addEventListener('DOMContentLoaded', () => {
+      // Register custom timeline for HyperFrames core adapter compatibility
+      window.__timelines = window.__timelines || {};
+      window.__timelines['root'] = {
+        duration: () => 10,
+        seek: (t) => window.__hfSeek(t)
+      };
+      window.__hfSeek(0);
+    });
+
+    // ─── HYPERFRAMES SEEK-SAFE ADAPTER ───
+    window.__hfSeek = function(time) {
+      // Seek all timed components with data-start
+      document.querySelectorAll('[data-start]').forEach(el => {
+        const start = parseFloat(el.getAttribute('data-start') || 0);
+        const duration = parseFloat(el.getAttribute('data-duration') || 2);
+        const localTime = Math.max(0, Math.min(duration, time - start));
+        
+        el.style.animationPlayState = 'paused';
+        el.style.animationDelay = `-${localTime}s`;
+        
+        // Seek animate-child tags inside this timed element
+        el.querySelectorAll('.animate-child').forEach(child => {
+          const childDelay = parseFloat(child.getAttribute('data-delay') || 0);
+          const childLocalTime = Math.max(0, time - start - childDelay);
+          child.style.animationPlayState = 'paused';
+          child.style.animationDelay = `-${childLocalTime}s`;
+        });
+      });
+    };
+
+    // ─── SCROLL SYNC TRIGGER ───
+    const urlParams = new URLSearchParams(window.location.search);
+    const isRendering = urlParams.get('render') === 'true' || window.__hyperframes;
+
+    if (!isRendering) {
+      window.addEventListener('scroll', () => {
+        const scrolled = window.scrollY;
+        const max = document.documentElement.scrollHeight - window.innerHeight;
+        const pct = max > 0 ? scrolled / max : 0;
+        
+        // Map 0-100% scroll to 0-10 seconds timeline
+        const seekTime = pct * 10;
+        window.__hfSeek(seekTime);
+      }, { passive: true });
+    }
+
+    // Respect reduced motion query
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      document.querySelectorAll('.hf-anim, .exp-card, .merch-card, .join-card, .footer-brand, .footer-links-col').forEach(el => {
+        el.style.animation = 'none';
+        el.style.opacity = '1';
+        el.style.transform = 'none';
+      });
+    }
+  </script>
+</body>
+</html>

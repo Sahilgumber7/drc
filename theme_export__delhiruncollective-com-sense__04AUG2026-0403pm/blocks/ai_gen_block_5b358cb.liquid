@@ -1,0 +1,829 @@
+{% doc %}
+  @prompt
+    Add a date input setting to each link card in a link tree menu block. Each link (1-6) should have a title, description, thumbnail image, link URL, and a date field. Display the date on the card in a clean, styled format., add main heading and description for block 
+{% enddoc %}
+{% assign ai_gen_id = block.id | replace: '_', '' | downcase %}
+
+{% style %}
+  .ai-link-tree-{{ ai_gen_id }} {
+    display: block;
+    width: {{ block.settings.desktop_width_percent }}%;
+    max-width: 100%;
+    margin: 0 auto;
+  }
+
+  .ai-link-tree__header-{{ ai_gen_id }} {
+    text-align: {{ block.settings.text_alignment }};
+    padding: {{ block.settings.container_padding }}px;
+    padding-bottom: {{ block.settings.header_spacing }}px;
+  }
+
+  .ai-link-tree__main-heading-{{ ai_gen_id }} {
+    font-size: {{ block.settings.heading_font_size }}px;
+    font-weight: 700;
+    color: {{ block.settings.heading_color }};
+    margin: 0 0 {{ block.settings.heading_margin }}px 0;
+    line-height: 1.2;
+  }
+
+  .ai-link-tree__main-description-{{ ai_gen_id }} {
+    font-size: {{ block.settings.main_description_font_size }}px;
+    color: {{ block.settings.main_description_color }};
+    margin: 0;
+    line-height: 1.5;
+  }
+
+  .ai-link-tree__container-{{ ai_gen_id }} {
+    display: flex;
+    flex-direction: column;
+    gap: {{ block.settings.card_spacing }}px;
+    padding: 0 {{ block.settings.container_padding }}px {{ block.settings.container_padding }}px;
+  }
+
+  .ai-link-tree__card-{{ ai_gen_id }} {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: {{ block.settings.card_padding }}px;
+    background-color: {{ block.settings.card_background }};
+    border-radius: {{ block.settings.card_border_radius }}px;
+    text-decoration: none;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  }
+
+  .ai-link-tree__card-{{ ai_gen_id }}:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  }
+
+  .ai-link-tree__thumbnail-{{ ai_gen_id }} {
+    flex-shrink: 0;
+    width: {{ block.settings.thumbnail_size }}px;
+    height: {{ block.settings.thumbnail_size }}px;
+    border-radius: {{ block.settings.thumbnail_border_radius }}px;
+    overflow: hidden;
+    background-color: #f4f4f4;
+  }
+
+  .ai-link-tree__thumbnail-{{ ai_gen_id }} img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .ai-link-tree__thumbnail-placeholder-{{ ai_gen_id }} {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #f4f4f4;
+  }
+
+  .ai-link-tree__thumbnail-placeholder-{{ ai_gen_id }} svg {
+    width: 60%;
+    height: 60%;
+    opacity: 0.3;
+  }
+
+  .ai-link-tree__content-{{ ai_gen_id }} {
+    flex-grow: 1;
+    min-width: 0;
+  }
+
+  .ai-link-tree__title-{{ ai_gen_id }} {
+    font-size: {{ block.settings.title_font_size }}px;
+    font-weight: 600;
+    color: {{ block.settings.title_color }};
+    margin: 0 0 4px 0;
+    line-height: 1.3;
+  }
+
+  .ai-link-tree__description-{{ ai_gen_id }} {
+    font-size: {{ block.settings.description_font_size }}px;
+    color: {{ block.settings.description_color }};
+    margin: 0 0 6px 0;
+    line-height: 1.4;
+  }
+
+  .ai-link-tree__date-{{ ai_gen_id }} {
+    font-size: {{ block.settings.date_font_size }}px;
+    color: {{ block.settings.date_color }};
+    font-weight: 500;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 4px 10px;
+    background-color: {{ block.settings.date_background }};
+    border-radius: {{ block.settings.date_border_radius }}px;
+    width: fit-content;
+  }
+
+  .ai-link-tree__date-icon-{{ ai_gen_id }} {
+    width: 14px;
+    height: 14px;
+    flex-shrink: 0;
+  }
+
+  .ai-link-tree__empty-state-{{ ai_gen_id }} {
+    text-align: center;
+    padding: 40px 20px;
+    color: #666;
+    font-size: 14px;
+  }
+
+  @media screen and (max-width: 749px) {
+    .ai-link-tree__main-heading-{{ ai_gen_id }} {
+      font-size: {{ block.settings.heading_font_size | times: 0.8 }}px;
+    }
+
+    .ai-link-tree__main-description-{{ ai_gen_id }} {
+      font-size: {{ block.settings.main_description_font_size | times: 0.9 }}px;
+    }
+
+    .ai-link-tree__card-{{ ai_gen_id }} {
+      flex-direction: {{ block.settings.mobile_layout }};
+      gap: 12px;
+    }
+
+    .ai-link-tree__thumbnail-{{ ai_gen_id }} {
+      width: {{ block.settings.thumbnail_size | times: 0.8 }}px;
+      height: {{ block.settings.thumbnail_size | times: 0.8 }}px;
+    }
+
+    .ai-link-tree__title-{{ ai_gen_id }} {
+      font-size: {{ block.settings.title_font_size | times: 0.9 }}px;
+    }
+
+    .ai-link-tree__description-{{ ai_gen_id }} {
+      font-size: {{ block.settings.description_font_size | times: 0.9 }}px;
+    }
+  }
+{% endstyle %}
+
+<link-tree-{{ ai_gen_id }} class="ai-link-tree-{{ ai_gen_id }}" {{ block.shopify_attributes }}>
+  {% if block.settings.main_heading != blank or block.settings.main_description != blank %}
+    <div class="ai-link-tree__header-{{ ai_gen_id }}">
+      {% if block.settings.main_heading != blank %}
+        <h2 class="ai-link-tree__main-heading-{{ ai_gen_id }}">{{ block.settings.main_heading }}</h2>
+      {% endif %}
+      {% if block.settings.main_description != blank %}
+        <div class="ai-link-tree__main-description-{{ ai_gen_id }}">{{ block.settings.main_description }}</div>
+      {% endif %}
+    </div>
+  {% endif %}
+
+  <div class="ai-link-tree__container-{{ ai_gen_id }}">
+    {% assign has_links = false %}
+    
+    {% for i in (1..6) %}
+      {% liquid
+        assign title_key = 'link_' | append: i | append: '_title'
+        assign description_key = 'link_' | append: i | append: '_description'
+        assign url_key = 'link_' | append: i | append: '_url'
+        assign image_key = 'link_' | append: i | append: '_image'
+        assign date_key = 'link_' | append: i | append: '_date'
+        assign enabled_key = 'link_' | append: i | append: '_enabled'
+
+        assign title = block.settings[title_key]
+        assign description = block.settings[description_key]
+        assign url = block.settings[url_key]
+        assign image = block.settings[image_key]
+        assign date = block.settings[date_key]
+        assign enabled = block.settings[enabled_key]
+      %}
+
+      {% if enabled %}
+        {% assign has_links = true %}
+        <a 
+          href="{% if url != blank %}{{ url }}{% else %}#{% endif %}" 
+          class="ai-link-tree__card-{{ ai_gen_id }}"
+          {% if url == blank %}onclick="return false;"{% endif %}
+        >
+          <div class="ai-link-tree__thumbnail-{{ ai_gen_id }}">
+            {% if image %}
+              <img
+                src="{{ image | image_url: width: 200 }}"
+                alt="{{ title | escape }}"
+                loading="lazy"
+                width="200"
+                height="200"
+              >
+            {% else %}
+              <div class="ai-link-tree__thumbnail-placeholder-{{ ai_gen_id }}">
+                {{ 'image' | placeholder_svg_tag }}
+              </div>
+            {% endif %}
+          </div>
+
+          <div class="ai-link-tree__content-{{ ai_gen_id }}">
+            {% if title != blank %}
+              <h3 class="ai-link-tree__title-{{ ai_gen_id }}">{{ title }}</h3>
+            {% endif %}
+
+            {% if description != blank %}
+              <p class="ai-link-tree__description-{{ ai_gen_id }}">{{ description }}</p>
+            {% endif %}
+
+            {% if date != blank and block.settings.show_dates %}
+              <div class="ai-link-tree__date-{{ ai_gen_id }}">
+                {% if block.settings.show_date_icon %}
+                  <svg class="ai-link-tree__date-icon-{{ ai_gen_id }}" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                    <line x1="16" y1="2" x2="16" y2="6"></line>
+                    <line x1="8" y1="2" x2="8" y2="6"></line>
+                    <line x1="3" y1="10" x2="21" y2="10"></line>
+                  </svg>
+                {% endif %}
+                <span>{{ date | date: block.settings.date_format }}</span>
+              </div>
+            {% endif %}
+          </div>
+        </a>
+      {% endif %}
+    {% endfor %}
+
+    {% unless has_links %}
+      <div class="ai-link-tree__empty-state-{{ ai_gen_id }}">
+        Enable and configure your link cards in the block settings
+      </div>
+    {% endunless %}
+  </div>
+</link-tree-{{ ai_gen_id }}>
+
+<script>
+  (function() {
+    class LinkTree{{ ai_gen_id }} extends HTMLElement {
+      constructor() {
+        super();
+      }
+
+      connectedCallback() {
+        this.cards = this.querySelectorAll('.ai-link-tree__card-{{ ai_gen_id }}');
+        this.setupAccessibility();
+      }
+
+      setupAccessibility() {
+        this.cards.forEach((card) => {
+          card.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter' || e.key === ' ') {
+              e.preventDefault();
+              card.click();
+            }
+          });
+        });
+      }
+    }
+
+    customElements.define('link-tree-{{ ai_gen_id }}', LinkTree{{ ai_gen_id }});
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "Link tree menu",
+  "tag": null,
+  "settings": [
+    {
+      "type": "header",
+      "content": "Main heading"
+    },
+    {
+      "type": "inline_richtext",
+      "id": "main_heading",
+      "label": "Heading",
+      "default": "Quick links"
+    },
+    {
+      "type": "richtext",
+      "id": "main_description",
+      "label": "Description",
+      "default": "<p>Explore our featured content and resources</p>"
+    },
+    {
+      "type": "select",
+      "id": "text_alignment",
+      "label": "Text alignment",
+      "options": [
+        {
+          "value": "left",
+          "label": "Left"
+        },
+        {
+          "value": "center",
+          "label": "Center"
+        },
+        {
+          "value": "right",
+          "label": "Right"
+        }
+      ],
+      "default": "center"
+    },
+    {
+      "type": "color",
+      "id": "heading_color",
+      "label": "Heading color",
+      "default": "#2e2a39"
+    },
+    {
+      "type": "range",
+      "id": "heading_font_size",
+      "label": "Heading font size",
+      "min": 20,
+      "max": 48,
+      "step": 2,
+      "unit": "px",
+      "default": 32
+    },
+    {
+      "type": "range",
+      "id": "heading_margin",
+      "label": "Heading bottom margin",
+      "min": 0,
+      "max": 24,
+      "step": 4,
+      "unit": "px",
+      "default": 8
+    },
+    {
+      "type": "color",
+      "id": "main_description_color",
+      "label": "Description color",
+      "default": "#666666"
+    },
+    {
+      "type": "range",
+      "id": "main_description_font_size",
+      "label": "Description font size",
+      "min": 12,
+      "max": 20,
+      "step": 1,
+      "unit": "px",
+      "default": 16
+    },
+    {
+      "type": "range",
+      "id": "header_spacing",
+      "label": "Header bottom spacing",
+      "min": 0,
+      "max": 40,
+      "step": 4,
+      "unit": "px",
+      "default": 16
+    },
+    {
+      "type": "header",
+      "content": "Layout"
+    },
+    {
+      "type": "range",
+      "id": "desktop_width_percent",
+      "label": "Desktop width",
+      "min": 50,
+      "max": 100,
+      "step": 5,
+      "unit": "%",
+      "default": 100
+    },
+    {
+      "type": "select",
+      "id": "mobile_layout",
+      "label": "Mobile layout",
+      "options": [
+        {
+          "value": "row",
+          "label": "Horizontal"
+        },
+        {
+          "value": "column",
+          "label": "Vertical"
+        }
+      ],
+      "default": "row"
+    },
+    {
+      "type": "range",
+      "id": "container_padding",
+      "label": "Container padding",
+      "min": 0,
+      "max": 40,
+      "step": 4,
+      "unit": "px",
+      "default": 20
+    },
+    {
+      "type": "range",
+      "id": "card_spacing",
+      "label": "Card spacing",
+      "min": 8,
+      "max": 40,
+      "step": 4,
+      "unit": "px",
+      "default": 16
+    },
+    {
+      "type": "header",
+      "content": "Card style"
+    },
+    {
+      "type": "color",
+      "id": "card_background",
+      "label": "Background",
+      "default": "#ffffff"
+    },
+    {
+      "type": "range",
+      "id": "card_padding",
+      "label": "Padding",
+      "min": 8,
+      "max": 32,
+      "step": 4,
+      "unit": "px",
+      "default": 16
+    },
+    {
+      "type": "range",
+      "id": "card_border_radius",
+      "label": "Border radius",
+      "min": 0,
+      "max": 24,
+      "step": 2,
+      "unit": "px",
+      "default": 12
+    },
+    {
+      "type": "header",
+      "content": "Thumbnail"
+    },
+    {
+      "type": "range",
+      "id": "thumbnail_size",
+      "label": "Size",
+      "min": 40,
+      "max": 120,
+      "step": 10,
+      "unit": "px",
+      "default": 80
+    },
+    {
+      "type": "range",
+      "id": "thumbnail_border_radius",
+      "label": "Border radius",
+      "min": 0,
+      "max": 24,
+      "step": 2,
+      "unit": "px",
+      "default": 8
+    },
+    {
+      "type": "header",
+      "content": "Card title"
+    },
+    {
+      "type": "color",
+      "id": "title_color",
+      "label": "Color",
+      "default": "#2e2a39"
+    },
+    {
+      "type": "range",
+      "id": "title_font_size",
+      "label": "Font size",
+      "min": 12,
+      "max": 24,
+      "step": 1,
+      "unit": "px",
+      "default": 16
+    },
+    {
+      "type": "header",
+      "content": "Card description"
+    },
+    {
+      "type": "color",
+      "id": "description_color",
+      "label": "Color",
+      "default": "#666666"
+    },
+    {
+      "type": "range",
+      "id": "description_font_size",
+      "label": "Font size",
+      "min": 10,
+      "max": 18,
+      "step": 1,
+      "unit": "px",
+      "default": 14
+    },
+    {
+      "type": "header",
+      "content": "Date"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_dates",
+      "label": "Show dates",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_date_icon",
+      "label": "Show date icon",
+      "default": true
+    },
+    {
+      "type": "select",
+      "id": "date_format",
+      "label": "Date format",
+      "options": [
+        {
+          "value": "%B %d, %Y",
+          "label": "January 01, 2026"
+        },
+        {
+          "value": "%b %d, %Y",
+          "label": "Jan 01, 2026"
+        },
+        {
+          "value": "%d %B %Y",
+          "label": "01 January 2026"
+        },
+        {
+          "value": "%m/%d/%Y",
+          "label": "01/01/2026"
+        },
+        {
+          "value": "%d/%m/%Y",
+          "label": "01/01/2026"
+        },
+        {
+          "value": "%Y-%m-%d",
+          "label": "2026-01-01"
+        }
+      ],
+      "default": "%B %d, %Y"
+    },
+    {
+      "type": "color",
+      "id": "date_color",
+      "label": "Color",
+      "default": "#9b046f"
+    },
+    {
+      "type": "color",
+      "id": "date_background",
+      "label": "Background",
+      "default": "#f4f4f4"
+    },
+    {
+      "type": "range",
+      "id": "date_font_size",
+      "label": "Font size",
+      "min": 10,
+      "max": 16,
+      "step": 1,
+      "unit": "px",
+      "default": 12
+    },
+    {
+      "type": "range",
+      "id": "date_border_radius",
+      "label": "Border radius",
+      "min": 0,
+      "max": 20,
+      "step": 2,
+      "unit": "px",
+      "default": 6
+    },
+    {
+      "type": "header",
+      "content": "Link 1"
+    },
+    {
+      "type": "checkbox",
+      "id": "link_1_enabled",
+      "label": "Enable link 1",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "link_1_title",
+      "label": "Title",
+      "default": "Link 1"
+    },
+    {
+      "type": "text",
+      "id": "link_1_description",
+      "label": "Description",
+      "default": "Description for link 1"
+    },
+    {
+      "type": "url",
+      "id": "link_1_url",
+      "label": "URL"
+    },
+    {
+      "type": "image_picker",
+      "id": "link_1_image",
+      "label": "Thumbnail"
+    },
+    {
+      "type": "text",
+      "id": "link_1_date",
+      "label": "Date",
+      "placeholder": "2026-08-03"
+    },
+    {
+      "type": "header",
+      "content": "Link 2"
+    },
+    {
+      "type": "checkbox",
+      "id": "link_2_enabled",
+      "label": "Enable link 2",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "link_2_title",
+      "label": "Title",
+      "default": "Link 2"
+    },
+    {
+      "type": "text",
+      "id": "link_2_description",
+      "label": "Description",
+      "default": "Description for link 2"
+    },
+    {
+      "type": "url",
+      "id": "link_2_url",
+      "label": "URL"
+    },
+    {
+      "type": "image_picker",
+      "id": "link_2_image",
+      "label": "Thumbnail"
+    },
+    {
+      "type": "text",
+      "id": "link_2_date",
+      "label": "Date",
+      "placeholder": "2026-08-03"
+    },
+    {
+      "type": "header",
+      "content": "Link 3"
+    },
+    {
+      "type": "checkbox",
+      "id": "link_3_enabled",
+      "label": "Enable link 3",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "link_3_title",
+      "label": "Title",
+      "default": "Link 3"
+    },
+    {
+      "type": "text",
+      "id": "link_3_description",
+      "label": "Description",
+      "default": "Description for link 3"
+    },
+    {
+      "type": "url",
+      "id": "link_3_url",
+      "label": "URL"
+    },
+    {
+      "type": "image_picker",
+      "id": "link_3_image",
+      "label": "Thumbnail"
+    },
+    {
+      "type": "text",
+      "id": "link_3_date",
+      "label": "Date",
+      "placeholder": "2026-08-03"
+    },
+    {
+      "type": "header",
+      "content": "Link 4"
+    },
+    {
+      "type": "checkbox",
+      "id": "link_4_enabled",
+      "label": "Enable link 4",
+      "default": false
+    },
+    {
+      "type": "text",
+      "id": "link_4_title",
+      "label": "Title"
+    },
+    {
+      "type": "text",
+      "id": "link_4_description",
+      "label": "Description"
+    },
+    {
+      "type": "url",
+      "id": "link_4_url",
+      "label": "URL"
+    },
+    {
+      "type": "image_picker",
+      "id": "link_4_image",
+      "label": "Thumbnail"
+    },
+    {
+      "type": "text",
+      "id": "link_4_date",
+      "label": "Date",
+      "placeholder": "2026-08-03"
+    },
+    {
+      "type": "header",
+      "content": "Link 5"
+    },
+    {
+      "type": "checkbox",
+      "id": "link_5_enabled",
+      "label": "Enable link 5",
+      "default": false
+    },
+    {
+      "type": "text",
+      "id": "link_5_title",
+      "label": "Title"
+    },
+    {
+      "type": "text",
+      "id": "link_5_description",
+      "label": "Description"
+    },
+    {
+      "type": "url",
+      "id": "link_5_url",
+      "label": "URL"
+    },
+    {
+      "type": "image_picker",
+      "id": "link_5_image",
+      "label": "Thumbnail"
+    },
+    {
+      "type": "text",
+      "id": "link_5_date",
+      "label": "Date",
+      "placeholder": "2026-08-03"
+    },
+    {
+      "type": "header",
+      "content": "Link 6"
+    },
+    {
+      "type": "checkbox",
+      "id": "link_6_enabled",
+      "label": "Enable link 6",
+      "default": false
+    },
+    {
+      "type": "text",
+      "id": "link_6_title",
+      "label": "Title"
+    },
+    {
+      "type": "text",
+      "id": "link_6_description",
+      "label": "Description"
+    },
+    {
+      "type": "url",
+      "id": "link_6_url",
+      "label": "URL"
+    },
+    {
+      "type": "image_picker",
+      "id": "link_6_image",
+      "label": "Thumbnail"
+    },
+    {
+      "type": "text",
+      "id": "link_6_date",
+      "label": "Date",
+      "placeholder": "2026-08-03"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Link tree menu"
+    }
+  ]
+}
+{% endschema %}

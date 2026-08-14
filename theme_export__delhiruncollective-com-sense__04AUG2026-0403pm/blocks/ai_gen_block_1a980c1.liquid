@@ -1,0 +1,550 @@
+{% doc %}
+  @prompt
+    Make a layout with two buttons for apple usic and spotify and space for a cover image. , make this block horizontal for web 
+{% enddoc %}
+{% assign ai_gen_id = block.id | replace: '_', '' | downcase %}
+
+{% style %}
+  .ai-music-streaming-{{ ai_gen_id }} {
+    display: flex;
+    gap: {{ block.settings.spacing }}px;
+    padding: {{ block.settings.padding }}px;
+    background-color: {{ block.settings.background_color }};
+    border-radius: {{ block.settings.border_radius }}px;
+    max-width: {{ block.settings.max_width }}px;
+    margin: 0 auto;
+    align-items: center;
+  }
+
+  .ai-music-cover-container-{{ ai_gen_id }} {
+    position: relative;
+    width: {{ block.settings.cover_size }}px;
+    height: {{ block.settings.cover_size }}px;
+    flex-shrink: 0;
+    border-radius: {{ block.settings.image_border_radius }}px;
+    overflow: hidden;
+    background-color: #f4f4f4;
+  }
+
+  .ai-music-cover-{{ ai_gen_id }} {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .ai-music-cover-placeholder-{{ ai_gen_id }} {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+  }
+
+  .ai-music-cover-placeholder-{{ ai_gen_id }} svg {
+    width: 60%;
+    height: 60%;
+    opacity: 0.3;
+  }
+
+  .ai-music-empty-state-{{ ai_gen_id }} {
+    position: absolute;
+    bottom: 8px;
+    left: 50%;
+    transform: translateX(-50%);
+    padding: 4px 8px;
+    background-color: rgba(0, 0, 0, 0.7);
+    color: white;
+    font-size: 10px;
+    border-radius: 4px;
+    text-align: center;
+    pointer-events: none;
+  }
+
+  .ai-music-content-{{ ai_gen_id }} {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: {{ block.settings.content_spacing }}px;
+    min-width: 0;
+  }
+
+  .ai-music-info-{{ ai_gen_id }} {
+    text-align: {{ block.settings.text_alignment }};
+  }
+
+  .ai-music-title-{{ ai_gen_id }} {
+    font-size: {{ block.settings.title_size }}px;
+    font-weight: 600;
+    color: {{ block.settings.text_color }};
+    margin: 0 0 4px;
+    line-height: 1.2;
+  }
+
+  .ai-music-artist-{{ ai_gen_id }} {
+    font-size: {{ block.settings.artist_size }}px;
+    color: {{ block.settings.text_color }};
+    opacity: 0.8;
+    margin: 0;
+    line-height: 1.3;
+  }
+
+  .ai-music-buttons-{{ ai_gen_id }} {
+    display: flex;
+    gap: {{ block.settings.button_spacing }}px;
+    {% if block.settings.button_layout == 'column' %}
+      flex-direction: column;
+    {% else %}
+      flex-direction: row;
+    {% endif %}
+  }
+
+  .ai-music-button-{{ ai_gen_id }} {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: {{ block.settings.button_padding }}px {{ block.settings.button_padding | times: 1.5 }}px;
+    border-radius: {{ block.settings.button_border_radius }}px;
+    text-decoration: none;
+    font-weight: 500;
+    font-size: {{ block.settings.button_text_size }}px;
+    transition: all 0.3s ease;
+    white-space: nowrap;
+    {% if block.settings.button_layout == 'row' %}
+      flex: 1;
+    {% endif %}
+  }
+
+  .ai-music-button-apple-{{ ai_gen_id }} {
+    background-color: {{ block.settings.apple_button_color }};
+    color: {{ block.settings.apple_button_text_color }};
+  }
+
+  .ai-music-button-apple-{{ ai_gen_id }}:hover {
+    background-color: {{ block.settings.apple_button_hover_color }};
+    color: {{ block.settings.apple_button_text_color }};
+    transform: translateY(-2px);
+  }
+
+  .ai-music-button-spotify-{{ ai_gen_id }} {
+    background-color: {{ block.settings.spotify_button_color }};
+    color: {{ block.settings.spotify_button_text_color }};
+  }
+
+  .ai-music-button-spotify-{{ ai_gen_id }}:hover {
+    background-color: {{ block.settings.spotify_button_hover_color }};
+    color: {{ block.settings.spotify_button_text_color }};
+    transform: translateY(-2px);
+  }
+
+  .ai-music-button-icon-{{ ai_gen_id }} {
+    width: {{ block.settings.button_icon_size }}px;
+    height: {{ block.settings.button_icon_size }}px;
+    flex-shrink: 0;
+  }
+
+  @media screen and (max-width: 749px) {
+    .ai-music-streaming-{{ ai_gen_id }} {
+      flex-direction: column;
+      text-align: center;
+      padding: {{ block.settings.padding | times: 0.8 }}px;
+    }
+
+    .ai-music-cover-container-{{ ai_gen_id }} {
+      width: {{ block.settings.cover_size | times: 0.8 }}px;
+      height: {{ block.settings.cover_size | times: 0.8 }}px;
+    }
+
+    .ai-music-content-{{ ai_gen_id }} {
+      width: 100%;
+    }
+
+    .ai-music-info-{{ ai_gen_id }} {
+      text-align: center;
+    }
+
+    .ai-music-buttons-{{ ai_gen_id }} {
+      flex-direction: column;
+      gap: {{ block.settings.button_spacing | times: 0.8 }}px;
+    }
+
+    .ai-music-button-{{ ai_gen_id }} {
+      padding: {{ block.settings.button_padding | times: 0.9 }}px {{ block.settings.button_padding | times: 1.2 }}px;
+    }
+  }
+{% endstyle %}
+
+<div class="ai-music-streaming-{{ ai_gen_id }}" {{ block.shopify_attributes }}>
+  <div class="ai-music-cover-container-{{ ai_gen_id }}">
+    {% if block.settings.cover_image %}
+      <img
+        src="{{ block.settings.cover_image | image_url: width: 400 }}"
+        alt="{{ block.settings.cover_image.alt | default: 'Album cover' | escape }}"
+        class="ai-music-cover-{{ ai_gen_id }}"
+        loading="lazy"
+        width="400"
+        height="400"
+      >
+    {% else %}
+      <div class="ai-music-cover-placeholder-{{ ai_gen_id }}">
+        {{ 'image' | placeholder_svg_tag }}
+        <div class="ai-music-empty-state-{{ ai_gen_id }}">
+          Add cover
+        </div>
+      </div>
+    {% endif %}
+  </div>
+
+  <div class="ai-music-content-{{ ai_gen_id }}">
+    <div class="ai-music-info-{{ ai_gen_id }}">
+      {% if block.settings.song_title != blank %}
+        <h3 class="ai-music-title-{{ ai_gen_id }}">{{ block.settings.song_title }}</h3>
+      {% endif %}
+      
+      {% if block.settings.artist_name != blank %}
+        <p class="ai-music-artist-{{ ai_gen_id }}">{{ block.settings.artist_name }}</p>
+      {% endif %}
+    </div>
+
+    <div class="ai-music-buttons-{{ ai_gen_id }}">
+      {% if block.settings.apple_music_link != blank %}
+        <a
+          href="{{ block.settings.apple_music_link }}"
+          class="ai-music-button-{{ ai_gen_id }} ai-music-button-apple-{{ ai_gen_id }}"
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label="Listen on Apple Music"
+        >
+          <svg class="ai-music-button-icon-{{ ai_gen_id }}" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/>
+          </svg>
+          {{ block.settings.apple_button_text }}
+        </a>
+      {% endif %}
+
+      {% if block.settings.spotify_link != blank %}
+        <a
+          href="{{ block.settings.spotify_link }}"
+          class="ai-music-button-{{ ai_gen_id }} ai-music-button-spotify-{{ ai_gen_id }}"
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label="Listen on Spotify"
+        >
+          <svg class="ai-music-button-icon-{{ ai_gen_id }}" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M12 0C5.4 0 0 5.4 0 12s5.4 12 12 12 12-5.4 12-12S18.66 0 12 0zm5.521 17.34c-.24.359-.66.48-1.021.24-2.82-1.74-6.36-2.101-10.561-1.141-.418.122-.779-.179-.899-.539-.12-.421.18-.78.54-.9 4.56-1.021 8.52-.6 11.64 1.32.42.18.479.659.301 1.02zm1.44-3.3c-.301.42-.841.6-1.262.3-3.239-1.98-8.159-2.58-11.939-1.38-.479.12-1.02-.12-1.14-.6-.12-.48.12-1.021.6-1.141C9.6 9.9 15 10.561 18.72 12.84c.361.181.54.78.241 1.2zm.12-3.36C15.24 8.4 8.82 8.16 5.16 9.301c-.6.179-1.2-.181-1.38-.721-.18-.601.18-1.2.72-1.381 4.26-1.26 11.28-1.02 15.721 1.621.539.3.719 1.02.42 1.56-.299.421-1.02.599-1.559.3z"/>
+          </svg>
+          {{ block.settings.spotify_button_text }}
+        </a>
+      {% endif %}
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Music streaming",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Cover image"
+    },
+    {
+      "type": "image_picker",
+      "id": "cover_image",
+      "label": "Cover image"
+    },
+    {
+      "type": "range",
+      "id": "cover_size",
+      "min": 80,
+      "max": 200,
+      "step": 10,
+      "unit": "px",
+      "label": "Cover size",
+      "default": 120
+    },
+    {
+      "type": "range",
+      "id": "image_border_radius",
+      "min": 0,
+      "max": 40,
+      "step": 2,
+      "unit": "px",
+      "label": "Image border radius",
+      "default": 12
+    },
+    {
+      "type": "header",
+      "content": "Music information"
+    },
+    {
+      "type": "text",
+      "id": "song_title",
+      "label": "Song title",
+      "default": "Song Title"
+    },
+    {
+      "type": "text",
+      "id": "artist_name",
+      "label": "Artist name",
+      "default": "Artist Name"
+    },
+    {
+      "type": "select",
+      "id": "text_alignment",
+      "label": "Text alignment",
+      "options": [
+        {
+          "value": "left",
+          "label": "Left"
+        },
+        {
+          "value": "center",
+          "label": "Center"
+        },
+        {
+          "value": "right",
+          "label": "Right"
+        }
+      ],
+      "default": "left"
+    },
+    {
+      "type": "header",
+      "content": "Apple Music"
+    },
+    {
+      "type": "url",
+      "id": "apple_music_link",
+      "label": "Apple Music link"
+    },
+    {
+      "type": "text",
+      "id": "apple_button_text",
+      "label": "Button text",
+      "default": "Apple Music"
+    },
+    {
+      "type": "color",
+      "id": "apple_button_color",
+      "label": "Button color",
+      "default": "#000000"
+    },
+    {
+      "type": "color",
+      "id": "apple_button_hover_color",
+      "label": "Button hover color",
+      "default": "#333333"
+    },
+    {
+      "type": "color",
+      "id": "apple_button_text_color",
+      "label": "Button text color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "header",
+      "content": "Spotify"
+    },
+    {
+      "type": "url",
+      "id": "spotify_link",
+      "label": "Spotify link"
+    },
+    {
+      "type": "text",
+      "id": "spotify_button_text",
+      "label": "Button text",
+      "default": "Spotify"
+    },
+    {
+      "type": "color",
+      "id": "spotify_button_color",
+      "label": "Button color",
+      "default": "#1DB954"
+    },
+    {
+      "type": "color",
+      "id": "spotify_button_hover_color",
+      "label": "Button hover color",
+      "default": "#1ed760"
+    },
+    {
+      "type": "color",
+      "id": "spotify_button_text_color",
+      "label": "Button text color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "header",
+      "content": "Layout"
+    },
+    {
+      "type": "select",
+      "id": "button_layout",
+      "label": "Button layout",
+      "options": [
+        {
+          "value": "row",
+          "label": "Side by side"
+        },
+        {
+          "value": "column",
+          "label": "Stacked"
+        }
+      ],
+      "default": "row"
+    },
+    {
+      "type": "range",
+      "id": "max_width",
+      "min": 400,
+      "max": 1000,
+      "step": 50,
+      "unit": "px",
+      "label": "Maximum width",
+      "default": 600
+    },
+    {
+      "type": "range",
+      "id": "padding",
+      "min": 0,
+      "max": 60,
+      "step": 4,
+      "unit": "px",
+      "label": "Padding",
+      "default": 24
+    },
+    {
+      "type": "range",
+      "id": "spacing",
+      "min": 16,
+      "max": 60,
+      "step": 4,
+      "unit": "px",
+      "label": "Horizontal spacing",
+      "default": 24
+    },
+    {
+      "type": "range",
+      "id": "content_spacing",
+      "min": 8,
+      "max": 32,
+      "step": 4,
+      "unit": "px",
+      "label": "Content spacing",
+      "default": 16
+    },
+    {
+      "type": "range",
+      "id": "border_radius",
+      "min": 0,
+      "max": 40,
+      "step": 2,
+      "unit": "px",
+      "label": "Container border radius",
+      "default": 16
+    },
+    {
+      "type": "header",
+      "content": "Colors"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text color",
+      "default": "#000000"
+    },
+    {
+      "type": "header",
+      "content": "Typography"
+    },
+    {
+      "type": "range",
+      "id": "title_size",
+      "min": 14,
+      "max": 32,
+      "step": 2,
+      "unit": "px",
+      "label": "Title size",
+      "default": 20
+    },
+    {
+      "type": "range",
+      "id": "artist_size",
+      "min": 12,
+      "max": 24,
+      "step": 1,
+      "unit": "px",
+      "label": "Artist size",
+      "default": 16
+    },
+    {
+      "type": "header",
+      "content": "Button style"
+    },
+    {
+      "type": "range",
+      "id": "button_padding",
+      "min": 8,
+      "max": 24,
+      "step": 2,
+      "unit": "px",
+      "label": "Button padding",
+      "default": 12
+    },
+    {
+      "type": "range",
+      "id": "button_spacing",
+      "min": 8,
+      "max": 24,
+      "step": 2,
+      "unit": "px",
+      "label": "Button spacing",
+      "default": 12
+    },
+    {
+      "type": "range",
+      "id": "button_border_radius",
+      "min": 0,
+      "max": 40,
+      "step": 2,
+      "unit": "px",
+      "label": "Button border radius",
+      "default": 8
+    },
+    {
+      "type": "range",
+      "id": "button_text_size",
+      "min": 12,
+      "max": 20,
+      "step": 1,
+      "unit": "px",
+      "label": "Button text size",
+      "default": 14
+    },
+    {
+      "type": "range",
+      "id": "button_icon_size",
+      "min": 16,
+      "max": 28,
+      "step": 2,
+      "unit": "px",
+      "label": "Button icon size",
+      "default": 20
+    }
+  ],
+  "presets": [
+    {
+      "name": "Music streaming"
+    }
+  ]
+}
+{% endschema %}

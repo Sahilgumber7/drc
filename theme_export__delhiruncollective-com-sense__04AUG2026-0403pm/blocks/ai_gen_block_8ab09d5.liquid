@@ -1,0 +1,660 @@
+{% doc %}
+  @prompt
+    make a section for show casing two buttons to purse tickets and very small one line description of the catory of the ticket eg - early bird and Standard, put both the tickes in one card and the title can be put directly on the button , use more attractive colors for the buttons and remove caps from catrory name and also mention price , make the clickable button smaller  and wrtie information one one side and make a more strcutreured column view 
+    give a tiitle to the card , make the clickable button smaller  and wrtie information one one side and make a more strcutreured column view 
+    give a tiitle to the card , give option to remove one ticket category and add more if needed
+{% enddoc %}
+{% assign ai_gen_id = block.id | replace: '_', '' | downcase %}
+
+{% style %}
+  .ai-ticket-showcase-{{ ai_gen_id }} {
+    padding: {{ block.settings.section_padding }}px 20px;
+    background-color: {{ block.settings.background_color }};
+  }
+
+  .ai-ticket-showcase-container-{{ ai_gen_id }} {
+    max-width: {{ block.settings.max_width }}px;
+    margin: 0 auto;
+  }
+
+  .ai-ticket-card-{{ ai_gen_id }} {
+    background-color: {{ block.settings.card_background }};
+    border-radius: {{ block.settings.border_radius }}px;
+    padding: {{ block.settings.card_padding }}px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  }
+
+  .ai-ticket-card-title-{{ ai_gen_id }} {
+    font-size: {{ block.settings.card_title_size }}px;
+    font-weight: 700;
+    margin: 0 0 {{ block.settings.title_spacing }}px 0;
+    color: {{ block.settings.card_title_color }};
+    text-align: {{ block.settings.card_title_alignment }};
+  }
+
+  .ai-ticket-items-{{ ai_gen_id }} {
+    display: flex;
+    flex-direction: column;
+    gap: {{ block.settings.item_spacing }}px;
+  }
+
+  .ai-ticket-item-{{ ai_gen_id }} {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    align-items: center;
+    gap: 20px;
+    padding: {{ block.settings.item_padding }}px;
+    background-color: {{ block.settings.item_background }};
+    border-radius: {{ block.settings.item_border_radius }}px;
+    border: 1px solid {{ block.settings.item_border_color }};
+  }
+
+  .ai-ticket-info-{{ ai_gen_id }} {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .ai-ticket-category-{{ ai_gen_id }} {
+    font-size: {{ block.settings.category_font_size }}px;
+    font-weight: 600;
+    margin: 0;
+    color: {{ block.settings.category_color }};
+  }
+
+  .ai-ticket-description-{{ ai_gen_id }} {
+    font-size: {{ block.settings.description_font_size }}px;
+    margin: 0;
+    line-height: 1.4;
+    color: {{ block.settings.description_color }};
+    opacity: 0.85;
+  }
+
+  .ai-ticket-price-{{ ai_gen_id }} {
+    font-size: {{ block.settings.price_font_size }}px;
+    font-weight: 700;
+    margin: 0;
+    color: {{ block.settings.price_color }};
+  }
+
+  .ai-ticket-button-{{ ai_gen_id }} {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: {{ block.settings.button_padding_vertical }}px {{ block.settings.button_padding_horizontal }}px;
+    text-decoration: none;
+    border-radius: {{ block.settings.button_border_radius }}px;
+    transition: all 0.3s ease;
+    border: none;
+    cursor: pointer;
+    font-size: {{ block.settings.button_font_size }}px;
+    font-weight: 600;
+    white-space: nowrap;
+    background: {{ block.settings.button_background }};
+    color: {{ block.settings.button_text_color }};
+  }
+
+  .ai-ticket-button-{{ ai_gen_id }}:hover {
+    background: {{ block.settings.button_hover_background }};
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(155, 4, 111, 0.3);
+  }
+
+  @media screen and (max-width: 749px) {
+    .ai-ticket-item-{{ ai_gen_id }} {
+      grid-template-columns: 1fr;
+      gap: 12px;
+    }
+
+    .ai-ticket-button-{{ ai_gen_id }} {
+      width: 100%;
+    }
+  }
+{% endstyle %}
+
+<div class="ai-ticket-showcase-{{ ai_gen_id }}" {{ block.shopify_attributes }}>
+  <div class="ai-ticket-showcase-container-{{ ai_gen_id }}">
+    <div class="ai-ticket-card-{{ ai_gen_id }}">
+      {% if block.settings.card_title != blank %}
+        <h2 class="ai-ticket-card-title-{{ ai_gen_id }}">{{ block.settings.card_title }}</h2>
+      {% endif %}
+
+      <div class="ai-ticket-items-{{ ai_gen_id }}">
+        {% for i in (1..5) %}
+          {% liquid
+            assign enabled_key = 'ticket_' | append: i | append: '_enabled'
+            assign category_key = 'ticket_' | append: i | append: '_category'
+            assign description_key = 'ticket_' | append: i | append: '_description'
+            assign price_key = 'ticket_' | append: i | append: '_price'
+            assign link_key = 'ticket_' | append: i | append: '_link'
+            assign button_text_key = 'ticket_' | append: i | append: '_button_text'
+
+            assign enabled = block.settings[enabled_key]
+            assign category = block.settings[category_key]
+            assign description = block.settings[description_key]
+            assign price = block.settings[price_key]
+            assign link = block.settings[link_key]
+            assign button_text = block.settings[button_text_key]
+          %}
+
+          {% if enabled %}
+            <div class="ai-ticket-item-{{ ai_gen_id }}">
+              <div class="ai-ticket-info-{{ ai_gen_id }}">
+                {% if category != blank %}
+                  <h3 class="ai-ticket-category-{{ ai_gen_id }}">{{ category }}</h3>
+                {% endif %}
+                {% if description != blank %}
+                  <p class="ai-ticket-description-{{ ai_gen_id }}">{{ description }}</p>
+                {% endif %}
+                {% if price != blank %}
+                  <p class="ai-ticket-price-{{ ai_gen_id }}">{{ price }}</p>
+                {% endif %}
+              </div>
+              {% if link != blank %}
+                <a href="{{ link }}" class="ai-ticket-button-{{ ai_gen_id }}">
+                  {% if button_text != blank %}
+                    {{ button_text }}
+                  {% else %}
+                    Buy Now
+                  {% endif %}
+                </a>
+              {% else %}
+                <button class="ai-ticket-button-{{ ai_gen_id }}" disabled>
+                  {% if button_text != blank %}
+                    {{ button_text }}
+                  {% else %}
+                    Buy Now
+                  {% endif %}
+                </button>
+              {% endif %}
+            </div>
+          {% endif %}
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Ticket showcase",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Card"
+    },
+    {
+      "type": "text",
+      "id": "card_title",
+      "label": "Card title",
+      "default": "Get Your Tickets"
+    },
+    {
+      "type": "range",
+      "id": "card_title_size",
+      "min": 18,
+      "max": 36,
+      "step": 2,
+      "unit": "px",
+      "label": "Title size",
+      "default": 24
+    },
+    {
+      "type": "color",
+      "id": "card_title_color",
+      "label": "Title color",
+      "default": "#2e2a39"
+    },
+    {
+      "type": "select",
+      "id": "card_title_alignment",
+      "label": "Title alignment",
+      "options": [
+        {
+          "value": "left",
+          "label": "Left"
+        },
+        {
+          "value": "center",
+          "label": "Center"
+        },
+        {
+          "value": "right",
+          "label": "Right"
+        }
+      ],
+      "default": "left"
+    },
+    {
+      "type": "range",
+      "id": "title_spacing",
+      "min": 10,
+      "max": 40,
+      "step": 2,
+      "unit": "px",
+      "label": "Title spacing",
+      "default": 20
+    },
+    {
+      "type": "header",
+      "content": "Ticket 1"
+    },
+    {
+      "type": "checkbox",
+      "id": "ticket_1_enabled",
+      "label": "Enable ticket 1",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "ticket_1_category",
+      "label": "Category",
+      "default": "Early Bird"
+    },
+    {
+      "type": "text",
+      "id": "ticket_1_description",
+      "label": "Description",
+      "default": "Limited time offer - Save 30%"
+    },
+    {
+      "type": "text",
+      "id": "ticket_1_price",
+      "label": "Price",
+      "default": "₹499"
+    },
+    {
+      "type": "url",
+      "id": "ticket_1_link",
+      "label": "Button link"
+    },
+    {
+      "type": "text",
+      "id": "ticket_1_button_text",
+      "label": "Button text",
+      "default": "Buy Now"
+    },
+    {
+      "type": "header",
+      "content": "Ticket 2"
+    },
+    {
+      "type": "checkbox",
+      "id": "ticket_2_enabled",
+      "label": "Enable ticket 2",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "ticket_2_category",
+      "label": "Category",
+      "default": "Standard"
+    },
+    {
+      "type": "text",
+      "id": "ticket_2_description",
+      "label": "Description",
+      "default": "Regular admission - Full access"
+    },
+    {
+      "type": "text",
+      "id": "ticket_2_price",
+      "label": "Price",
+      "default": "₹699"
+    },
+    {
+      "type": "url",
+      "id": "ticket_2_link",
+      "label": "Button link"
+    },
+    {
+      "type": "text",
+      "id": "ticket_2_button_text",
+      "label": "Button text",
+      "default": "Buy Now"
+    },
+    {
+      "type": "header",
+      "content": "Ticket 3"
+    },
+    {
+      "type": "checkbox",
+      "id": "ticket_3_enabled",
+      "label": "Enable ticket 3",
+      "default": false
+    },
+    {
+      "type": "text",
+      "id": "ticket_3_category",
+      "label": "Category",
+      "default": "VIP"
+    },
+    {
+      "type": "text",
+      "id": "ticket_3_description",
+      "label": "Description",
+      "default": "Premium experience with exclusive perks"
+    },
+    {
+      "type": "text",
+      "id": "ticket_3_price",
+      "label": "Price",
+      "default": "₹999"
+    },
+    {
+      "type": "url",
+      "id": "ticket_3_link",
+      "label": "Button link"
+    },
+    {
+      "type": "text",
+      "id": "ticket_3_button_text",
+      "label": "Button text",
+      "default": "Buy Now"
+    },
+    {
+      "type": "header",
+      "content": "Ticket 4"
+    },
+    {
+      "type": "checkbox",
+      "id": "ticket_4_enabled",
+      "label": "Enable ticket 4",
+      "default": false
+    },
+    {
+      "type": "text",
+      "id": "ticket_4_category",
+      "label": "Category",
+      "default": "Group Pass"
+    },
+    {
+      "type": "text",
+      "id": "ticket_4_description",
+      "label": "Description",
+      "default": "For groups of 5 or more"
+    },
+    {
+      "type": "text",
+      "id": "ticket_4_price",
+      "label": "Price",
+      "default": "₹2199"
+    },
+    {
+      "type": "url",
+      "id": "ticket_4_link",
+      "label": "Button link"
+    },
+    {
+      "type": "text",
+      "id": "ticket_4_button_text",
+      "label": "Button text",
+      "default": "Buy Now"
+    },
+    {
+      "type": "header",
+      "content": "Ticket 5"
+    },
+    {
+      "type": "checkbox",
+      "id": "ticket_5_enabled",
+      "label": "Enable ticket 5",
+      "default": false
+    },
+    {
+      "type": "text",
+      "id": "ticket_5_category",
+      "label": "Category",
+      "default": "Student"
+    },
+    {
+      "type": "text",
+      "id": "ticket_5_description",
+      "label": "Description",
+      "default": "Special discount for students"
+    },
+    {
+      "type": "text",
+      "id": "ticket_5_price",
+      "label": "Price",
+      "default": "₹399"
+    },
+    {
+      "type": "url",
+      "id": "ticket_5_link",
+      "label": "Button link"
+    },
+    {
+      "type": "text",
+      "id": "ticket_5_button_text",
+      "label": "Button text",
+      "default": "Buy Now"
+    },
+    {
+      "type": "header",
+      "content": "Layout"
+    },
+    {
+      "type": "range",
+      "id": "max_width",
+      "min": 600,
+      "max": 1200,
+      "step": 50,
+      "unit": "px",
+      "label": "Maximum width",
+      "default": 900
+    },
+    {
+      "type": "range",
+      "id": "section_padding",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Section padding",
+      "default": 40
+    },
+    {
+      "type": "range",
+      "id": "item_spacing",
+      "min": 10,
+      "max": 30,
+      "step": 2,
+      "unit": "px",
+      "label": "Space between tickets",
+      "default": 16
+    },
+    {
+      "type": "header",
+      "content": "Card style"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Section background",
+      "default": "#fdfbf7"
+    },
+    {
+      "type": "color",
+      "id": "card_background",
+      "label": "Card background",
+      "default": "#ffffff"
+    },
+    {
+      "type": "range",
+      "id": "card_padding",
+      "min": 10,
+      "max": 50,
+      "step": 5,
+      "unit": "px",
+      "label": "Card padding",
+      "default": 25
+    },
+    {
+      "type": "range",
+      "id": "border_radius",
+      "min": 0,
+      "max": 30,
+      "step": 2,
+      "unit": "px",
+      "label": "Card border radius",
+      "default": 12
+    },
+    {
+      "type": "header",
+      "content": "Item style"
+    },
+    {
+      "type": "color",
+      "id": "item_background",
+      "label": "Item background",
+      "default": "#f9f9f9"
+    },
+    {
+      "type": "color",
+      "id": "item_border_color",
+      "label": "Item border color",
+      "default": "#e5e5e5"
+    },
+    {
+      "type": "range",
+      "id": "item_padding",
+      "min": 10,
+      "max": 30,
+      "step": 2,
+      "unit": "px",
+      "label": "Item padding",
+      "default": 16
+    },
+    {
+      "type": "range",
+      "id": "item_border_radius",
+      "min": 0,
+      "max": 20,
+      "step": 2,
+      "unit": "px",
+      "label": "Item border radius",
+      "default": 8
+    },
+    {
+      "type": "header",
+      "content": "Typography"
+    },
+    {
+      "type": "color",
+      "id": "category_color",
+      "label": "Category color",
+      "default": "#2e2a39"
+    },
+    {
+      "type": "range",
+      "id": "category_font_size",
+      "min": 14,
+      "max": 22,
+      "step": 1,
+      "unit": "px",
+      "label": "Category font size",
+      "default": 16
+    },
+    {
+      "type": "color",
+      "id": "description_color",
+      "label": "Description color",
+      "default": "#2e2a39"
+    },
+    {
+      "type": "range",
+      "id": "description_font_size",
+      "min": 11,
+      "max": 16,
+      "step": 1,
+      "unit": "px",
+      "label": "Description font size",
+      "default": 13
+    },
+    {
+      "type": "color",
+      "id": "price_color",
+      "label": "Price color",
+      "default": "#9b046f"
+    },
+    {
+      "type": "range",
+      "id": "price_font_size",
+      "min": 16,
+      "max": 26,
+      "step": 1,
+      "unit": "px",
+      "label": "Price font size",
+      "default": 20
+    },
+    {
+      "type": "header",
+      "content": "Button style"
+    },
+    {
+      "type": "color",
+      "id": "button_background",
+      "label": "Button background",
+      "default": "#9b046f"
+    },
+    {
+      "type": "color",
+      "id": "button_hover_background",
+      "label": "Button hover background",
+      "default": "#7a0358"
+    },
+    {
+      "type": "color",
+      "id": "button_text_color",
+      "label": "Button text color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "range",
+      "id": "button_font_size",
+      "min": 12,
+      "max": 18,
+      "step": 1,
+      "unit": "px",
+      "label": "Button font size",
+      "default": 13
+    },
+    {
+      "type": "range",
+      "id": "button_padding_vertical",
+      "min": 6,
+      "max": 20,
+      "step": 2,
+      "unit": "px",
+      "label": "Button vertical padding",
+      "default": 10
+    },
+    {
+      "type": "range",
+      "id": "button_padding_horizontal",
+      "min": 12,
+      "max": 40,
+      "step": 2,
+      "unit": "px",
+      "label": "Button horizontal padding",
+      "default": 20
+    },
+    {
+      "type": "range",
+      "id": "button_border_radius",
+      "min": 0,
+      "max": 30,
+      "step": 2,
+      "unit": "px",
+      "label": "Button border radius",
+      "default": 8
+    }
+  ],
+  "presets": [
+    {
+      "name": "Ticket showcase"
+    }
+  ]
+}
+{% endschema %}

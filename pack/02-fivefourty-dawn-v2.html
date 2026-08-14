@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Delhi Run Collective — 5:40 AM</title>
+<style>
+  /* ============ DRC / v2 "5:40 AM" ============
+     The world of a Delhi dawn: sodium street lamps still on, cool lilac haze
+     before the sun clears the flyover. Editorial/zine, not brochure. */
+  :root{
+    --paper:#EDE8F1;        /* cool pale lilac, pre-dawn sky */
+    --paper-2:#E3DCE9;
+    --ink:#221C2E;
+    --ink-soft:#544B63;
+    --hush:#8C82A0;         /* neutral, biased violet */
+    --sodium:#E07A18;       /* street lamp — the accent */
+    --rose:#C4436B;         /* second signal, used sparingly */
+    --rule:#C9C0D6;
+    --card:#F6F3F8;
+    --shadow:20px 20px 0 rgba(34,28,46,.06);
+
+    --display:Didot,"Playfair Display",Baskerville,"Hoefler Text",Georgia,serif;
+    --body:"Avenir Next",Avenir,Optima,"Segoe UI",system-ui,sans-serif;
+    --data:ui-monospace,"SF Mono",Menlo,Consolas,monospace;
+
+    --s--1:clamp(.74rem,.7rem + .2vw,.82rem);
+    --s-0:clamp(1rem,.95rem + .3vw,1.12rem);
+    --s-1:clamp(1.25rem,1.1rem + .7vw,1.6rem);
+    --s-2:clamp(1.7rem,1.35rem + 1.8vw,2.7rem);
+    --s-3:clamp(2.4rem,1.6rem + 4vw,4.6rem);
+    --s-4:clamp(3.4rem,1.9rem + 8vw,8rem);
+  }
+  @media (prefers-color-scheme: dark){
+    :root{
+      --paper:#1A1523;--paper-2:#221B2D;--ink:#F0EAF6;--ink-soft:#C4B9D2;--hush:#9186A6;
+      --sodium:#FFA03D;--rose:#F0708F;--rule:#3A3049;--card:#241D30;
+      --shadow:20px 20px 0 rgba(0,0,0,.25);
+    }
+  }
+  :root[data-theme="dark"]{
+    --paper:#1A1523;--paper-2:#221B2D;--ink:#F0EAF6;--ink-soft:#C4B9D2;--hush:#9186A6;
+    --sodium:#FFA03D;--rose:#F0708F;--rule:#3A3049;--card:#241D30;
+    --shadow:20px 20px 0 rgba(0,0,0,.25);
+  }
+  :root[data-theme="light"]{
+    --paper:#EDE8F1;--paper-2:#E3DCE9;--ink:#221C2E;--ink-soft:#544B63;--hush:#8C82A0;
+    --sodium:#E07A18;--rose:#C4436B;--rule:#C9C0D6;--card:#F6F3F8;
+    --shadow:20px 20px 0 rgba(34,28,46,.06);
+  }
+
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--body);font-size:var(--s-0);line-height:1.6;-webkit-font-smoothing:antialiased}
+  a{color:inherit}
+  ::selection{background:var(--sodium);color:var(--paper)}
+  :focus-visible{outline:2px solid var(--sodium);outline-offset:3px}
+  .wrap{max-width:1140px;margin:0 auto;padding:0 clamp(18px,4vw,44px)}
+  .lab{font-family:var(--data);font-size:var(--s--1);letter-spacing:.16em;text-transform:uppercase;color:var(--hush)}
+  h1,h2,h3{font-family:var(--display);font-weight:400;line-height:1.02;letter-spacing:-.02em;text-wrap:balance;margin:0}
+  em{font-style:italic;color:var(--sodium)}
+
+  /* ---------- masthead ---------- */
+  .mast{border-bottom:1px solid var(--rule)}
+  .mast .wrap{display:flex;align-items:center;gap:clamp(14px,3vw,30px);padding-top:16px;padding-bottom:16px;flex-wrap:wrap}
+  .logo{font-family:var(--display);font-size:1.3rem;letter-spacing:-.01em}
+  .logo span{font-family:var(--data);font-size:.62rem;letter-spacing:.2em;text-transform:uppercase;color:var(--hush);display:block;margin-top:2px}
+  .mast nav{margin-left:auto;display:flex;gap:clamp(12px,2.4vw,26px);flex-wrap:wrap}
+  .mast nav a{font-size:var(--s--1);letter-spacing:.06em;text-transform:uppercase;text-decoration:none;color:var(--ink-soft);padding-bottom:2px;border-bottom:1px solid transparent}
+  .mast nav a:hover{color:var(--ink);border-color:var(--sodium)}
+
+  /* ---------- hero: the clock ---------- */
+  .hero{position:relative;overflow:hidden;padding:clamp(44px,7vw,90px) 0 clamp(36px,5vw,64px)}
+  .hero::before{
+    content:"";position:absolute;left:50%;top:-42vw;width:120vw;height:120vw;transform:translateX(-50%);
+    background:radial-gradient(closest-side, color-mix(in srgb,var(--sodium) 26%,transparent), transparent 72%);
+    pointer-events:none;
+  }
+  .hero .wrap{position:relative;display:grid;gap:clamp(20px,3vw,38px)}
+  @media(min-width:900px){.hero .wrap{grid-template-columns:1fr 300px;align-items:end}}
+  .clock{font-family:var(--data);font-size:var(--s--1);letter-spacing:.2em;text-transform:uppercase;color:var(--sodium);font-variant-numeric:tabular-nums}
+  .hero h1{font-size:var(--s-4);margin-top:14px}
+  .hero h1 i{font-style:italic}
+  .hero .lede{margin:clamp(18px,2.5vw,26px) 0 0;font-size:var(--s-1);max-width:34ch;color:var(--ink-soft);line-height:1.4}
+  .acts{display:flex;flex-wrap:wrap;gap:10px;margin-top:26px}
+  .btn{text-decoration:none;font-family:var(--data);font-size:var(--s--1);letter-spacing:.1em;text-transform:uppercase;padding:14px 22px;border-radius:999px;border:1px solid var(--ink);transition:transform .18s,background .18s,color .18s}
+  .btn:hover{transform:translateY(-2px)}
+  .btn.fill{background:var(--ink);color:var(--paper)}
+  .btn.fill:hover{background:var(--sodium);border-color:var(--sodium);color:#1A1523}
+  .btn.line:hover{background:var(--ink);color:var(--paper)}
+
+  /* marginalia card in hero */
+  .aside{border-top:2px solid var(--ink);padding-top:14px}
+  .aside dl{margin:0;display:grid;grid-template-columns:auto 1fr;gap:6px 14px;font-family:var(--data);font-size:var(--s--1)}
+  .aside dt{color:var(--hush);letter-spacing:.1em;text-transform:uppercase}
+  .aside dd{margin:0;font-variant-numeric:tabular-nums}
+
+  /* ---------- section shell ---------- */
+  section{padding:clamp(50px,7vw,104px) 0}
+  .band{background:var(--paper-2)}
+  .shead{display:grid;gap:10px;margin-bottom:clamp(24px,3.4vw,44px);max-width:62ch}
+  .shead h2{font-size:var(--s-3)}
+  .shead p{margin:0;color:var(--ink-soft);max-width:56ch}
+
+  /* ---------- the week, as a route strip ---------- */
+  .week{display:grid;gap:1px;background:var(--rule);border:1px solid var(--rule)}
+  @media(min-width:780px){.week{grid-template-columns:repeat(4,1fr)}}
+  .day{background:var(--card);padding:clamp(18px,2.2vw,24px);display:flex;flex-direction:column;gap:10px;transition:background .2s}
+  .day:hover{background:color-mix(in srgb,var(--sodium) 9%,var(--card))}
+  .day .d{font-family:var(--display);font-size:var(--s-2);line-height:1}
+  .day .t{font-family:var(--data);font-size:var(--s--1);letter-spacing:.1em;color:var(--sodium);font-variant-numeric:tabular-nums}
+  .day .place{font-size:var(--s-0)}
+  .day .note{font-size:var(--s--1);color:var(--ink-soft);line-height:1.55}
+  .day .km{margin-top:auto;font-family:var(--data);font-size:var(--s--1);color:var(--hush);border-top:1px dashed var(--rule);padding-top:10px;font-variant-numeric:tabular-nums}
+
+  /* ---------- experiences: editorial rows ---------- */
+  .rows{display:flex;flex-direction:column;border-top:1px solid var(--rule)}
+  .row{display:grid;gap:8px 26px;padding:clamp(20px,3vw,32px) 0;border-bottom:1px solid var(--rule);align-items:start}
+  @media(min-width:820px){.row{grid-template-columns:130px 1fr 190px}}
+  .row .when{font-family:var(--data);font-size:var(--s--1);letter-spacing:.1em;text-transform:uppercase;color:var(--sodium);padding-top:6px}
+  .row h3{font-size:var(--s-2)}
+  .row p{margin:10px 0 0;color:var(--ink-soft);max-width:56ch}
+  .row .side{display:flex;flex-direction:column;gap:8px;align-items:flex-start}
+  @media(min-width:820px){.row .side{align-items:flex-end;text-align:right}}
+  .pill{font-family:var(--data);font-size:.64rem;letter-spacing:.12em;text-transform:uppercase;border:1px solid var(--rose);color:var(--rose);padding:4px 10px;border-radius:999px}
+  .row a.reg{font-family:var(--data);font-size:var(--s--1);letter-spacing:.08em;text-transform:uppercase;text-decoration:none;border-bottom:1px solid var(--sodium);padding-bottom:2px}
+  .row a.reg:hover{color:var(--sodium)}
+  .row:hover h3{color:var(--sodium)}
+
+  /* ---------- notes: torn-page zine cards ---------- */
+  .notes{display:grid;gap:clamp(18px,2.6vw,30px)}
+  @media(min-width:760px){.notes{grid-template-columns:repeat(3,1fr)}}
+  .note-card{background:var(--card);border:1px solid var(--rule);padding:clamp(20px,2.4vw,28px);box-shadow:var(--shadow);display:flex;flex-direction:column;gap:14px}
+  .note-card:nth-child(1){transform:rotate(-.7deg)}
+  .note-card:nth-child(2){transform:rotate(.5deg)}
+  .note-card:nth-child(3){transform:rotate(-.3deg)}
+  .note-card blockquote{margin:0;font-family:var(--display);font-size:var(--s-1);line-height:1.28}
+  .note-card cite{font-style:normal;font-family:var(--data);font-size:var(--s--1);letter-spacing:.1em;text-transform:uppercase;color:var(--hush);margin-top:auto}
+
+  /* ---------- first run walkthrough (a real sequence) ---------- */
+  .steps{counter-reset:s;display:grid;gap:1px;background:var(--rule);border:1px solid var(--rule)}
+  @media(min-width:820px){.steps{grid-template-columns:repeat(4,1fr)}}
+  .step{background:var(--card);padding:clamp(18px,2.2vw,26px);display:flex;flex-direction:column;gap:8px}
+  .step::before{counter-increment:s;content:counter(s,decimal-leading-zero);font-family:var(--data);font-size:var(--s--1);letter-spacing:.14em;color:var(--sodium)}
+  .step h3{font-family:var(--body);font-weight:600;font-size:var(--s-0);letter-spacing:0}
+  .step p{margin:0;font-size:var(--s--1);color:var(--ink-soft);line-height:1.6}
+
+  /* ---------- merch ---------- */
+  .tees{display:grid;gap:clamp(14px,2vw,22px)}
+  @media(min-width:600px){.tees{grid-template-columns:repeat(2,1fr)}}
+  @media(min-width:960px){.tees{grid-template-columns:repeat(4,1fr)}}
+  .tee{display:flex;flex-direction:column;gap:10px}
+  .tee .swatch{aspect-ratio:4/5;border:1px solid var(--rule);display:grid;place-items:center;text-align:center;padding:20px;font-family:var(--display);font-size:clamp(1.2rem,3.4vw,1.8rem);line-height:1.1;transition:transform .2s}
+  .tee:hover .swatch{transform:translateY(-4px)}
+  .tee.i1 .swatch{background:#241D30;color:#F0EAF6}
+  .tee.i2 .swatch{background:#F5C9D8;color:#4A1B2C}
+  .tee.i3 .swatch{background:#E5DFEC;color:#221C2E}
+  .tee.i4 .swatch{background:var(--sodium);color:#241D30}
+  .tee .cap{display:flex;justify-content:space-between;gap:10px;font-family:var(--data);font-size:var(--s--1);color:var(--ink-soft);font-variant-numeric:tabular-nums}
+
+  /* ---------- join ---------- */
+  .join{display:grid;gap:clamp(24px,4vw,54px);align-items:center}
+  @media(min-width:860px){.join{grid-template-columns:1.05fr .95fr}}
+  .join h2{font-size:var(--s-3)}
+  .join p{color:var(--ink-soft);max-width:42ch}
+  .chan{display:flex;flex-direction:column;gap:10px}
+  .chan a{display:flex;justify-content:space-between;align-items:baseline;gap:14px;text-decoration:none;background:var(--card);border:1px solid var(--rule);border-radius:999px;padding:15px 22px;transition:border-color .18s,transform .18s}
+  .chan a:hover{border-color:var(--sodium);transform:translateX(4px)}
+  .chan a strong{font-weight:600}
+  .chan a span{font-family:var(--data);font-size:var(--s--1);color:var(--hush)}
+
+  footer{border-top:1px solid var(--rule);padding:36px 0 48px}
+  footer .wrap{display:flex;flex-wrap:wrap;gap:16px;justify-content:space-between;align-items:baseline}
+  footer p{margin:0;font-family:var(--display);font-size:var(--s-1)}
+  footer nav{display:flex;gap:18px;flex-wrap:wrap}
+  footer nav a{font-family:var(--data);font-size:var(--s--1);letter-spacing:.08em;text-transform:uppercase;text-decoration:none;color:var(--ink-soft)}
+  footer nav a:hover{color:var(--sodium)}
+  @media(prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+</style>
+</head>
+<body>
+<div class="mast"><div class="wrap">
+  <div class="logo">Delhi Run Collective<span>Delhi NCR · since 2023</span></div>
+  <nav aria-label="Primary">
+    <a href="#week">The week</a><a href="#experiences">Experiences</a><a href="#first">First run</a><a href="#merch">Merch</a><a href="#join">Join</a>
+  </nav>
+</div></div>
+
+<header class="hero"><div class="wrap">
+  <div>
+    <p class="clock">06:45 AM · Lodhi Gardens · pre-dawn social</p>
+    <h1>Because running alone <i>isn't it.</i></h1>
+    <p class="lede">A premium running community based in Delhi where movement meets culture. Sunday sunrise runs, coffee socials, and zero pretense.</p>
+    <div class="acts">
+      <a class="btn fill" href="#week">See this week</a>
+      <a class="btn line" href="#first">Our co-founders' story</a>
+    </div>
+  </div>
+  <div class="aside">
+    <dl>
+      <dt>On the group</dt><dd>1,840 runners</dd>
+      <dt>Weekly runs</dt><dd>4 schedules</dd>
+      <dt>Sunday start</dt><dd>06:45 AM</dd>
+      <dt>Cost</dt><dd>Free to join</dd>
+      <dt>Next run</dt><dd>Sun, 06:45 AM</dd>
+    </dl>
+  </div>
+</div></header>
+
+<section id="week" class="band"><div class="wrap">
+  <div class="shead">
+    <span class="lab">The week</span>
+    <h2>Same spots, same hour, whatever the AQI says.</h2>
+    <p>Sunday Sunrise run drops at Lodhi Gardens Gate 1. Turn up, meet someone new, and join our zero-drop pace groups.</p>
+  </div>
+  <div class="week">
+    <article class="day" style="grid-column: span 4;">
+      <span class="d">Sunday Sunrise Social</span><span class="t">06:45 AM</span>
+      <span class="place">Lodhi Gardens Gate 1</span>
+      <span class="note">Social 5K past the historic monuments and gardens, followed by our custom coffee after-party.</span>
+      <span class="km">5 km · all paces led</span>
+    </article>
+  </div>
+</div></section>
+
+<section id="experiences"><div class="wrap">
+  <div class="shead">
+    <span class="lab">Upcoming experiences</span>
+    <h2>Curated runs, workouts and things that aren't <em>only</em> running.</h2>
+  </div>
+  <div class="rows">
+    <article class="row">
+      <span class="when">Weekly · Sun</span>
+      <div>
+        <h3>Sunday Social 5K</h3>
+        <p>Conversational pace 5K route through historical paths, followed by our post-run coffee social. Join the crew for dawn vibes.</p>
+      </div>
+      <div class="side"><span class="pill">Free · All welcome</span><a class="reg" href="https://www.instagram.com/delhiruncollective/?hl=en" target="_blank">Join Chat</a></div>
+    </article>
+    <article class="row">
+      <span class="when">Sun · 16 Aug</span>
+      <div>
+        <h3>Burn for Beer</h3>
+        <p>High-energy morning workout and social session. We sweat first, then celebrate together with beers and good vibes.</p>
+      </div>
+      <div class="side"><span class="pill">Workout · Offlyn App</span><a class="reg" href="https://offlyn.life/e/0zB6Akl" target="_blank">Register</a></div>
+    </article>
+    <article class="row">
+      <span class="when">Sun · 23 Aug</span>
+      <div>
+        <h3>Peakst8: No Parking</h3>
+        <p>High intensity team partner loops + bodyweight exercises. Limitless energy. Use code "drc30" for 30% off entry.</p>
+      </div>
+      <div class="side"><span class="pill">Code: drc30</span><a class="reg" href="https://www.peakst8.club/no-parking?id=drc30" target="_blank">Get Code</a></div>
+    </article>
+  </div>
+</div></section>
+
+<section id="first" class="band"><div class="wrap">
+  <div class="shead">
+    <span class="lab">Your first run</span>
+    <h2>How we got started.</h2>
+    <p>Military officers' sons Manraj & Shahnil met in Tezpur, then combined with EY lead Krishna to form a radical running tribe.</p>
+  </div>
+  <div class="steps">
+    <div class="step"><h3>Co-Founders</h3><p>Manraj and Shahnil met during a posting in Tezpur. Combined with corporate insights from Krishna (EY), they created DRC.</p></div>
+    <div class="step"><h3>Military discipline</h3><p>Tempered by military-grade pre-dawn consistency but completely relaxed and inclusive on the roads.</p></div>
+    <div class="step"><h3>Zero drop policy</h3><p>A first 5K is celebrated just as much as a marathon PR. We run together, we stay together.</p></div>
+    <div class="step"><h3>Coffee socials</h3><p>Stopwatches off. We sit together, sharing steaming cups of coffee and discussing our weekly milestones.</p></div>
+  </div>
+</div></section>
+
+<section><div class="wrap">
+  <div class="shead">
+    <span class="lab">Inside the community</span>
+    <h2>Three years of people who came once.</h2>
+  </div>
+  <div class="notes">
+    <div class="note-card"><blockquote>“Came for one Sunday 5K in January. Four half marathons later and I haven't run a single one alone.”</blockquote><cite>Ananya · joined Jan 2026</cite></div>
+    <div class="note-card"><blockquote>“Moved to Delhi for work, knew nobody. My friends are all from a pre-dawn running crew now. The running is almost secondary.”</blockquote><cite>Rehan · joined Aug 2025</cite></div>
+    <div class="note-card"><blockquote>“Nobody asked my pace before they asked my name. I'd been dreading the opposite for months.”</blockquote><cite>Ishita · joined Mar 2026</cite></div>
+  </div>
+</div></section>
+
+<section id="merch" class="band"><div class="wrap">
+  <div class="shead">
+    <span class="lab">Grab the merch</span>
+    <h2>Tees designed for premium performance.</h2>
+    <p>Boxy heavy cotton, unisex S–XXL. Merch supports community printing, routes, and socials.</p>
+  </div>
+  <div class="tees">
+    <article class="tee i1"><div class="swatch">Off-White Tee</div><div class="cap"><span>Drop Shoulder</span><span>₹750</span></div></article>
+    <article class="tee i2"><div class="swatch">Sage Green Tee</div><div class="cap"><span>Drop Shoulder</span><span>₹750</span></div></article>
+    <article class="tee i3"><div class="swatch">Baby Girl Pink</div><div class="cap"><span>Oversized Fit</span><span>₹800</span></div></article>
+    <article class="tee i4"><div class="swatch">Faster Than You</div><div class="cap"><span>Oversized · black</span><span>₹800</span></div></article>
+  </div>
+</div></section>
+
+<section id="join"><div class="wrap join">
+  <div>
+    <span class="lab">Join DRC</span>
+    <h2 style="margin-top:12px">There's no sign-up. Just be at the gate.</h2>
+    <p>No fee, no form, no trial period. Register on Offlyn, check the route details on Instagram, and run with us on Sunday.</p>
+    <div class="acts"><a class="btn fill" href="https://offlyn.life/e/0zB6Akl" target="_blank">Register on Offlyn</a></div>
+  </div>
+  <div class="chan">
+    <a href="https://www.instagram.com/delhiruncollective/?hl=en" target="_blank"><strong>Instagram</strong><span>@delhiruncollective</span></a>
+    <a href="https://www.strava.com/clubs/1483233" target="_blank"><strong>Strava club</strong><span>Run with the crew, virtually</span></a>
+    <a href="https://offlyn.life/e/0zB6Akl" target="_blank"><strong>Offlyn</strong><span>Registrations &amp; social workout drops</span></a>
+  </div>
+</div></section>
+
+<footer><div class="wrap">
+  <p>© 2026 Delhi Run Collective · delhiruncollective@gmail.com · 9958446326 · Block G Chittaranjan Park, 1328, New Delhi.</p>
+  <nav aria-label="Footer">
+    <a href="https://www.instagram.com/delhiruncollective/?hl=en" target="_blank">Instagram</a>
+    <a href="https://www.strava.com/clubs/1483233" target="_blank">Strava</a>
+    <a href="https://offlyn.life/e/0zB6Akl" target="_blank">Offlyn</a>
+  </nav>
+</div></footer>
+</body>
+</html>

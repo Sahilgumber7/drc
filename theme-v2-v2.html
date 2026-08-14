@@ -1,0 +1,686 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Delhi Run Collective — Movement is Narrative</title>
+<meta name="description" content="Delhi Run Collective is a running community that meets before the city wakes. Weekly runs, curated routes, and a crew that turns 5:30 AM into culture.">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,450;0,9..144,600;1,9..144,450&family=Oswald:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+
+<style>
+:root{
+  --ink:#15130E;
+  --paper:#EFE8D8;
+  --paper-dim:#E4DCC7;
+  --signal:#D6431F;
+  --signal-dim:#B93A1B;
+  --moss:#4C5A3B;
+  --dawn:#F0AE94;
+  --line:rgba(21,19,14,0.14);
+  --font-display:'Fraunces', serif;
+  --font-cond:'Oswald', sans-serif;
+  --font-body:'Inter', sans-serif;
+}
+
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{
+  background:var(--paper);
+  color:var(--ink);
+  font-family:var(--font-body);
+  overflow-x:hidden;
+  -webkit-font-smoothing:antialiased;
+}
+img{max-width:100%;display:block;}
+a{color:inherit;text-decoration:none;}
+
+::selection{background:var(--signal);color:var(--paper);}
+
+/* grain overlay */
+.grain{
+  position:fixed;inset:0;pointer-events:none;z-index:999;
+  opacity:0.05;mix-blend-mode:multiply;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+/* route progress line (signature element) */
+.route-line{
+  position:fixed;left:0;top:0;bottom:0;width:2px;z-index:998;
+  transform-origin:top;
+}
+.route-line svg{position:fixed;left:14px;top:0;height:100vh;width:40px;}
+.route-line path{
+  fill:none;stroke:var(--signal);stroke-width:2;
+  stroke-dasharray:1;stroke-dashoffset:1;
+  vector-effect:non-scaling-stroke;
+  transition: stroke-dashoffset 0.1s linear;
+}
+.route-track{stroke:var(--line);stroke-width:1;}
+
+/* container */
+.wrap{max-width:1220px;margin:0 auto;padding:0 32px;}
+
+/* ------- header ------- */
+header{
+  position:fixed;top:0;left:0;right:0;z-index:200;
+  padding:22px 0;
+  mix-blend-mode:difference;
+}
+header .wrap{display:flex;align-items:center;justify-content:space-between;}
+.brand{
+  font-family:var(--font-cond);
+  font-weight:600;letter-spacing:0.04em;font-size:1.6rem;
+  color:var(--paper);
+}
+.brand span{color:var(--dawn);}
+nav ul{display:flex;gap:34px;list-style:none;}
+nav a{
+  font-family:var(--font-cond);font-size:1.25rem;letter-spacing:0.08em;
+  text-transform:uppercase;color:var(--paper);position:relative;padding-bottom:2px;
+}
+nav a::after{
+  content:'';position:absolute;left:0;bottom:0;height:1px;width:0;
+  background:var(--paper);transition:width .35s cubic-bezier(.2,.7,.2,1);
+}
+nav a:hover::after{width:100%;}
+.menu-btn{display:none;background:none;border:none;color:var(--paper);font-family:var(--font-cond);font-size:1.2rem;letter-spacing:.08em;text-transform:uppercase;cursor:pointer;}
+
+/* ------- hero ------- */
+.hero{
+  min-height:100vh;position:relative;display:flex;align-items:flex-end;
+  padding:0 0 90px;overflow:hidden;
+  background:
+    radial-gradient(120% 90% at 15% -10%, #F6C7AE 0%, transparent 55%),
+    radial-gradient(90% 70% at 100% 0%, #C9D4B4 0%, transparent 50%),
+    var(--paper);
+}
+.hero-bg-img{
+  position:absolute;inset:0;width:100%;height:100%;object-fit:cover;
+  opacity:0.9;
+}
+.hero-scrim{
+  position:absolute;inset:0;
+  background:linear-gradient(180deg, rgba(21,19,14,0) 0%, rgba(21,19,14,0.05) 55%, rgba(21,19,14,0.75) 100%);
+}
+.hero-inner{position:relative;z-index:2;width:100%;}
+.hero-top{
+  display:flex;justify-content:space-between;align-items:flex-start;
+  padding-top:130px;
+}
+.bib{
+  font-family:var(--font-cond);font-size:1.3rem;letter-spacing:.15em;
+  color:var(--paper);text-transform:uppercase;
+  border:1px solid rgba(239,232,216,0.4);
+  padding:6px 14px;border-radius:999px;
+}
+.hero-title{
+  font-family:var(--font-display);font-weight:450;
+  font-size:clamp(3.6rem, 8vw, 8.4rem);line-height:0.96;
+  letter-spacing:-0.02em;color:var(--paper);
+  margin:26px 0 30px;max-width:960px;
+}
+.hero-title em{font-style:italic;color:var(--signal);font-weight:450;}
+.hero-title .reveal-line{display:block;overflow:hidden;}
+.hero-title .reveal-line span{
+  display:inline-block;
+  transform:translateY(110%);
+  animation-name: lineUp;
+  animation-duration: 0.9s;
+  animation-timing-function: cubic-bezier(.2,.8,.2,1);
+  animation-fill-mode: both;
+  animation-play-state: paused;
+}
+@keyframes lineUp {
+  to { transform: translateY(0); }
+}
+
+.hero-foot{
+  display:flex;justify-content:space-between;align-items:flex-end;gap:40px;flex-wrap:wrap;
+}
+.hero-desc{
+  font-size:1.55rem;line-height:1.6;color:rgba(239,232,216,0.9);max-width:400px;
+}
+.hero-cta{
+  display:inline-flex;align-items:center;gap:12px;
+  background:var(--signal);color:var(--paper);
+  font-family:var(--font-cond);letter-spacing:.1em;text-transform:uppercase;font-size:1.3rem;
+  padding:16px 26px;border-radius:999px;white-space:nowrap;
+  transition:transform .4s cubic-bezier(.2,.8,.2,1), background .3s;
+}
+.hero-cta:hover{background:var(--signal-dim);transform:translateY(-3px);}
+.hero-cta svg{width:16px;height:16px;stroke:currentColor;fill:none;stroke-width:2.4;transition:transform .3s;}
+.hero-cta:hover svg{transform:translate(3px,-3px);}
+
+.scroll-cue{
+  position:absolute;bottom:26px;left:32px;z-index:3;
+  display:flex;align-items:center;gap:10px;color:var(--paper);
+  font-family:var(--font-cond);letter-spacing:.15em;font-size:1.1rem;text-transform:uppercase;
+}
+.scroll-cue::before{
+  content:'';width:1px;height:34px;background:var(--paper);
+  animation:pulseLine 1.8s ease-in-out infinite;
+}
+@keyframes pulseLine{0%,100%{opacity:.25;}50%{opacity:1;}}
+
+/* ------- marquee ------- */
+.marquee{
+  background:var(--ink);color:var(--paper);overflow:hidden;
+  border-top:1px solid var(--ink);border-bottom:1px solid var(--ink);padding:14px 0;
+}
+.marquee-track{display:flex;width:max-content;animation:scrollMarq 26s linear infinite;}
+.marquee-track span{
+  font-family:var(--font-cond);font-size:1.5rem;letter-spacing:.08em;text-transform:uppercase;
+  padding:0 28px;display:flex;align-items:center;gap:28px;white-space:nowrap;
+}
+.marquee-track span::after{content:'✺';color:var(--signal);font-size:1.1rem;}
+@keyframes scrollMarq{from{transform:translateX(0);}to{transform:translateX(-50%);}}
+
+/* ------- section shared ------- */
+.section{padding:120px 0;position:relative;}
+.section-head{
+  display:flex;justify-content:space-between;align-items:flex-end;
+  margin-bottom:64px;gap:30px;flex-wrap:wrap;
+}
+.eyebrow{
+  font-family:var(--font-cond);font-size:1.2rem;letter-spacing:.2em;text-transform:uppercase;
+  color:var(--signal);display:flex;align-items:center;gap:10px;margin-bottom:14px;
+}
+.eyebrow::before{content:'';width:24px;height:1px;background:var(--signal);}
+.section-title{
+  font-family:var(--font-display);font-weight:450;font-size:clamp(2.6rem,4.4vw,4.4rem);
+  letter-spacing:-0.01em;line-height:1.02;
+}
+.section-note{font-size:1.4rem;max-width:340px;color:rgba(21,19,14,0.6);line-height:1.6;}
+
+/* ------- HYPERFRAMES ADAPTER CLASSES ------- */
+.hf-anim {
+  animation-duration: 1s;
+  animation-fill-mode: both;
+  animation-play-state: paused;
+}
+.hf-fade-in { animation-name: hfFadeIn; }
+.hf-slide-up { animation-name: hfSlideUp; }
+.hf-scale-up { animation-name: hfScaleUp; }
+
+@keyframes hfFadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+@keyframes hfSlideUp {
+  from { opacity: 0; transform: translateY(36px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes hfScaleUp {
+  from { opacity: 0; transform: scale(0.96); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+/* ------- experiences ------- */
+.exp-list{border-top:1px solid var(--line);}
+.exp-row{
+  display:grid;grid-template-columns:70px 130px 1fr auto;gap:28px;align-items:center;
+  padding:26px 0;border-bottom:1px solid var(--line);
+  transition:background .35s;position:relative;
+  animation-name: hfSlideUp;
+  animation-duration: 1s;
+  animation-fill-mode: both;
+  animation-play-state: paused;
+}
+.exp-row:hover{background:rgba(21,19,14,0.03);}
+.exp-num{font-family:var(--font-cond);font-size:1.3rem;color:rgba(21,19,14,0.35);}
+.exp-thumb{width:130px;height:88px;border-radius:8px;overflow:hidden;background:#ccc;}
+.exp-thumb img{width:100%;height:100%;object-fit:cover;transition:transform .6s cubic-bezier(.2,.7,.2,1);}
+.exp-row:hover .exp-thumb img{transform:scale(1.08);}
+.exp-body h3{
+  font-family:var(--font-display);font-weight:600;font-size:2rem;margin-bottom:6px;
+}
+.exp-body p{font-size:1.35rem;color:rgba(21,19,14,0.6);max-width:520px;line-height:1.5;}
+.exp-date{
+  font-family:var(--font-cond);font-size:1.15rem;letter-spacing:.1em;text-transform:uppercase;
+  color:var(--ink);text-align:right;display:flex;flex-direction:column;align-items:flex-end;gap:4px;
+}
+.exp-date small{color:rgba(21,19,14,0.45);font-size:1.05rem;letter-spacing:.05em;}
+.exp-arrow{
+  width:38px;height:38px;border-radius:50%;border:1px solid var(--line);
+  display:flex;align-items:center;justify-content:center;flex-shrink:0;
+  transition:all .35s cubic-bezier(.2,.7,.2,1);
+}
+.exp-row:hover .exp-arrow{background:var(--signal);border-color:var(--signal);transform:rotate(45deg);}
+.exp-arrow svg{width:15px;height:15px;stroke:var(--ink);fill:none;stroke-width:2.2;transition:stroke .3s;}
+.exp-row:hover .exp-arrow svg{stroke:var(--paper);}
+
+@media(max-width:760px){
+  .exp-row{grid-template-columns:1fr auto;grid-template-areas:"thumb arrow" "body body" "date date";row-gap:10px;}
+  .exp-num{display:none;}
+  .exp-thumb{grid-area:thumb;width:90px;height:64px;}
+  .exp-arrow{grid-area:arrow;justify-self:end;}
+  .exp-body{grid-area:body;}
+  .exp-date{grid-area:date;align-items:flex-start;text-align:left;}
+}
+
+/* ------- stats strip ------- */
+.stats{background:var(--ink);color:var(--paper);padding:70px 0;}
+.stats-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:20px;}
+.stat{
+  animation-name: hfScaleUp;
+  animation-duration: 1s;
+  animation-fill-mode: both;
+  animation-play-state: paused;
+}
+.stat h4{
+  font-family:var(--font-display);font-weight:300;font-size:clamp(3rem,5vw,5.2rem);
+  color:var(--dawn);
+}
+.stat p{font-family:var(--font-cond);letter-spacing:.1em;text-transform:uppercase;font-size:1.15rem;color:rgba(239,232,216,0.6);margin-top:6px;}
+@media(max-width:760px){.stats-grid{grid-template-columns:repeat(2,1fr);row-gap:36px;}}
+
+/* ------- merch ------- */
+.merch-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:24px;}
+.merch-card{
+  position:relative;
+  animation-name: hfSlideUp;
+  animation-duration: 1s;
+  animation-fill-mode: both;
+  animation-play-state: paused;
+}
+.merch-frame{
+  aspect-ratio:3/4;border-radius:10px;overflow:hidden;background:#d8d2c1;position:relative;
+}
+.merch-frame img{width:100%;height:100%;object-fit:cover;transition:transform .7s cubic-bezier(.2,.7,.2,1);}
+.merch-card:hover .merch-frame img{transform:scale(1.06);}
+.merch-tag{
+  position:absolute;top:12px;left:12px;background:var(--paper);
+  font-family:var(--font-cond);font-size:1.05rem;letter-spacing:.08em;text-transform:uppercase;
+  padding:5px 10px;border-radius:999px;
+}
+.merch-meta{display:flex;justify-content:space-between;align-items:flex-start;margin-top:16px;}
+.merch-meta h3{font-family:var(--font-display);font-weight:600;font-size:1.5rem;margin-bottom:4px;}
+.merch-meta span{font-size:1.25rem;color:rgba(21,19,14,0.5);}
+.merch-price{font-family:var(--font-cond);font-size:1.4rem;color:var(--signal);}
+@media(max-width:900px){.merch-grid{grid-template-columns:repeat(2,1fr);}}
+
+/* ------- join ------- */
+.join-grid{display:grid;grid-template-columns:1fr 1fr;gap:28px;}
+.join-card{
+  background:var(--ink);color:var(--paper);border-radius:16px;overflow:hidden;
+  display:grid;grid-template-columns:1fr 1fr;min-height:340px;
+  animation-name: hfSlideUp;
+  animation-duration: 1.2s;
+  animation-fill-mode: both;
+  animation-play-state: paused;
+}
+.join-img{overflow:hidden;}
+.join-img img{width:100%;height:100%;object-fit:cover;transition:transform .8s cubic-bezier(.2,.7,.2,1);}
+.join-card:hover .join-img img{transform:scale(1.08);}
+.join-text{padding:40px;display:flex;flex-direction:column;justify-content:center;}
+.join-text h3{font-family:var(--font-display);font-weight:600;font-size:2.2rem;margin-bottom:14px;}
+.join-text p{font-size:1.35rem;color:rgba(239,232,216,0.65);line-height:1.6;margin-bottom:26px;}
+.join-link{
+  display:inline-flex;align-items:center;gap:10px;font-family:var(--font-cond);
+  letter-spacing:.1em;text-transform:uppercase;font-size:1.2rem;color:var(--dawn);
+  border-bottom:1px solid rgba(240,174,148,0.4);padding-bottom:4px;width:fit-content;
+}
+.join-link svg{width:14px;height:14px;stroke:currentColor;fill:none;stroke-width:2.4;transition:transform .3s;}
+.join-link:hover svg{transform:translate(3px,-3px);}
+@media(max-width:760px){.join-grid{grid-template-columns:1fr;}.join-card{grid-template-columns:1fr;}.join-img{height:200px;}}
+
+/* ------- footer ------- */
+footer{background:var(--ink);color:var(--paper);padding:90px 0 30px;}
+.foot-top{display:flex;justify-content:space-between;flex-wrap:wrap;gap:50px;margin-bottom:70px;}
+.foot-brand{
+  font-family:var(--font-display);font-size:2.4rem;max-width:340px;line-height:1.2;
+  animation-name: hfFadeIn;
+  animation-duration: 1s;
+  animation-fill-mode: both;
+  animation-play-state: paused;
+}
+.foot-brand span{color:var(--dawn);font-style:italic;}
+.foot-cols{display:flex;gap:80px;}
+.foot-col{
+  animation-name: hfFadeIn;
+  animation-duration: 1s;
+  animation-fill-mode: both;
+  animation-play-state: paused;
+}
+.foot-col h4{font-family:var(--font-cond);font-size:1.1rem;letter-spacing:.15em;text-transform:uppercase;color:rgba(239,232,216,0.4);margin-bottom:18px;}
+.foot-col a{display:block;font-size:1.35rem;margin-bottom:12px;color:rgba(239,232,216,0.85);transition:color .3s;}
+.foot-col a:hover{color:var(--signal);}
+.foot-bottom{
+  border-top:1px solid rgba(239,232,216,0.1);padding-top:26px;
+  display:flex;justify-content:space-between;font-family:var(--font-cond);
+  font-size:1.05rem;letter-spacing:.06em;text-transform:uppercase;color:rgba(239,232,216,0.3);
+}
+@media(max-width:760px){.foot-cols{gap:40px;}.foot-bottom{flex-direction:column;gap:10px;}}
+
+/* High contrast keyboard focus rings for accessibility */
+:focus-visible {
+  outline: 2px solid var(--signal) !important;
+  outline-offset: 4px !important;
+}
+
+/* Clear pointer interactions */
+a, button, [role="button"], .exp-row, .merch-card, .join-card {
+  cursor: pointer;
+}
+</style>
+</head>
+<body data-composition-id="root" data-start="0" data-duration="10" data-width="1920" data-height="1080">
+
+<div class="grain"></div>
+
+<div class="route-line">
+  <svg viewBox="0 0 40 100" preserveAspectRatio="none">
+    <path class="route-track" d="M20,0 L20,100" vector-effect="non-scaling-stroke"/>
+    <path id="routeProgress" d="M20,0 L20,100" vector-effect="non-scaling-stroke"/>
+  </svg>
+</div>
+
+<header id="siteHeader">
+  <div class="wrap" style="display:flex; justify-content:space-between; align-items:center;">
+    <a href="#top" class="brand" style="display:flex; align-items:center; gap:10px;">
+      <img alt="DRC Logo" class="h-6 object-contain" style="height:24px; filter:invert(1);" src="https://delhiruncollective.com/cdn/shop/files/LOGO_streached_1.png"/>
+      <span>DELHI RUN COLLECTIVE</span>
+    </a>
+    <nav>
+      <ul>
+        <li><a href="#hero">Story</a></li>
+        <li><a href="#experiences">Crew</a></li>
+        <li><a href="#merch">Kit</a></li>
+        <li><a href="#join">Join</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<section class="hero hf-anim hf-fade-in" id="hero" data-start="0" data-duration="2.5">
+  <img class="hero-bg-img" src="https://images.unsplash.com/photo-1552674605-db6ffd4facb5?auto=format&fit=crop&w=1600&q=80" alt="DRC runners stretching at dawn in Lodhi Gardens">
+  <div class="hero-scrim"></div>
+  <div class="hero-inner wrap">
+    <div class="hero-top">
+      <span class="bib hf-anim hf-fade-in animate-child" data-delay="0.1">No. 001 — Est. Delhi</span>
+      <span class="bib hf-anim hf-fade-in animate-child" data-delay="0.2">06:45 AM · Lodhi Gardens</span>
+    </div>
+    <h1 class="hero-title">
+      <span class="reveal-line"><span class="animate-child" data-delay="0.2">Because running</span></span>
+      <span class="reveal-line"><span class="animate-child" data-delay="0.45"><em>alone</em> isn't it.</span></span>
+    </h1>
+    <div class="hero-foot">
+      <p class="hero-desc hf-anim hf-slide-up animate-child" data-delay="0.5">We claim the streets while the city is still asleep and the narrative is ours to write — every Sunday at sunrise.</p>
+      <a href="https://www.instagram.com/delhiruncollective/?hl=en" target="_blank" class="hero-cta hf-anim hf-slide-up animate-child" data-delay="0.6">
+        Inside the community
+        <svg viewBox="0 0 24 24"><path d="M7 17L17 7M17 7H9M17 7V15"/></svg>
+      </a>
+    </div>
+  </div>
+  <div class="scroll-cue">Scroll</div>
+</section>
+
+<div class="marquee">
+  <div class="marquee-track" id="marqTrack">
+    <span>Join the run</span><span>Sundays · 06:45 AM</span><span>Lodhi Gardens</span><span>Movement is narrative</span>
+    <span>Join the run</span><span>Sundays · 06:45 AM</span><span>Lodhi Gardens</span><span>Movement is narrative</span>
+  </div>
+</div>
+
+<section class="section" id="experiences">
+  <div class="wrap">
+    <div class="section-head hf-anim hf-slide-up" data-start="1.5" data-duration="1">
+      <div>
+        <p class="eyebrow">On the calendar</p>
+        <h2 class="section-title">Upcoming<br>experiences</h2>
+      </div>
+      <p class="section-note">Curated runs, workouts, and community drops across Delhi NCR — pick your bib.</p>
+    </div>
+
+    <div class="exp-list">
+      <!-- Experience Card 1 -->
+      <a href="https://www.instagram.com/delhiruncollective/?hl=en" target="_blank" class="exp-row" data-start="1.8" data-duration="1">
+        <span class="exp-num">01</span>
+        <div class="exp-thumb"><img src="https://images.unsplash.com/photo-1476480862126-209bfaa8edc8?auto=format&fit=crop&w=1000&q=80" alt="Sunday Sunrise Social"></div>
+        <div class="exp-body">
+          <h3>Sunday Social 5K</h3>
+          <p>Our weekly sunrise ritual. Conversational pacing, scenic heritage loops, and post-run coffee social.</p>
+        </div>
+        <span class="exp-date">Weekly<small>Sun 06:45 AM</small></span>
+        <span class="exp-arrow"><svg viewBox="0 0 24 24"><path d="M7 17L17 7M17 7H9M17 7V15"/></svg></span>
+      </a>
+
+      <!-- Experience Card 2 -->
+      <a href="https://offlyn.life/e/0zB6Akl" target="_blank" class="exp-row" data-start="2.1" data-duration="1">
+        <span class="exp-num">02</span>
+        <div class="exp-thumb"><img src="https://images.unsplash.com/photo-1552674605-db6ffd4facb5?auto=format&fit=crop&w=1600&q=80" alt="Burn for Beer social workout"></div>
+        <div class="exp-body">
+          <h3>Burn for Beer</h3>
+          <p>High-energy morning workout and social session. We sweat first, then celebrate together with beers and good vibes.</p>
+        </div>
+        <span class="exp-date">16th Aug<small>Sun 06:45 AM</small></span>
+        <span class="exp-arrow"><svg viewBox="0 0 24 24"><path d="M7 17L17 7M17 7H9M17 7V15"/></svg></span>
+      </a>
+
+      <!-- Experience Card 3 -->
+      <a href="https://www.peakst8.club/no-parking?id=drc30" target="_blank" class="exp-row" data-start="2.4" data-duration="1">
+        <span class="exp-num">03</span>
+        <div class="exp-thumb"><img src="https://images.unsplash.com/photo-1542291026-7eec264c27ff?auto=format&fit=crop&w=1000&q=80" alt="Peakst8: No Parking workout"></div>
+        <div class="exp-body">
+          <h3>Peakst8: No Parking</h3>
+          <p>High intensity team partner loops + bodyweight exercises. Use code "drc30" for 30% off.</p>
+        </div>
+        <span class="exp-date">23rd Aug<small>Sun 06:45 AM</small></span>
+        <span class="exp-arrow"><svg viewBox="0 0 24 24"><path d="M7 17L17 7M17 7H9M17 7V15"/></svg></span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<div class="stats" data-start="3.5" data-duration="1.5">
+  <div class="wrap stats-grid">
+    <div class="stat animate-child" data-delay="0"><h4 data-count="1840">0</h4><p>Runners in the crew</p></div>
+    <div class="stat animate-child" data-delay="0.2"><h4 data-count="150">0</h4><p>Socials, unbroken</p></div>
+    <div class="stat animate-child" data-delay="0.4"><h4 data-count="4">0</h4><p>Weekly Runs Mapped</p></div>
+    <div class="stat animate-child" data-delay="0.6"><h4 data-count="6">0</h4><p>Sunrise start (6:45)</p></div>
+  </div>
+</div>
+
+<section class="section" id="merch">
+  <div class="wrap">
+    <div class="section-head hf-anim hf-slide-up" data-start="4.8" data-duration="1">
+      <div>
+        <p class="eyebrow">The kit</p>
+        <h2 class="section-title">Grab the<br>merch</h2>
+      </div>
+      <p class="section-note">Built for pre-dawn miles, worn long after the run ends.</p>
+    </div>
+
+    <div class="merch-grid">
+      <!-- Merch Card 1 -->
+      <div class="merch-card" data-start="5.2" data-duration="1">
+        <div class="merch-frame">
+          <span class="merch-tag">New</span>
+          <img src="https://images.unsplash.com/photo-1552674605-db6ffd4facb5?auto=format&fit=crop&w=1600&q=80" alt="Off-White Drop Shoulder T-shirt">
+        </div>
+        <div class="merch-meta"><div><h3>Off-White Tee</h3><span>Drop Shoulder</span></div><span class="merch-price">₹750</span></div>
+      </div>
+      <!-- Merch Card 2 -->
+      <div class="merch-card" data-start="5.5" data-duration="1">
+        <div class="merch-frame">
+          <img src="https://images.unsplash.com/photo-1476480862126-209bfaa8edc8?auto=format&fit=crop&w=1000&q=80" alt="Sage Green Drop Shoulder T-shirt">
+        </div>
+        <div class="merch-meta"><div><h3>Sage Green Tee</h3><span>Drop Shoulder</span></div><span class="merch-price">₹750</span></div>
+      </div>
+      <!-- Merch Card 3 -->
+      <div class="merch-card" data-start="5.8" data-duration="1">
+        <div class="merch-frame">
+          <img src="https://images.unsplash.com/photo-1517838277536-f5f99be501cd?auto=format&fit=crop&w=1000&q=80" alt="Born to be a Baby Girl Pink Oversized T-shirt">
+        </div>
+        <div class="merch-meta"><div><h3>Baby Girl Pink Tee</h3><span>Oversized Fit</span></div><span class="merch-price">₹800</span></div>
+      </div>
+      <!-- Merch Card 4 -->
+      <div class="merch-card" data-start="6.1" data-duration="1">
+        <div class="merch-frame">
+          <img src="https://images.unsplash.com/photo-1542291026-7eec264c27ff?auto=format&fit=crop&w=1000&q=80" alt="Faster Than You Black Oversized T-shirt">
+        </div>
+        <div class="merch-meta"><div><h3>Faster Than You Tee</h3><span>Black Oversized</span></div><span class="merch-price">₹800</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="join">
+  <div class="wrap">
+    <div class="section-head hf-anim hf-slide-up" data-start="7.0" data-duration="1">
+      <div>
+        <p class="eyebrow">Get in</p>
+        <h2 class="section-title">Join DRC</h2>
+      </div>
+      <p class="section-note">Show up at Lodhi Gardens Gate 1 on Sundays, or track it from wherever you are — either way, you're crew.</p>
+    </div>
+
+    <div class="join-grid">
+      <!-- Join Card 1 -->
+      <div class="join-card" data-start="7.4" data-duration="1.2">
+        <div class="join-img"><img src="https://images.unsplash.com/photo-1552674605-db6ffd4facb5?auto=format&fit=crop&w=1600&q=80" alt="DRC Instagram feed"></div>
+        <div class="join-text">
+          <h3>Instagram</h3>
+          <p>Run updates, community highlights, and everything that makes DRC more than a run club.</p>
+          <a class="join-link" href="https://www.instagram.com/delhiruncollective/?hl=en" target="_blank">Follow updates <svg viewBox="0 0 24 24"><path d="M7 17L17 7M17 7H9M17 7V15"/></svg></a>
+        </div>
+      </div>
+      <!-- Join Card 2 -->
+      <div class="join-card" data-start="7.8" data-duration="1.2">
+        <div class="join-img"><img src="https://images.unsplash.com/photo-1476480862126-209bfaa8edc8?auto=format&fit=crop&w=1000&q=80" alt="Strava club feed"></div>
+        <div class="join-text">
+          <h3>Strava</h3>
+          <p>Track your runs, celebrate progress, and log miles with the crew — even from across the city.</p>
+          <a class="join-link" href="https://www.strava.com/clubs/1483233" target="_blank">Join the club <svg viewBox="0 0 24 24"><path d="M7 17L17 7M17 7H9M17 7V15"/></svg></a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer id="top">
+  <div class="wrap">
+    <div class="foot-top">
+      <p class="foot-brand" data-start="8.8" data-duration="1" style="display:flex; align-items:center; gap:12px; flex-wrap:wrap;">
+        <img alt="DRC Logo" class="h-6 object-contain" style="height:24px; filter:invert(1);" src="https://delhiruncollective.com/cdn/shop/files/LOGO_streached_1.png"/>
+        <span>Movement is narrative. One Sunday at a time.</span>
+      </p>
+      <div class="foot-cols">
+        <div class="foot-col" data-start="9.1" data-duration="1">
+          <h4>Explore</h4>
+          <a href="#hero">Story</a>
+          <a href="#experiences">Crew</a>
+          <a href="#merch">Kit</a>
+          <a href="#join">Join</a>
+        </div>
+        <div class="foot-col" data-start="9.4" data-duration="1">
+          <h4>Connect</h4>
+          <a href="https://www.instagram.com/delhiruncollective/?hl=en" target="_blank">Instagram</a>
+          <a href="https://www.strava.com/clubs/1483233" target="_blank">Strava</a>
+          <a href="https://offlyn.life/e/0zB6Akl" target="_blank">Offlyn Register</a>
+        </div>
+      </div>
+    </div>
+    <div class="foot-bottom">
+      <span>© 2026 Delhi Run Collective · delhiruncollective@gmail.com · 9958446326</span>
+      <span>Block G Chittaranjan Park, 1328, New Delhi</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+// Route progress path length preparation
+const routeProgress = document.getElementById('routeProgress');
+document.addEventListener('DOMContentLoaded', () => {
+  if (routeProgress) {
+    routeProgress.style.strokeDasharray = '1';
+    routeProgress.style.strokeDashoffset = '1';
+    routeProgress.setAttribute('pathLength', '1');
+  }
+  // Register custom timeline for HyperFrames core adapter compatibility
+  window.__timelines = window.__timelines || {};
+  window.__timelines['root'] = {
+    duration: () => 10,
+    seek: (t) => window.__hfSeek(t)
+  };
+  // Initial seek at 0
+  window.__hfSeek(0);
+});
+
+// ─── HYPERFRAMES SEEK-SAFE ADAPTER ───
+window.__hfSeek = function(time) {
+  // Seek all components having data-start
+  document.querySelectorAll('[data-start]').forEach(el => {
+    const start = parseFloat(el.getAttribute('data-start') || 0);
+    const duration = parseFloat(el.getAttribute('data-duration') || 2);
+    const localTime = Math.max(0, Math.min(duration, time - start));
+    
+    // Update animation play states and delays (negative seeking)
+    el.style.animationPlayState = 'paused';
+    el.style.animationDelay = `-${localTime}s`;
+    
+    // Seek animate-child tags inside this timed element
+    el.querySelectorAll('.animate-child').forEach(child => {
+      const childDelay = parseFloat(child.getAttribute('data-delay') || 0);
+      const childLocalTime = Math.max(0, time - start - childDelay);
+      child.style.animationPlayState = 'paused';
+      child.style.animationDelay = `-${childLocalTime}s`;
+    });
+  });
+
+  // Handle counter animations (smooth cubic-bezier interpolation)
+  document.querySelectorAll('[data-count]').forEach(counter => {
+    const statEl = counter.closest('[data-start]');
+    if (!statEl) return;
+    const start = parseFloat(statEl.getAttribute('data-start') || 0);
+    const duration = parseFloat(statEl.getAttribute('data-duration') || 1.5);
+    const target = parseInt(counter.getAttribute('data-count'), 10);
+    
+    const progress = Math.max(0, Math.min(1, (time - start) / duration));
+    const eased = 1 - Math.pow(1 - progress, 3); // Ease-out cubic
+    counter.textContent = Math.round(eased * target);
+  });
+
+  // Update Route Progress line in sync with the time
+  if (routeProgress) {
+    const totalDuration = 10; // Root composition length
+    const progress = Math.max(0, Math.min(1, time / totalDuration));
+    routeProgress.style.strokeDashoffset = (1 - progress).toString();
+  }
+};
+
+// ─── SCROLL SYNC TRIGGER ───
+// Detect if running in headless renderer mode
+const urlParams = new URLSearchParams(window.location.search);
+const isRendering = urlParams.get('render') === 'true' || window.__hyperframes;
+
+if (!isRendering) {
+  window.addEventListener('scroll', () => {
+    const scrolled = window.scrollY;
+    const max = document.documentElement.scrollHeight - window.innerHeight;
+    const pct = max > 0 ? scrolled / max : 0;
+    
+    // Seek time is bound between 0 and 10 seconds of root composition
+    const seekTime = pct * 10;
+    window.__hfSeek(seekTime);
+  }, { passive: true });
+}
+
+// Respect reduced motion query
+if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+  document.querySelectorAll('.hf-anim, .exp-row, .stat, .merch-card, .join-card, .foot-brand, .foot-col').forEach(el => {
+    el.style.animation = 'none';
+    el.style.opacity = '1';
+    el.style.transform = 'none';
+  });
+  document.querySelectorAll('.hero-title .reveal-line span').forEach(el => {
+    el.style.animation = 'none';
+    el.style.transform = 'translateY(0)';
+  });
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,648 @@
+{% doc %}
+  @prompt
+    make a interactive link tree like menue that redirects has a heading small description and has animated glow effect, 
+    also add a small thumnail againt each link , the purple color scheme on the higlight its making it look dull , keep the lime green color and remove the arrows , improve the hihglight , keep the highlight within the box, keep thihglight color as the theme  
+{% enddoc %}
+{% assign ai_gen_id = block.id | replace: '_', '' | downcase %}
+
+{% style %}
+  .ai-linktree-{{ ai_gen_id }} {
+    display: block;
+    width: {{ block.settings.desktop_width_percent }}%;
+    max-width: 100%;
+    margin: 0 auto;
+    padding: 40px 20px;
+  }
+
+  .ai-linktree-header-{{ ai_gen_id }} {
+    text-align: center;
+    margin-bottom: 40px;
+  }
+
+  .ai-linktree-title-{{ ai_gen_id }} {
+    font-size: {{ block.settings.heading_size }}px;
+    color: {{ block.settings.heading_color }};
+    margin: 0 0 12px;
+    font-weight: 600;
+  }
+
+  .ai-linktree-subtitle-{{ ai_gen_id }} {
+    font-size: {{ block.settings.subtitle_size }}px;
+    color: {{ block.settings.subtitle_color }};
+    margin: 0;
+  }
+
+  .ai-linktree-links-{{ ai_gen_id }} {
+    display: flex;
+    flex-direction: column;
+    gap: {{ block.settings.link_spacing }}px;
+    max-width: 600px;
+    margin: 0 auto;
+  }
+
+  .ai-linktree-link-{{ ai_gen_id }} {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 20px;
+    background: {{ block.settings.link_background }};
+    border-radius: {{ block.settings.border_radius }}px;
+    text-decoration: none;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    overflow: hidden;
+    border: {{ block.settings.border_thickness }}px solid {{ block.settings.border_color }};
+  }
+
+  .ai-linktree-link-{{ ai_gen_id }}::before {
+    content: '';
+    position: absolute;
+    top: -2px;
+    left: -2px;
+    right: -2px;
+    bottom: -2px;
+    background: linear-gradient(135deg, #edffa7, #d7ff89);
+    border-radius: {{ block.settings.border_radius }}px;
+    opacity: 0;
+    z-index: 0;
+    transition: opacity 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .ai-linktree-link-{{ ai_gen_id }}::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: {{ block.settings.link_background }};
+    border-radius: {{ block.settings.border_radius }}px;
+    z-index: 0;
+    transition: background 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .ai-linktree-link-{{ ai_gen_id }}:hover::before {
+    opacity: 1;
+  }
+
+  .ai-linktree-link-{{ ai_gen_id }}:hover::after {
+    background: linear-gradient(135deg, rgba(237, 255, 167, 0.1), rgba(215, 255, 137, 0.1));
+  }
+
+  .ai-linktree-link-{{ ai_gen_id }}:hover {
+    transform: translateY(-6px) scale(1.02);
+    box-shadow: 0 12px 30px rgba(215, 255, 137, 0.25);
+    border-color: transparent;
+  }
+
+  .ai-linktree-thumbnail-{{ ai_gen_id }} {
+    flex-shrink: 0;
+    width: {{ block.settings.thumbnail_size }}px;
+    height: {{ block.settings.thumbnail_size }}px;
+    border-radius: {{ block.settings.thumbnail_radius }}px;
+    overflow: hidden;
+    background: #f4f4f4;
+    transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    z-index: 1;
+  }
+
+  .ai-linktree-link-{{ ai_gen_id }}:hover .ai-linktree-thumbnail-{{ ai_gen_id }} {
+    transform: scale(1.1) rotate(3deg);
+  }
+
+  .ai-linktree-thumbnail-{{ ai_gen_id }} img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .ai-linktree-thumbnail-placeholder-{{ ai_gen_id }} {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, #f4f4f4, #e0e0e0);
+  }
+
+  .ai-linktree-thumbnail-placeholder-{{ ai_gen_id }} svg {
+    width: 60%;
+    height: 60%;
+    opacity: 0.3;
+  }
+
+  .ai-linktree-content-{{ ai_gen_id }} {
+    flex-grow: 1;
+    min-width: 0;
+    position: relative;
+    z-index: 1;
+  }
+
+  .ai-linktree-link-title-{{ ai_gen_id }} {
+    font-size: {{ block.settings.link_title_size }}px;
+    color: {{ block.settings.link_title_color }};
+    margin: 0 0 6px;
+    font-weight: 600;
+    transition: color 0.3s ease;
+  }
+
+  .ai-linktree-link-{{ ai_gen_id }}:hover .ai-linktree-link-title-{{ ai_gen_id }} {
+    color: {{ block.settings.link_title_hover_color }};
+  }
+
+  .ai-linktree-link-description-{{ ai_gen_id }} {
+    font-size: {{ block.settings.link_description_size }}px;
+    color: {{ block.settings.link_description_color }};
+    margin: 0;
+    line-height: 1.4;
+  }
+
+  @media screen and (max-width: 749px) {
+    .ai-linktree-{{ ai_gen_id }} {
+      width: 100%;
+      padding: 30px 16px;
+    }
+
+    .ai-linktree-title-{{ ai_gen_id }} {
+      font-size: calc({{ block.settings.heading_size }}px * 0.8);
+    }
+
+    .ai-linktree-subtitle-{{ ai_gen_id }} {
+      font-size: calc({{ block.settings.subtitle_size }}px * 0.9);
+    }
+
+    .ai-linktree-link-{{ ai_gen_id }} {
+      padding: 16px;
+    }
+
+    .ai-linktree-thumbnail-{{ ai_gen_id }} {
+      width: calc({{ block.settings.thumbnail_size }}px * 0.8);
+      height: calc({{ block.settings.thumbnail_size }}px * 0.8);
+    }
+  }
+{% endstyle %}
+
+<link-tree-{{ ai_gen_id }} class="ai-linktree-{{ ai_gen_id }}" {{ block.shopify_attributes }}>
+  {% if block.settings.main_heading != blank or block.settings.main_subtitle != blank %}
+    <div class="ai-linktree-header-{{ ai_gen_id }}">
+      {% if block.settings.main_heading != blank %}
+        <h2 class="ai-linktree-title-{{ ai_gen_id }}">{{ block.settings.main_heading }}</h2>
+      {% endif %}
+      {% if block.settings.main_subtitle != blank %}
+        <p class="ai-linktree-subtitle-{{ ai_gen_id }}">{{ block.settings.main_subtitle }}</p>
+      {% endif %}
+    </div>
+  {% endif %}
+
+  <div class="ai-linktree-links-{{ ai_gen_id }}">
+    {% for i in (1..6) %}
+      {% liquid
+        assign link_enabled_key = 'link_' | append: i | append: '_enabled'
+        assign link_url_key = 'link_' | append: i | append: '_url'
+        assign link_title_key = 'link_' | append: i | append: '_title'
+        assign link_description_key = 'link_' | append: i | append: '_description'
+        assign link_image_key = 'link_' | append: i | append: '_image'
+
+        assign link_enabled = block.settings[link_enabled_key]
+        assign link_url = block.settings[link_url_key]
+        assign link_title = block.settings[link_title_key]
+        assign link_description = block.settings[link_description_key]
+        assign link_image = block.settings[link_image_key]
+      %}
+
+      {% if link_enabled %}
+        <a
+          href="{{ link_url }}"
+          class="ai-linktree-link-{{ ai_gen_id }}"
+          {% if link_url == blank %}onclick="return false;"{% endif %}
+        >
+          <div class="ai-linktree-thumbnail-{{ ai_gen_id }}">
+            {% if link_image %}
+              <img
+                src="{{ link_image | image_url: width: 200 }}"
+                alt="{{ link_title | escape }}"
+                loading="lazy"
+                width="200"
+                height="200"
+              >
+            {% else %}
+              <div class="ai-linktree-thumbnail-placeholder-{{ ai_gen_id }}">
+                {{ 'image' | placeholder_svg_tag }}
+              </div>
+            {% endif %}
+          </div>
+
+          <div class="ai-linktree-content-{{ ai_gen_id }}">
+            {% if link_title != blank %}
+              <h3 class="ai-linktree-link-title-{{ ai_gen_id }}">{{ link_title }}</h3>
+            {% endif %}
+            {% if link_description != blank %}
+              <p class="ai-linktree-link-description-{{ ai_gen_id }}">{{ link_description }}</p>
+            {% endif %}
+          </div>
+        </a>
+      {% endif %}
+    {% endfor %}
+  </div>
+</link-tree-{{ ai_gen_id }}>
+
+<script>
+  (function() {
+    class LinkTree{{ ai_gen_id }} extends HTMLElement {
+      constructor() {
+        super();
+      }
+
+      connectedCallback() {
+        this.links = this.querySelectorAll('.ai-linktree-link-{{ ai_gen_id }}');
+        this.setupAnimations();
+      }
+
+      setupAnimations() {
+        this.links.forEach((link, index) => {
+          link.style.opacity = '0';
+          link.style.transform = 'translateY(30px)';
+
+          setTimeout(() => {
+            link.style.transition = 'opacity 0.6s cubic-bezier(0.4, 0, 0.2, 1), transform 0.6s cubic-bezier(0.4, 0, 0.2, 1)';
+            link.style.opacity = '1';
+            link.style.transform = 'translateY(0)';
+          }, index * 120);
+        });
+      }
+    }
+
+    customElements.define('link-tree-{{ ai_gen_id }}', LinkTree{{ ai_gen_id }});
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "Link tree menu",
+  "tag": null,
+  "settings": [
+    {
+      "type": "header",
+      "content": "Main heading"
+    },
+    {
+      "type": "text",
+      "id": "main_heading",
+      "label": "Heading",
+      "default": "Connect with us"
+    },
+    {
+      "type": "text",
+      "id": "main_subtitle",
+      "label": "Subtitle",
+      "default": "Find us on your favorite platforms"
+    },
+    {
+      "type": "range",
+      "id": "heading_size",
+      "min": 20,
+      "max": 60,
+      "step": 2,
+      "unit": "px",
+      "label": "Heading size",
+      "default": 36
+    },
+    {
+      "type": "range",
+      "id": "subtitle_size",
+      "min": 12,
+      "max": 24,
+      "step": 1,
+      "unit": "px",
+      "label": "Subtitle size",
+      "default": 16
+    },
+    {
+      "type": "color",
+      "id": "heading_color",
+      "label": "Heading color",
+      "default": "#2e2a39"
+    },
+    {
+      "type": "color",
+      "id": "subtitle_color",
+      "label": "Subtitle color",
+      "default": "#666666"
+    },
+    {
+      "type": "header",
+      "content": "Layout"
+    },
+    {
+      "type": "range",
+      "id": "desktop_width_percent",
+      "label": "Desktop width",
+      "min": 50,
+      "max": 100,
+      "step": 5,
+      "unit": "%",
+      "default": 100
+    },
+    {
+      "type": "range",
+      "id": "link_spacing",
+      "min": 8,
+      "max": 32,
+      "step": 4,
+      "unit": "px",
+      "label": "Space between links",
+      "default": 16
+    },
+    {
+      "type": "header",
+      "content": "Link style"
+    },
+    {
+      "type": "color",
+      "id": "link_background",
+      "label": "Background",
+      "default": "#ffffff"
+    },
+    {
+      "type": "range",
+      "id": "border_radius",
+      "min": 0,
+      "max": 40,
+      "step": 2,
+      "unit": "px",
+      "label": "Border radius",
+      "default": 16
+    },
+    {
+      "type": "range",
+      "id": "border_thickness",
+      "min": 0,
+      "max": 4,
+      "step": 1,
+      "unit": "px",
+      "label": "Border thickness",
+      "default": 1
+    },
+    {
+      "type": "color",
+      "id": "border_color",
+      "label": "Border color",
+      "default": "#e0e0e0"
+    },
+    {
+      "type": "range",
+      "id": "link_title_size",
+      "min": 14,
+      "max": 28,
+      "step": 1,
+      "unit": "px",
+      "label": "Title size",
+      "default": 18
+    },
+    {
+      "type": "color",
+      "id": "link_title_color",
+      "label": "Title color",
+      "default": "#2e2a39"
+    },
+    {
+      "type": "color",
+      "id": "link_title_hover_color",
+      "label": "Title hover color",
+      "default": "#2e2a39"
+    },
+    {
+      "type": "range",
+      "id": "link_description_size",
+      "min": 12,
+      "max": 18,
+      "step": 1,
+      "unit": "px",
+      "label": "Description size",
+      "default": 14
+    },
+    {
+      "type": "color",
+      "id": "link_description_color",
+      "label": "Description color",
+      "default": "#666666"
+    },
+    {
+      "type": "header",
+      "content": "Thumbnail"
+    },
+    {
+      "type": "range",
+      "id": "thumbnail_size",
+      "min": 40,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "label": "Thumbnail size",
+      "default": 60
+    },
+    {
+      "type": "range",
+      "id": "thumbnail_radius",
+      "min": 0,
+      "max": 40,
+      "step": 2,
+      "unit": "px",
+      "label": "Thumbnail radius",
+      "default": 12
+    },
+    {
+      "type": "header",
+      "content": "Link 1"
+    },
+    {
+      "type": "checkbox",
+      "id": "link_1_enabled",
+      "label": "Enable link 1",
+      "default": true
+    },
+    {
+      "type": "image_picker",
+      "id": "link_1_image",
+      "label": "Thumbnail"
+    },
+    {
+      "type": "text",
+      "id": "link_1_title",
+      "label": "Title",
+      "default": "Instagram"
+    },
+    {
+      "type": "text",
+      "id": "link_1_description",
+      "label": "Description",
+      "default": "Follow us for daily updates"
+    },
+    {
+      "type": "url",
+      "id": "link_1_url",
+      "label": "Link"
+    },
+    {
+      "type": "header",
+      "content": "Link 2"
+    },
+    {
+      "type": "checkbox",
+      "id": "link_2_enabled",
+      "label": "Enable link 2",
+      "default": true
+    },
+    {
+      "type": "image_picker",
+      "id": "link_2_image",
+      "label": "Thumbnail"
+    },
+    {
+      "type": "text",
+      "id": "link_2_title",
+      "label": "Title",
+      "default": "Shop"
+    },
+    {
+      "type": "text",
+      "id": "link_2_description",
+      "label": "Description",
+      "default": "Browse our latest collection"
+    },
+    {
+      "type": "url",
+      "id": "link_2_url",
+      "label": "Link"
+    },
+    {
+      "type": "header",
+      "content": "Link 3"
+    },
+    {
+      "type": "checkbox",
+      "id": "link_3_enabled",
+      "label": "Enable link 3",
+      "default": true
+    },
+    {
+      "type": "image_picker",
+      "id": "link_3_image",
+      "label": "Thumbnail"
+    },
+    {
+      "type": "text",
+      "id": "link_3_title",
+      "label": "Title",
+      "default": "YouTube"
+    },
+    {
+      "type": "text",
+      "id": "link_3_description",
+      "label": "Description",
+      "default": "Watch our latest videos"
+    },
+    {
+      "type": "url",
+      "id": "link_3_url",
+      "label": "Link"
+    },
+    {
+      "type": "header",
+      "content": "Link 4"
+    },
+    {
+      "type": "checkbox",
+      "id": "link_4_enabled",
+      "label": "Enable link 4",
+      "default": false
+    },
+    {
+      "type": "image_picker",
+      "id": "link_4_image",
+      "label": "Thumbnail"
+    },
+    {
+      "type": "text",
+      "id": "link_4_title",
+      "label": "Title"
+    },
+    {
+      "type": "text",
+      "id": "link_4_description",
+      "label": "Description"
+    },
+    {
+      "type": "url",
+      "id": "link_4_url",
+      "label": "Link"
+    },
+    {
+      "type": "header",
+      "content": "Link 5"
+    },
+    {
+      "type": "checkbox",
+      "id": "link_5_enabled",
+      "label": "Enable link 5",
+      "default": false
+    },
+    {
+      "type": "image_picker",
+      "id": "link_5_image",
+      "label": "Thumbnail"
+    },
+    {
+      "type": "text",
+      "id": "link_5_title",
+      "label": "Title"
+    },
+    {
+      "type": "text",
+      "id": "link_5_description",
+      "label": "Description"
+    },
+    {
+      "type": "url",
+      "id": "link_5_url",
+      "label": "Link"
+    },
+    {
+      "type": "header",
+      "content": "Link 6"
+    },
+    {
+      "type": "checkbox",
+      "id": "link_6_enabled",
+      "label": "Enable link 6",
+      "default": false
+    },
+    {
+      "type": "image_picker",
+      "id": "link_6_image",
+      "label": "Thumbnail"
+    },
+    {
+      "type": "text",
+      "id": "link_6_title",
+      "label": "Title"
+    },
+    {
+      "type": "text",
+      "id": "link_6_description",
+      "label": "Description"
+    },
+    {
+      "type": "url",
+      "id": "link_6_url",
+      "label": "Link"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Link tree menu"
+    }
+  ]
+}
+{% endschema %}

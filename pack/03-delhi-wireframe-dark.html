@@ -1,0 +1,588 @@
+<title>Delhi Run Collective</title>
+<style>
+  /* ===== DRC v3 — "DELHI, 6 AM" =====
+     Committed single dark world: a map table at first light.
+     Ground: near-black with blue bias. Water/map: Yamuna teal. Delhi: marigold. */
+  :root{
+    --void:#07080B;
+    --deck:#0D1116;
+    --line:#1B2530;
+    --steel:#78879A;      /* neutral, blue-biased */
+    --bone:#EDF1F4;
+    --teal:#2FD3C3;       /* map + water */
+    --gold:#FFB01F;       /* Delhi / signal */
+    --disp:"Helvetica Neue",Helvetica,"Arial Black",Arial,sans-serif;
+    --body:"Helvetica Neue",Helvetica,Arial,sans-serif;
+    --data:ui-monospace,"SF Mono",Menlo,Consolas,monospace;
+    --f--1:clamp(.72rem,.68rem + .2vw,.8rem);
+    --f-0:clamp(.98rem,.94rem + .25vw,1.08rem);
+    --f-1:clamp(1.2rem,1.1rem + .5vw,1.45rem);
+    --f-2:clamp(1.7rem,1.4rem + 1.6vw,2.6rem);
+    --f-3:clamp(2.4rem,1.7rem + 3.6vw,4.4rem);
+    --f-4:clamp(3rem,1.6rem + 9vw,9.5rem);
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{margin:0;background:var(--void);color:var(--bone);font-family:var(--body);font-size:var(--f-0);line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+  a{color:inherit}
+  ::selection{background:var(--teal);color:var(--void)}
+  :focus-visible{outline:2px solid var(--gold);outline-offset:3px}
+  .wrap{max-width:1240px;margin:0 auto;padding:0 clamp(16px,4vw,44px)}
+  .lab{font-family:var(--data);font-size:var(--f--1);letter-spacing:.2em;text-transform:uppercase;color:var(--steel);margin:0}
+  h1,h2,h3{font-family:var(--disp);font-weight:800;text-transform:uppercase;letter-spacing:-.03em;line-height:.9;text-wrap:balance;margin:0}
+
+  /* ---------- nav ---------- */
+  .top{position:fixed;inset:0 0 auto 0;z-index:60;backdrop-filter:blur(10px);background:linear-gradient(var(--void),color-mix(in srgb,var(--void) 40%,transparent));border-bottom:1px solid var(--line)}
+  .top .wrap{display:flex;align-items:center;gap:clamp(10px,2.5vw,28px);height:58px}
+  .brand{font-family:var(--disp);font-weight:800;text-transform:uppercase;letter-spacing:-.02em;font-size:1.05rem}
+  .brand i{font-style:normal;color:var(--teal)}
+  .top nav{margin-left:auto;display:flex;gap:clamp(10px,2vw,24px)}
+  .top nav a{font-family:var(--data);font-size:var(--f--1);letter-spacing:.14em;text-transform:uppercase;text-decoration:none;color:var(--steel)}
+  .top nav a:hover{color:var(--bone)}
+  .top nav a.go{color:var(--gold)}
+  @media(max-width:640px){.top nav a.hide-s{display:none}}
+
+  /* ---------- hero / map ---------- */
+  .hero{position:relative;min-height:min(104svh,980px);display:flex;flex-direction:column;justify-content:flex-end;padding-top:58px;overflow:hidden}
+  #map{position:absolute;inset:0;width:100%;height:100%;display:block;cursor:grab;touch-action:pan-y}
+  #map.drag{cursor:grabbing}
+  .hero::after{ /* let the wordmark rise out of the map */
+    content:"";position:absolute;inset:auto 0 0 0;height:62%;pointer-events:none;
+    background:linear-gradient(to top,var(--void) 8%,color-mix(in srgb,var(--void) 72%,transparent) 48%,transparent);
+  }
+  .hero-copy{position:relative;z-index:2;padding-bottom:clamp(26px,4vw,52px)}
+  .rise{animation:rise 1.5s cubic-bezier(.2,.8,.2,1) both}
+  .rise-2{animation-delay:.5s}
+  .rise-3{animation-delay:.75s}
+  @keyframes rise{from{opacity:0;transform:translateY(26px);filter:blur(9px)}to{opacity:1;transform:none;filter:none}}
+  h1.word{font-size:var(--f-4);line-height:.82}
+  h1.word .l2{display:block;color:var(--teal)}
+  .tag{font-family:var(--disp);font-weight:800;text-transform:uppercase;font-size:var(--f-1);letter-spacing:-.01em;margin:18px 0 0;max-width:22ch}
+  .herofoot{display:flex;flex-wrap:wrap;gap:clamp(14px,3vw,34px);align-items:flex-end;justify-content:space-between;margin-top:clamp(20px,3vw,34px)}
+  .acts{display:flex;flex-wrap:wrap;gap:10px}
+  .btn{font-family:var(--data);font-size:var(--f--1);letter-spacing:.14em;text-transform:uppercase;text-decoration:none;padding:14px 22px;border:1px solid var(--bone);transition:background .16s,color .16s,transform .16s,border-color .16s}
+  .btn:hover{transform:translateY(-2px)}
+  .btn.fill{background:var(--gold);border-color:var(--gold);color:#161000}
+  .btn.fill:hover{background:var(--bone);border-color:var(--bone);color:var(--void)}
+  .btn.line:hover{background:var(--bone);color:var(--void)}
+  .hint{font-family:var(--data);font-size:.66rem;letter-spacing:.14em;text-transform:uppercase;color:var(--steel)}
+
+  /* live marker readout */
+  .readout{border:1px solid var(--line);background:color-mix(in srgb,var(--deck) 88%,transparent);padding:14px 16px;min-width:min(340px,100%);display:grid;gap:6px}
+  .readout .rl{font-family:var(--data);font-size:.64rem;letter-spacing:.16em;text-transform:uppercase;color:var(--gold)}
+  .readout .rn{font-family:var(--disp);font-weight:800;text-transform:uppercase;font-size:var(--f-1);line-height:1}
+  .readout .rd{font-family:var(--data);font-size:var(--f--1);color:var(--steel);font-variant-numeric:tabular-nums}
+
+  /* ---------- marquee ---------- */
+  .strip{border-top:1px solid var(--line);border-bottom:1px solid var(--line);overflow:hidden;background:var(--deck)}
+  .strip ul{display:flex;margin:0;padding:0;list-style:none;width:max-content;animation:sl 40s linear infinite}
+  .strip li{font-family:var(--disp);font-weight:800;text-transform:uppercase;font-size:clamp(1rem,2.6vw,1.5rem);letter-spacing:-.01em;padding:10px 0;white-space:nowrap;color:var(--steel)}
+  .strip li::after{content:"·";color:var(--teal);padding:0 .55em}
+  @keyframes sl{to{transform:translateX(-50%)}}
+  @media(prefers-reduced-motion:reduce){.strip ul{animation:none}.rise{animation:none}}
+
+  /* ---------- sections ---------- */
+  section{padding:clamp(54px,8vw,116px) 0}
+  .shead{display:flex;gap:18px;align-items:flex-end;flex-wrap:wrap;margin-bottom:clamp(24px,3.5vw,46px)}
+  .shead h2{font-size:var(--f-3);flex:1 1 340px}
+  .shead .note{max-width:38ch;color:var(--steel);font-size:var(--f--1);margin:0}
+
+  /* week grid */
+  .week{display:grid;gap:1px;background:var(--line);border:1px solid var(--line)}
+  @media(min-width:820px){.week{grid-template-columns:repeat(4,1fr)}}
+  .day{background:var(--deck);padding:clamp(18px,2.2vw,26px);display:flex;flex-direction:column;gap:11px;border:0;text-align:left;color:inherit;font:inherit;cursor:pointer;transition:background .2s}
+  .day:hover,.day:focus-visible{background:#121822}
+  .day.on{background:#131A24;box-shadow:inset 0 2px 0 var(--gold)}
+  .day .dd{font-family:var(--disp);font-weight:800;text-transform:uppercase;font-size:var(--f-2);line-height:.95}
+  .day .tt{font-family:var(--data);font-size:var(--f--1);letter-spacing:.12em;color:var(--teal);font-variant-numeric:tabular-nums}
+  .day .pl{font-weight:600}
+  .day .nt{font-size:var(--f--1);color:var(--steel);line-height:1.55}
+  .day .km{margin-top:auto;padding-top:11px;border-top:1px dashed var(--line);font-family:var(--data);font-size:var(--f--1);color:var(--steel);font-variant-numeric:tabular-nums}
+  .day .km em{font-style:normal;color:var(--gold)}
+
+  /* ---------- events ---------- */
+  .evs{display:flex;flex-direction:column;border-top:1px solid var(--line)}
+  .ev{display:grid;gap:10px 28px;padding:clamp(22px,3vw,34px) 0;border-bottom:1px solid var(--line);align-items:start;transition:background .18s}
+  @media(min-width:860px){.ev{grid-template-columns:132px 1fr 210px}}
+  .ev:hover{background:#0B0F14}
+  .ev .when{font-family:var(--data);font-size:var(--f--1);letter-spacing:.14em;text-transform:uppercase;color:var(--gold);padding-top:5px;font-variant-numeric:tabular-nums}
+  .ev h3{font-size:var(--f-2)}
+  .ev:hover h3{color:var(--teal)}
+  .ev p{margin:12px 0 0;color:var(--steel);max-width:58ch}
+  .ev .side{display:flex;flex-direction:column;gap:10px;align-items:flex-start}
+  @media(min-width:860px){.ev .side{align-items:flex-end;text-align:right}}
+  .chip{font-family:var(--data);font-size:.62rem;letter-spacing:.14em;text-transform:uppercase;border:1px solid var(--line);color:var(--steel);padding:5px 10px}
+  .chip.open{border-color:var(--teal);color:var(--teal)}
+  .chip.hot{border-color:var(--gold);color:var(--gold)}
+  .ev .reg{font-family:var(--data);font-size:var(--f--1);letter-spacing:.1em;text-transform:uppercase;text-decoration:none;border-bottom:1px solid var(--gold);padding-bottom:2px}
+  .ev .reg:hover{color:var(--gold)}
+
+  /* ---------- gallery ---------- */
+  .gal{display:grid;gap:clamp(8px,1.2vw,14px);grid-template-columns:repeat(2,1fr)}
+  @media(min-width:720px){.gal{grid-template-columns:repeat(4,1fr)}}
+  .shot{position:relative;aspect-ratio:4/5;overflow:hidden;border:1px solid var(--line);display:block}
+  .shot.tall{aspect-ratio:4/5}
+  @media(min-width:720px){.shot.wide{grid-column:span 2;aspect-ratio:8/5}}
+  .shot canvas{position:absolute;inset:0;width:100%;height:100%;display:block}
+  .shot figcaption{position:absolute;inset:auto 0 0 0;padding:12px 13px;display:flex;justify-content:space-between;gap:10px;align-items:baseline;
+    background:linear-gradient(transparent,rgba(4,6,9,.88));font-family:var(--data);font-size:.66rem;letter-spacing:.12em;text-transform:uppercase}
+  .shot figcaption b{font-weight:400;color:var(--bone)}
+  .shot figcaption span{color:var(--steel);font-variant-numeric:tabular-nums}
+  .shot::after{content:"";position:absolute;inset:0;box-shadow:inset 0 0 0 0 var(--teal);transition:box-shadow .18s}
+  .shot:hover::after{box-shadow:inset 0 0 0 2px var(--teal)}
+  .galfoot{display:flex;flex-wrap:wrap;gap:14px;justify-content:space-between;align-items:baseline;margin-top:18px}
+
+  /* ---------- first run ---------- */
+  .steps{counter-reset:s;display:grid;gap:1px;background:var(--line);border:1px solid var(--line)}
+  @media(min-width:860px){.steps{grid-template-columns:repeat(4,1fr)}}
+  .step{background:var(--deck);padding:clamp(18px,2.2vw,26px);display:flex;flex-direction:column;gap:9px}
+  .step::before{counter-increment:s;content:counter(s,decimal-leading-zero);font-family:var(--data);font-size:var(--f--1);letter-spacing:.16em;color:var(--teal)}
+  .step h3{font-family:var(--body);font-weight:700;text-transform:none;letter-spacing:0;font-size:var(--f-0);line-height:1.35}
+  .step p{margin:0;font-size:var(--f--1);color:var(--steel);line-height:1.6}
+
+  /* ---------- join ---------- */
+  .join{border:1px solid var(--gold);padding:clamp(24px,4vw,56px);display:grid;gap:clamp(22px,3vw,44px)}
+  @media(min-width:860px){.join{grid-template-columns:1.05fr .95fr;align-items:center}}
+  .join h2{font-size:var(--f-3)}
+  .join p{color:var(--steel);max-width:42ch}
+  .chan{display:grid;gap:1px;background:var(--line);border:1px solid var(--line)}
+  .chan a{background:var(--deck);padding:16px 18px;display:flex;justify-content:space-between;gap:12px;align-items:baseline;text-decoration:none;
+    font-family:var(--data);font-size:var(--f--1);letter-spacing:.1em;text-transform:uppercase;transition:background .16s,color .16s}
+  .chan a:hover{background:var(--gold);color:#161000}
+  .chan a i{font-style:normal;letter-spacing:0;text-transform:none;color:var(--steel)}
+  .chan a:hover i{color:#161000}
+
+  /* ---------- merch: deliberately a strip, not a store ---------- */
+  .merchbar{display:flex;gap:1px;background:var(--line);border:1px solid var(--line);overflow-x:auto}
+  .mi{background:var(--deck);min-width:190px;flex:1 0 190px;display:flex;flex-direction:column}
+  .mi .art{aspect-ratio:1/1;display:grid;place-items:center;text-align:center;padding:18px;font-family:var(--disp);font-weight:800;text-transform:uppercase;font-size:1.05rem;line-height:1}
+  .mi.m1 .art{background:#0A0C10;color:var(--teal)}
+  .mi.m2 .art{background:var(--teal);color:#04100E}
+  .mi.m3 .art{background:#0A0C10;color:#FF8FB0}
+  .mi.m4 .art{background:#FF8FB0;color:#26060F}
+  .mi .cap{display:flex;justify-content:space-between;gap:8px;padding:12px 14px;border-top:1px solid var(--line);font-family:var(--data);font-size:var(--f--1);color:var(--steel);font-variant-numeric:tabular-nums}
+
+  footer{border-top:1px solid var(--line);padding:36px 0 52px}
+  footer .wrap{display:flex;flex-wrap:wrap;gap:18px;justify-content:space-between;align-items:baseline}
+  footer .fw{font-family:var(--disp);font-weight:800;text-transform:uppercase;font-size:var(--f-1);letter-spacing:-.02em}
+  footer nav{display:flex;gap:18px;flex-wrap:wrap}
+  footer a{font-family:var(--data);font-size:var(--f--1);letter-spacing:.1em;text-transform:uppercase;text-decoration:none;color:var(--steel)}
+  footer a:hover{color:var(--bone)}
+</style>
+
+<div class="top"><div class="wrap">
+  <span class="brand">Delhi Run <i>Collective</i></span>
+  <nav aria-label="Primary">
+    <a href="#week">Runs</a>
+    <a href="#events">Events</a>
+    <a href="#gallery">Gallery</a>
+    <a href="#first" class="hide-s">First run</a>
+    <a href="#merch" class="hide-s">Merch</a>
+    <a href="#join" class="go">Join</a>
+  </nav>
+</div></div>
+
+<header class="hero">
+  <canvas id="map" aria-label="Rotating 3D wireframe map of Delhi showing the four weekly Delhi Run Collective meeting points" role="img"></canvas>
+  <div class="wrap hero-copy">
+    <p class="lab rise">Delhi NCR · 28.61° N, 77.21° E · four runs a week</p>
+    <h1 class="word rise rise-2">Because running<span class="l2">alone isn't it.</span></h1>
+    <div class="herofoot">
+      <div class="rise rise-3">
+        <p class="tag">We take 1,840 people around this city every week.</p>
+        <div class="acts">
+          <a class="btn fill" href="#week">This week's runs</a>
+          <a class="btn line" href="#first">Never done this before?</a>
+        </div>
+      </div>
+      <div class="readout rise rise-3" id="readout" aria-live="polite">
+        <span class="rl" id="rl">Next run · Saturday</span>
+        <span class="rn" id="rn">Kalindi Kunj</span>
+        <span class="rd" id="rd">6:15 AM · 10–21 km · all paces</span>
+        <span class="hint">Drag the map · tap a marker</span>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="strip" aria-hidden="true"><ul>
+  <li>Lodhi Colony</li><li>Nehru Park hills</li><li>Kalindi Kunj long run</li><li>Lodhi Art District 5K</li><li>Chai after</li><li>All paces led</li>
+  <li>Lodhi Colony</li><li>Nehru Park hills</li><li>Kalindi Kunj long run</li><li>Lodhi Art District 5K</li><li>Chai after</li><li>All paces led</li>
+</ul></div>
+
+<section id="week"><div class="wrap">
+  <div class="shead">
+    <div><p class="lab">The week</p><h2>Four corners of the city, same hour, every week.</h2></div>
+    <p class="note">Route pins go out in the WhatsApp group the night before. Tap a day to find it on the map.</p>
+  </div>
+  <div class="week" id="week-grid">
+    <button class="day" type="button" data-i="0">
+      <span class="dd">Tue</span><span class="tt">6:00 AM</span>
+      <span class="pl">Lodhi Colony</span>
+      <span class="nt">Meherchand Market gate, under the fish mural. Loops, so nobody gets stranded.</span>
+      <span class="km">5–8 km · <em>all paces</em></span>
+    </button>
+    <button class="day" type="button" data-i="1">
+      <span class="dd">Thu</span><span class="tt">6:00 AM</span>
+      <span class="pl">Nehru Park</span>
+      <span class="nt">Hill repeats. Genuinely hard. Bring water and no opinions about the incline.</span>
+      <span class="km">6–10 km · <em>5:15–7:00</em></span>
+    </button>
+    <button class="day on" type="button" data-i="2">
+      <span class="dd">Sat</span><span class="tt">6:15 AM</span>
+      <span class="pl">Kalindi Kunj</span>
+      <span class="nt">Long, flat, the marathon-block run. People cab-pool from Kalkaji at 5:30.</span>
+      <span class="km">10–21 km · <em>all paces</em></span>
+    </button>
+    <button class="day" type="button" data-i="3">
+      <span class="dd">Sun</span><span class="tt">6:30 AM</span>
+      <span class="pl">Lodhi Art District</span>
+      <span class="nt">Social 5K past the murals, breakfast after at Meherchand. Walking stretches is fine.</span>
+      <span class="km">5 km · <em>any pace</em></span>
+    </button>
+  </div>
+</div></section>
+
+<section id="events"><div class="wrap">
+  <div class="shead">
+    <div><p class="lab">Upcoming experiences</p><h2>Curated runs, workouts and community things.</h2></div>
+    <p class="note">Weekly runs are free forever. Only these are ticketed, and only when someone else is paying for the venue.</p>
+  </div>
+  <div class="evs">
+    <article class="ev">
+      <span class="when">Sat · 08 Aug</span>
+      <div>
+        <h3>Saturday Run with Nike</h3>
+        <p>Try on the Pegasus 42 or the Structure 26, take them out on the road, and find the pair that matches your stride. Most sizes on site — come at 5:45 if you want a fitting before we start.</p>
+      </div>
+      <div class="side"><span class="chip open">Free · 42 of 60 gone</span><a class="reg" href="#join">Register</a></div>
+    </article>
+    <article class="ev">
+      <span class="when">Sun · 09 Aug</span>
+      <div>
+        <h3>Sunday Run with Kyro</h3>
+        <p>Small teams, one map. You capture territory around Lodhi Colony as you run it, using Kyro's gamified app. The losing team buys breakfast — that part isn't in the app.</p>
+      </div>
+      <div class="side"><span class="chip open">Teams of 4</span><a class="reg" href="#join">Register</a></div>
+    </article>
+    <article class="ev">
+      <span class="when">Sat · 23 Aug</span>
+      <div>
+        <h3>Peakst8: No Parking</h3>
+        <p>One person runs a 500 m loop while the rest of the team maxes out reps — mountain climbers or burpees, your call. Register through our community link for 30% off entry.</p>
+      </div>
+      <div class="side"><span class="chip hot">Ticketed · 30% off</span><a class="reg" href="#join">Get the code</a></div>
+    </article>
+  </div>
+</div></section>
+
+<section id="gallery"><div class="wrap">
+  <div class="shead">
+    <div><p class="lab">Inside the community</p><h2>Six a.m. looks like this.</h2></div>
+    <p class="note">Shot by whoever remembered their phone. Everything here is a Tuesday or a Sunday, nothing staged.</p>
+  </div>
+  <div class="gal">
+    <figure class="shot wide"><canvas data-seed="1" data-mode="dawn"></canvas><figcaption><b>Lamps still on</b><span>Lodhi · 05:52</span></figcaption></figure>
+    <figure class="shot"><canvas data-seed="2" data-mode="dust"></canvas><figcaption><b>Footstrike</b><span>Nehru Park</span></figcaption></figure>
+    <figure class="shot"><canvas data-seed="3" data-mode="haze"></canvas><figcaption><b>Yamuna haze</b><span>Kalindi Kunj</span></figcaption></figure>
+    <figure class="shot"><canvas data-seed="4" data-mode="dust"></canvas><figcaption><b>Mural mile</b><span>Sun · 06:34</span></figcaption></figure>
+    <figure class="shot"><canvas data-seed="5" data-mode="haze"></canvas><figcaption><b>Back of the pack</b><span>7:30+ group</span></figcaption></figure>
+    <figure class="shot wide"><canvas data-seed="6" data-mode="dawn"></canvas><figcaption><b>Chai, twenty minutes</b><span>Meherchand</span></figcaption></figure>
+  </div>
+  <div class="galfoot">
+    <p class="lab">1,840 runners · 3 years · nobody left on a route</p>
+    <a class="btn line" href="#">See it all on @delhiruncollective</a>
+  </div>
+</div></section>
+
+<section id="first"><div class="wrap">
+  <div class="shead">
+    <div><p class="lab">Your first run</p><h2>What actually happens, in order.</h2></div>
+    <p class="note">Nobody's timed, nobody's tested, and nobody here is fast enough to make you feel slow on purpose.</p>
+  </div>
+  <div class="steps">
+    <div class="step"><h3>Join the group the night before</h3><p>Route pin, meeting point and pace groups go out around 9 PM. React with a tick so we know to look for you.</p></div>
+    <div class="step"><h3>Find the flag at the start</h3><p>Someone holds a DRC flag from 5:50. Say it's your first run — that's the whole introduction.</p></div>
+    <div class="step"><h3>Pick a pace, badly</h3><p>Guess slow. Every group has a leader at the back who runs at whoever is last. Dropping a group mid-run is normal.</p></div>
+    <div class="step"><h3>Stay for the chai</h3><p>This is the actual club. Twenty minutes at the stall is where the group stops being strangers you ran behind.</p></div>
+  </div>
+</div></section>
+
+<section id="join"><div class="wrap">
+  <div class="join">
+    <div>
+      <p class="lab">Join DRC</p>
+      <h2 style="margin-top:14px">There's no sign-up. Be at the gate.</h2>
+      <p>No fee, no form, no trial period. Get the WhatsApp link tonight, read the pin, run with us Tuesday.</p>
+      <div class="acts"><a class="btn fill" href="#">Get the WhatsApp link</a></div>
+    </div>
+    <div class="chan">
+      <a href="#">Instagram <i>@delhiruncollective</i></a>
+      <a href="#">Strava club <i>Run with the crew, virtually</i></a>
+      <a href="#">WhatsApp <i>Route pins &amp; pace groups</i></a>
+      <a href="#">Newsletter <i>One mail a week, Sunday night</i></a>
+    </div>
+  </div>
+</div></section>
+
+<section id="merch"><div class="wrap">
+  <div class="shead">
+    <div><p class="lab">Merch</p><h2>Four tees. That's the whole shop.</h2></div>
+    <p class="note">Boxy 240 GSM cotton, unisex S–XXL, printed in Okhla a hundred at a time. It pays for bibs, route markers and the flag.</p>
+  </div>
+  <div class="merchbar" role="region" aria-label="Merch" tabindex="0">
+    <article class="mi m1"><div class="art">Born to be<br>a baby girl</div><div class="cap"><span>Black</span><span>₹800</span></div></article>
+    <article class="mi m2"><div class="art">Faster<br>than you</div><div class="cap"><span>Teal</span><span>₹800</span></div></article>
+    <article class="mi m3"><div class="art">Born to be<br>a baby girl</div><div class="cap"><span>Pink print</span><span>₹800</span></div></article>
+    <article class="mi m4"><div class="art">Faster<br>than you</div><div class="cap"><span>Pink base</span><span>₹800</span></div></article>
+  </div>
+</div></section>
+
+<footer><div class="wrap">
+  <span class="fw">Because running alone isn't it.</span>
+  <nav aria-label="Footer"><a href="#">Contact</a><a href="#">Refunds</a><a href="#">Privacy</a><a href="#">Terms</a></nav>
+</div></footer>
+
+<script>
+(function(){
+  "use strict";
+  var reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  /* ---------- Delhi geometry (approximate, hand-plotted in lat/lng) ---------- */
+  var C = {lng:77.215, lat:28.613};
+  function ring(r, squash, n, jitter){
+    var pts=[];
+    for(var i=0;i<=n;i++){
+      var a = i/n*Math.PI*2;
+      var rr = r*(1 + (jitter?Math.sin(a*3.1)*jitter + Math.cos(a*5.3)*jitter*.6:0));
+      pts.push([Math.cos(a)*rr, Math.sin(a)*rr*squash]);
+    }
+    return pts;
+  }
+  // local units: degrees offset from centre, x = lng, y = lat
+  var RING   = ring(0.052, 0.86, 96, 0.06);   // Ring Road
+  var ORR    = ring(0.108, 0.90, 120, 0.05);  // Outer Ring Road
+  var NCR    = ring(0.205, 0.92, 140, 0.04);  // NCR edge
+  var YAMUNA = [[.03,.20],[.032,.145],[.024,.10],[.030,.055],[.038,.01],[.046,-.032],[.062,-.062],[.080,-.088],[.088,-.128],[.096,-.18]];
+  var RADIALS = [];
+  (function(){
+    var angles=[18,62,105,152,198,242,288,332];
+    for(var i=0;i<angles.length;i++){
+      var a=angles[i]*Math.PI/180;
+      RADIALS.push([[Math.cos(a)*.012,Math.sin(a)*.010],[Math.cos(a)*.205,Math.sin(a)*.190]]);
+    }
+  })();
+
+  /* the four actual meeting points */
+  var SPOTS = [
+    {n:"Lodhi Colony",      d:"Tue · 6:00 AM · 5–8 km · all paces",     lng:77.2215, lat:28.5820, day:"Tuesday"},
+    {n:"Nehru Park",        d:"Thu · 6:00 AM · 6–10 km · 5:15–7:00",    lng:77.1955, lat:28.5905, day:"Thursday"},
+    {n:"Kalindi Kunj",      d:"Sat · 6:15 AM · 10–21 km · all paces",   lng:77.3035, lat:28.5395, day:"Saturday"},
+    {n:"Lodhi Art District",d:"Sun · 6:30 AM · 5 km · any pace",        lng:77.2285, lat:28.5895, day:"Sunday"}
+  ].map(function(s){ s.x = s.lng - C.lng; s.y = s.lat - C.lat; return s; });
+
+  /* a few extruded blocks so the plane reads as a city, not a diagram */
+  var BLOCKS = [];
+  (function(){
+    var seed=7;
+    function rnd(){ seed=(seed*16807)%2147483647; return seed/2147483647; }
+    for(var i=0;i<90;i++){
+      var a=rnd()*Math.PI*2, r=Math.pow(rnd(),.62)*0.19;
+      BLOCKS.push({x:Math.cos(a)*r, y:Math.sin(a)*r*0.9, h:0.004+rnd()*0.030});
+    }
+  })();
+
+  var cv = document.getElementById("map"), ctx = cv.getContext("2d");
+  var W=0,H=0,DPR=1, yaw=-0.5, pitch=1.02, spin=reduce?0:0.00016, drag=false, lastX=0, vel=0;
+  var active = 2; /* Saturday = next run */
+
+  function resize(){
+    DPR = Math.min(devicePixelRatio||1, 2);
+    W = cv.clientWidth; H = cv.clientHeight;
+    cv.width = Math.round(W*DPR); cv.height = Math.round(H*DPR);
+    ctx.setTransform(DPR,0,0,DPR,0,0);
+  }
+
+  function proj(x,y,z){
+    var cy=Math.cos(yaw), sy=Math.sin(yaw);
+    var X = x*cy - y*sy, Y = x*sy + y*cy;
+    var cp=Math.cos(pitch), sp=Math.sin(pitch);
+    var Y2 = Y*cp - (z||0)*sp, Z2 = Y*sp + (z||0)*cp;
+    var f = 1.35, s = f/(f + Z2*2.6);
+    var S = Math.min(W,H*1.55) * 1.55;
+    return [W/2 + X*s*S, H*0.50 - Y2*s*S*0.96, s];
+  }
+  function path(pts, close){
+    ctx.beginPath();
+    for(var i=0;i<pts.length;i++){
+      var p = proj(pts[i][0], pts[i][1], 0);
+      i ? ctx.lineTo(p[0],p[1]) : ctx.moveTo(p[0],p[1]);
+    }
+    if(close) ctx.closePath();
+    ctx.stroke();
+  }
+
+  function draw(t){
+    ctx.clearRect(0,0,W,H);
+
+    /* horizon wash — first light behind the city */
+    var g = ctx.createRadialGradient(W/2, H*0.42, 0, W/2, H*0.42, Math.max(W,H)*0.72);
+    g.addColorStop(0,"rgba(47,211,195,0.10)");
+    g.addColorStop(.45,"rgba(20,42,52,0.07)");
+    g.addColorStop(1,"rgba(7,8,11,0)");
+    ctx.fillStyle=g; ctx.fillRect(0,0,W,H);
+
+    ctx.lineJoin="round"; ctx.lineCap="round";
+
+    /* grid graticule */
+    ctx.strokeStyle="rgba(120,135,154,0.10)"; ctx.lineWidth=1;
+    for(var i=-5;i<=5;i++){
+      path([[i*0.042,-0.215],[i*0.042,0.215]]);
+      path([[-0.215,i*0.042],[0.215,i*0.042]]);
+    }
+
+    /* NCR edge + radials */
+    ctx.strokeStyle="rgba(120,135,154,0.22)"; ctx.lineWidth=1; path(NCR,true);
+    ctx.strokeStyle="rgba(120,135,154,0.28)";
+    for(var r=0;r<RADIALS.length;r++) path(RADIALS[r]);
+
+    /* extruded blocks */
+    for(var b=0;b<BLOCKS.length;b++){
+      var B=BLOCKS[b];
+      var p0=proj(B.x,B.y,0), p1=proj(B.x,B.y,B.h);
+      ctx.strokeStyle="rgba(47,211,195,"+(0.10+B.h*7).toFixed(3)+")";
+      ctx.lineWidth=1.1;
+      ctx.beginPath(); ctx.moveTo(p0[0],p0[1]); ctx.lineTo(p1[0],p1[1]); ctx.stroke();
+      ctx.fillStyle="rgba(47,211,195,0.30)";
+      ctx.fillRect(p1[0]-1,p1[1]-1,2,2);
+    }
+
+    /* Outer Ring + Ring Road */
+    ctx.strokeStyle="rgba(237,241,244,0.30)"; ctx.lineWidth=1.3; path(ORR,true);
+    ctx.strokeStyle="rgba(237,241,244,0.62)"; ctx.lineWidth=1.8; path(RING,true);
+
+    /* Yamuna */
+    ctx.strokeStyle="rgba(47,211,195,0.85)"; ctx.lineWidth=3.4; path(YAMUNA);
+    ctx.strokeStyle="rgba(47,211,195,0.20)"; ctx.lineWidth=9; path(YAMUNA);
+
+    /* meeting points */
+    for(var s=0;s<SPOTS.length;s++){
+      var S=SPOTS[s], on = s===active;
+      var pb=proj(S.x,S.y,0), pt=proj(S.x,S.y,on?0.058:0.038);
+      ctx.strokeStyle = on?"rgba(255,176,31,0.95)":"rgba(255,176,31,0.42)";
+      ctx.lineWidth = on?2:1.2;
+      ctx.beginPath(); ctx.moveTo(pb[0],pb[1]); ctx.lineTo(pt[0],pt[1]); ctx.stroke();
+
+      var pulse = reduce?0:(Math.sin(t/520 + s)*0.5+0.5);
+      if(on){
+        ctx.beginPath(); ctx.arc(pb[0],pb[1], 8+pulse*11, 0, Math.PI*2);
+        ctx.strokeStyle="rgba(255,176,31,"+(0.34-pulse*0.30).toFixed(3)+")"; ctx.lineWidth=1.5; ctx.stroke();
+      }
+      ctx.beginPath(); ctx.arc(pt[0],pt[1], on?4.6:3, 0, Math.PI*2);
+      ctx.fillStyle = on?"#FFB01F":"rgba(255,176,31,0.55)"; ctx.fill();
+
+      S._sx=pt[0]; S._sy=pt[1];
+      if(on){
+        ctx.font="600 11px ui-monospace, SFMono-Regular, Menlo, monospace";
+        ctx.fillStyle="#FFB01F"; ctx.textAlign="left";
+        ctx.fillText(S.n.toUpperCase(), pt[0]+11, pt[1]-4);
+      }
+    }
+  }
+
+  var raf;
+  function loop(t){
+    if(!drag){ yaw += spin + vel; vel *= 0.94; }
+    draw(t||0);
+    raf = requestAnimationFrame(loop);
+  }
+
+  /* interaction */
+  function px(e){ return e.touches ? e.touches[0].clientX : e.clientX; }
+  cv.addEventListener("pointerdown", function(e){
+    drag=true; lastX=e.clientX; cv.classList.add("drag"); cv.setPointerCapture(e.pointerId);
+  });
+  cv.addEventListener("pointermove", function(e){
+    if(!drag) return;
+    var dx = e.clientX - lastX; lastX = e.clientX;
+    yaw += dx*0.006; vel = dx*0.0009;
+  });
+  cv.addEventListener("pointerup", function(e){
+    drag=false; cv.classList.remove("drag");
+    /* tap-to-select nearest marker */
+    var r = cv.getBoundingClientRect(), mx=e.clientX-r.left, my=e.clientY-r.top, best=-1, bd=1e9;
+    for(var i=0;i<SPOTS.length;i++){
+      var d=Math.hypot(SPOTS[i]._sx-mx, SPOTS[i]._sy-my);
+      if(d<bd){bd=d;best=i}
+    }
+    if(bd<44) select(best);
+  });
+  cv.addEventListener("pointercancel", function(){ drag=false; cv.classList.remove("drag"); });
+
+  var rl=document.getElementById("rl"), rn=document.getElementById("rn"), rd=document.getElementById("rd");
+  var days=[].slice.call(document.querySelectorAll(".day"));
+  function select(i){
+    active=i;
+    var S=SPOTS[i];
+    rl.textContent = (i===2?"Next run · ":"") + S.day;
+    rn.textContent = S.n;
+    rd.textContent = S.d;
+    days.forEach(function(b,j){ b.classList.toggle("on", j===i); });
+  }
+  days.forEach(function(b){
+    b.addEventListener("click", function(){
+      select(+b.dataset.i);
+      window.scrollTo({top:0, behavior: reduce?"auto":"smooth"});
+    });
+    b.addEventListener("mouseenter", function(){ active = +b.dataset.i; });
+  });
+
+  addEventListener("resize", resize);
+  resize(); select(2); loop(0);
+
+  /* ---------- gallery: procedural dawn frames until real photos land ---------- */
+  document.querySelectorAll(".shot canvas").forEach(function(c){
+    var g=c.getContext("2d"), seed=+c.dataset.seed*9301, mode=c.dataset.mode;
+    function rnd(){ seed=(seed*16807)%2147483647; return seed/2147483647; }
+    function paint(){
+      var w=c.clientWidth, h=c.clientHeight, d=Math.min(devicePixelRatio||1,2);
+      c.width=w*d; c.height=h*d; g.setTransform(d,0,0,d,0,0);
+      var pal = mode==="dawn" ? ["#0A1418","#123038","#2FD3C3","#FFB01F"]
+              : mode==="dust" ? ["#0B0C10","#241C10","#FFB01F","#78879A"]
+              :                 ["#080C10","#14262E","#78879A","#2FD3C3"];
+      var lg=g.createLinearGradient(0,h,w,0);
+      lg.addColorStop(0,pal[0]); lg.addColorStop(.55,pal[1]); lg.addColorStop(1,pal[0]);
+      g.fillStyle=lg; g.fillRect(0,0,w,h);
+      /* sun / lamp bloom */
+      var bx=w*(.2+rnd()*.6), by=h*(.22+rnd()*.3), rg=g.createRadialGradient(bx,by,0,bx,by,h*.7);
+      rg.addColorStop(0,pal[3]); rg.addColorStop(.16,"rgba(255,176,31,0.28)"); rg.addColorStop(1,"rgba(0,0,0,0)");
+      g.globalAlpha=.55; g.fillStyle=rg; g.fillRect(0,0,w,h); g.globalAlpha=1;
+      /* silhouetted runners along a ground line */
+      var gy=h*.80;
+      g.strokeStyle="rgba(4,7,10,.9)"; g.lineWidth=1;
+      var n=2+Math.floor(rnd()*4);
+      for(var i=0;i<n;i++){
+        var x=w*(.1+rnd()*.8), s=h*(.10+rnd()*.10), y=gy - rnd()*h*.03;
+        g.fillStyle="rgba(4,7,10,.92)";
+        g.beginPath(); g.ellipse(x,y-s*.86,s*.13,s*.13,0,0,6.3); g.fill();       /* head */
+        g.beginPath(); g.moveTo(x,y-s*.72); g.lineTo(x-s*.05,y-s*.30); g.lineTo(x+s*.10,y-s*.30); g.closePath(); g.fill(); /* torso */
+        g.lineWidth=Math.max(1.4,s*.055); g.strokeStyle="rgba(4,7,10,.92)";
+        g.beginPath(); g.moveTo(x,y-s*.30); g.lineTo(x-s*.20,y); g.stroke();     /* trailing leg */
+        g.beginPath(); g.moveTo(x,y-s*.30); g.lineTo(x+s*.18,y-s*.10); g.lineTo(x+s*.26,y); g.stroke();
+        g.beginPath(); g.moveTo(x-s*.02,y-s*.62); g.lineTo(x+s*.22,y-s*.48); g.stroke(); /* arms */
+        g.beginPath(); g.moveTo(x-s*.02,y-s*.62); g.lineTo(x-s*.20,y-s*.42); g.stroke();
+      }
+      /* haze band + grain */
+      var hz=g.createLinearGradient(0,gy-h*.18,0,h);
+      hz.addColorStop(0,"rgba(0,0,0,0)"); hz.addColorStop(1,"rgba(4,6,9,.72)");
+      g.fillStyle=hz; g.fillRect(0,gy-h*.18,w,h);
+      for(var k=0;k<w*h/34;k++){
+        g.fillStyle="rgba(255,255,255,"+(rnd()*.045).toFixed(3)+")";
+        g.fillRect(rnd()*w, rnd()*h, 1, 1);
+      }
+    }
+    paint();
+    addEventListener("resize", function(){ seed=+c.dataset.seed*9301; paint(); });
+  });
+})();
+</script>
