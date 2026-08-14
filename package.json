@@ -2,9 +2,5 @@
   "name": "drc-review-hub",
   "version": "1.0.0",
   "description": "Delhi Run Collective Concept Review Hub",
-  "private": true,
-  "scripts": {
-    "build": "echo 'Static build ready'",
-    "start": "npx serve ."
-  }
+  "private": true
 }
